@@ -22,30 +22,6 @@ typedef uint8_t SOCKET;
 #define IDM_AR0 0x8001
 #define IDM_AR1 0x8002
 #define IDM_DR  0x8003
-/*
-class MR {
-public:
-  static const uint8_t RST   = 0x80;
-  static const uint8_t PB    = 0x10;
-  static const uint8_t PPPOE = 0x08;
-  static const uint8_t LB    = 0x04;
-  static const uint8_t AI    = 0x02;
-  static const uint8_t IND   = 0x01;
-};
-*/
-/*
-class IR {
-public:
-  static const uint8_t CONFLICT = 0x80;
-  static const uint8_t UNREACH  = 0x40;
-  static const uint8_t PPPoE    = 0x20;
-  static const uint8_t SOCK0    = 0x01;
-  static const uint8_t SOCK1    = 0x02;
-  static const uint8_t SOCK2    = 0x04;
-  static const uint8_t SOCK3    = 0x08;
-  static inline uint8_t SOCK(SOCKET ch) { return (0x01 << ch); };
-};
-*/
 
 class SnMR {
 public:
@@ -70,20 +46,6 @@ enum SockCMD {
     Sock_SEND_KEEP = 0x22,
     Sock_RECV      = 0x40
 };
-
-/*class SnCmd {
-public:
-  static const uint8_t OPEN      = 0x01;
-  static const uint8_t LISTEN    = 0x02;
-  static const uint8_t CONNECT   = 0x04;
-  static const uint8_t DISCON    = 0x08;
-  static const uint8_t CLOSE     = 0x10;
-  static const uint8_t SEND      = 0x20;
-  static const uint8_t SEND_MAC  = 0x21;
-  static const uint8_t SEND_KEEP = 0x22;
-  static const uint8_t RECV      = 0x40;
-};
-*/
 
 class SnIR {
 public:
