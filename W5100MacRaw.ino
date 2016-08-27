@@ -10,9 +10,8 @@ void setup() {
     Serial.println("[W5100MacRaw]");
 
     byte mac_address[] = {
-      0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+        0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
     };
-
 
     // Initialise the basic info
     W5100.init();
