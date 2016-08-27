@@ -4,6 +4,32 @@
 
 const int sockNum = 0;
 
+
+void printPaddedHex(uint8_t byte)
+{
+    char str[2];
+    str[0] = (byte >> 4) & 0x0f;
+    str[1] = byte & 0x0f;
+
+    for (int i=0; i<2; i++) {
+        // base for converting single digit numbers to ASCII is 48
+        // base for 10-16 to become lower-case characters a-f is 87
+        if (str[i] > 9) str[i] += 39;
+        str[i] += 48;
+        Serial.print(str[i]);
+    }
+}
+
+void printMACAddress(const uint8_t address[6])
+{
+    for (uint8_t i = 0; i < 6; ++i) {
+        printPaddedHex(address[i]);
+        if (i < 5)
+            Serial.print(':');
+    }
+    Serial.println();
+}
+
 void setup() {
     // Setup serial port for debugging
     Serial.begin(38400);
@@ -35,8 +61,23 @@ void loop() {
 
     int16_t ret = recvAvailable(sockNum);
     if ( ret > 0 ) {
-        ret = recvfrom(sockNum, buffer, sizeof(buffer), addr, &port);
-        Serial.print("ret=");
+        int16_t len = recvfrom(sockNum, buffer, sizeof(buffer), addr, &port);
+        Serial.print("len=");
         Serial.println(ret, DEC);
+
+        Serial.print("Dest=");
+        printMACAddress(&buffer[0]);
+        Serial.print("Src=");
+        printMACAddress(&buffer[6]);
+
+        // 0x0800 = IPv4
+        // 0x0806 = ARP
+        // 0x86DD = IPv6
+        Serial.print("Type=0x");
+        printPaddedHex(buffer[12]);
+        printPaddedHex(buffer[13]);
+        Serial.println();
+
+        Serial.println();
     }
 }
