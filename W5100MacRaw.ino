@@ -1,6 +1,5 @@
 #include <SPI.h>
 #include "w5100.h"
-#include "socket.h"
 
 const int sockNum = 0;
 
@@ -30,6 +29,36 @@ void printMACAddress(const uint8_t address[6])
     Serial.println();
 }
 
+int read(uint8_t *buffer, uint16_t bufsize)
+{
+    uint16_t ptr=0;
+
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+
+    int16_t ret = W5100.getRXReceivedSize(sockNum);
+    if (ret > 0) {
+        uint8_t head[8];
+        uint16_t data_len=0;
+
+        ptr = W5100.readSnRX_RD(sockNum);
+
+        W5100.read_data(sockNum, ptr, head, 2);
+        ptr+=2;
+        data_len = head[0];
+        data_len = (data_len<<8) + head[1] - 2;
+
+        W5100.read_data(sockNum, ptr, buffer, data_len);
+        ptr += data_len;
+        W5100.writeSnRX_RD(sockNum, ptr);
+        W5100.execCmdSn(sockNum, Sock_RECV);
+    }
+
+    SPI.endTransaction();
+
+    return ret;
+}
+
+
 void setup() {
     // Setup serial port for debugging
     Serial.begin(38400);
@@ -45,25 +74,34 @@ void setup() {
     W5100.setMACAddress(mac_address);
     SPI.endTransaction();
 
-    socket(sockNum, SnMR::MACRAW, 0, 0);
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+    W5100.writeSnMR(sockNum, SnMR::MACRAW);
+    W5100.execCmdSn(sockNum, Sock_OPEN);
+    SPI.endTransaction();
 
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+    uint8_t socketStatus = W5100.readSnSR(sockNum);
+    SPI.endTransaction();
     Serial.print("socketStatus=0x");
-    Serial.println(socketStatus(sockNum), HEX);
+    Serial.println(socketStatus, HEX);
+
+    SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
+    uint8_t retryCount = W5100.readRCR();
+    SPI.endTransaction();
+
+    Serial.print("retryCount=");
+    Serial.println(retryCount, DEC);
 }
 
 
 uint8_t buffer[800];
 
 void loop() {
-    uint16_t data_len = 0;
-    uint16_t port;
-    uint8_t addr[16];
 
-    int16_t ret = recvAvailable(sockNum);
-    if ( ret > 0 ) {
-        int16_t len = recvfrom(sockNum, buffer, sizeof(buffer), addr, &port);
+    uint16_t len = read(buffer, sizeof(buffer));
+    if ( len > 0 ) {
         Serial.print("len=");
-        Serial.println(ret, DEC);
+        Serial.println(len, DEC);
 
         Serial.print("Dest=");
         printMACAddress(&buffer[0]);
