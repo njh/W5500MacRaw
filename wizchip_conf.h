@@ -517,34 +517,6 @@ void   wizchip_sw_reset(void);
  */
 int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
 
-/** 
- * @ingroup extra_functions
- * @brief Clear Interrupt of WIZCHIP.
- * @param intr : @ref intr_kind value operated OR. It can type-cast to uint16_t.
- */
-void wizchip_clrinterrupt(intr_kind intr);
-
-/** 
- * @ingroup extra_functions
- * @brief Get Interrupt of WIZCHIP.
- * @return @ref intr_kind value operated OR. It can type-cast to uint16_t.
- */
-intr_kind wizchip_getinterrupt(void);
-
-/** 
- * @ingroup extra_functions
- * @brief Mask or Unmask Interrupt of WIZCHIP.
- * @param intr : @ref intr_kind value operated OR. It can type-cast to uint16_t.
- */
-void wizchip_setinterruptmask(intr_kind intr);
-
-/** 
- * @ingroup extra_functions
- * @brief Get Interrupt mask of WIZCHIP.
- * @return : The operated OR vaule of @ref intr_kind. It can type-cast to uint16_t.
- */
-intr_kind wizchip_getinterruptmask(void);
-
 #if _WIZCHIP_ > 5100
    int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
    int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
