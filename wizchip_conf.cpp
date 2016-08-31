@@ -183,68 +183,7 @@ _WIZCHIP  WIZCHIP =
 static uint8_t    _DNS_[4];      // DNS server ip address
 static dhcp_mode  _DHCP_;        // DHCP mode
 
-void reg_wizchip_cris_cbfunc(void(*cris_en)(void), void(*cris_ex)(void))
 {
-   if(!cris_en || !cris_ex)
-   {
-      WIZCHIP.CRIS._enter = wizchip_cris_enter;
-      WIZCHIP.CRIS._exit  = wizchip_cris_exit;
-   }
-   else
-   {
-      WIZCHIP.CRIS._enter = cris_en;
-      WIZCHIP.CRIS._exit  = cris_ex;
-   }
-}
-
-void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void))
-{
-   if(!cs_sel || !cs_desel)
-   {
-      WIZCHIP.CS._select   = wizchip_cs_select;
-      WIZCHIP.CS._deselect = wizchip_cs_deselect;
-   }
-   else
-   {
-      WIZCHIP.CS._select   = cs_sel;
-      WIZCHIP.CS._deselect = cs_desel;
-   }
-}
-
-//M20150515 : For integrating with W5300
-//void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, uint8_t wb))
-void reg_wizchip_bus_cbfunc(iodata_t(*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, iodata_t wb))
-{
-   while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_BUS_));
-   //M20150601 : Rename call back function for integrating with W5300
-   /*
-   if(!bus_rb || !bus_wb)
-   {
-      WIZCHIP.IF.BUS._read_byte   = wizchip_bus_readbyte;
-      WIZCHIP.IF.BUS._write_byte  = wizchip_bus_writebyte;
-   }
-   else
-   {
-      WIZCHIP.IF.BUS._read_byte   = bus_rb;
-      WIZCHIP.IF.BUS._write_byte  = bus_wb;
-   }
-   */
-   if(!bus_rb || !bus_wb)
-   {
-      WIZCHIP.IF.BUS._read_data   = wizchip_bus_readdata;
-      WIZCHIP.IF.BUS._write_data  = wizchip_bus_writedata;
-   }
-   else
-   {
-      WIZCHIP.IF.BUS._read_data   = bus_rb;
-      WIZCHIP.IF.BUS._write_data  = bus_wb;
-   }
-}
-
-void reg_wizchip_spi_cbfunc(uint8_t (*spi_rb)(void), void (*spi_wb)(uint8_t wb))
-{
-   while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_));
-   
    if(!spi_rb || !spi_wb)
    {
       WIZCHIP.IF.SPI._read_byte   = wizchip_spi_readbyte;
@@ -257,22 +196,6 @@ void reg_wizchip_spi_cbfunc(uint8_t (*spi_rb)(void), void (*spi_wb)(uint8_t wb))
    }
 }
 
-// 20140626 Eric Added for SPI burst operations
-void reg_wizchip_spiburst_cbfunc(void (*spi_rb)(uint8_t* pBuf, uint16_t len), void (*spi_wb)(uint8_t* pBuf, uint16_t len))
-{
-   while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_));
-
-   if(!spi_rb || !spi_wb)
-   {
-      WIZCHIP.IF.SPI._read_burst   = wizchip_spi_readburst;
-      WIZCHIP.IF.SPI._write_burst  = wizchip_spi_writeburst;
-   }
-   else
-   {
-      WIZCHIP.IF.SPI._read_burst   = spi_rb;
-      WIZCHIP.IF.SPI._write_burst  = spi_wb;
-   }
-}
 
 int8_t ctlwizchip(ctlwizchip_type cwtype, void* arg)
 {

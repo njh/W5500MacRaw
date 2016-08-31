@@ -421,58 +421,6 @@ typedef struct wiz_NetTimeout_t
 }wiz_NetTimeout;
 
 /**
- *@brief Registers call back function for critical section of I/O functions such as
- *\ref WIZCHIP_READ, @ref WIZCHIP_WRITE, @ref WIZCHIP_READ_BUF and @ref WIZCHIP_WRITE_BUF.
- *@param cris_en : callback function for critical section enter.
- *@param cris_ex : callback function for critical section exit.
- *@todo Describe @ref WIZCHIP_CRITICAL_ENTER and @ref WIZCHIP_CRITICAL_EXIT marco or register your functions.
- *@note If you do not describe or register, default functions(@ref wizchip_cris_enter & @ref wizchip_cris_exit) is called.
- */
-void reg_wizchip_cris_cbfunc(void(*cris_en)(void), void(*cris_ex)(void));
-
-
-/**
- *@brief Registers call back function for WIZCHIP select & deselect.
- *@param cs_sel : callback function for WIZCHIP select
- *@param cs_desel : callback fucntion for WIZCHIP deselect
- *@todo Describe @ref wizchip_cs_select and @ref wizchip_cs_deselect function or register your functions.
- *@note If you do not describe or register, null function is called.
- */
-void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void));
-
-/**
- *@brief Registers call back function for bus interface.
- *@param bus_rb   : callback function to read byte data using system bus
- *@param bus_wb   : callback function to write byte data using system bus
- *@todo Describe @ref wizchip_bus_readbyte and @ref wizchip_bus_writebyte function
- *or register your functions.
- *@note If you do not describe or register, null function is called.
- */
-//M20150601 : For integrating with W5300
-//void reg_wizchip_bus_cbfunc(uint8_t (*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, uint8_t wb));
-void reg_wizchip_bus_cbfunc(iodata_t (*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, iodata_t wb));
-
-/**
- *@brief Registers call back function for SPI interface.
- *@param spi_rb : callback function to read byte using SPI
- *@param spi_wb : callback function to write byte using SPI
- *@todo Describe \ref wizchip_spi_readbyte and \ref wizchip_spi_writebyte function
- *or register your functions.
- *@note If you do not describe or register, null function is called.
- */
-void reg_wizchip_spi_cbfunc(uint8_t (*spi_rb)(void), void (*spi_wb)(uint8_t wb));
-
-/**
- *@brief Registers call back function for SPI interface.
- *@param spi_rb : callback function to burst read using SPI
- *@param spi_wb : callback function to burst write using SPI
- *@todo Describe \ref wizchip_spi_readbyte and \ref wizchip_spi_writebyte function
- *or register your functions.
- *@note If you do not describe or register, null function is called.
- */
-void reg_wizchip_spiburst_cbfunc(void (*spi_rb)(uint8_t* pBuf, uint16_t len), void (*spi_wb)(uint8_t* pBuf, uint16_t len));
-
-/**
  * @ingroup extra_functions
  * @brief Controls to the WIZCHIP.
  * @details Resets WIZCHIP & internal PHY, Configures PHY mode, Monitor PHY(Link,Speed,Half/Full/Auto),
