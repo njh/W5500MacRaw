@@ -64,7 +64,6 @@
  * null function is called.
  */
 //void 	  wizchip_cris_enter(void)           {};
-void 	  wizchip_cris_enter(void)           {}
 
 /**
  * @brief Default function to disable interrupt.
@@ -72,7 +71,6 @@ void 	  wizchip_cris_enter(void)           {}
  * null function is called.
  */
 //void 	  wizchip_cris_exit(void)          {};
-void 	  wizchip_cris_exit(void)          {}
 
 /**
  * @brief Default function to select chip.
@@ -88,25 +86,6 @@ void 	wizchip_cs_select(void)            {}
  * null function is called.
  */
 //void 	wizchip_cs_deselect(void)          {};
-void 	wizchip_cs_deselect(void)          {}
-
-/**
- * @brief Default function to read in direct or indirect interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
- //M20150601 : Rename the function for integrating with W5300
-//uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t *)((ptrdiff_t) AddrSel)); }
-iodata_t wizchip_bus_readdata(uint32_t AddrSel) { return * ((volatile iodata_t *)((ptrdiff_t) AddrSel)); }
-
-/**
- * @brief Default function to write in direct or indirect interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//M20150601 : Rename the function for integrating with W5300
-//void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*)((ptrdiff_t)AddrSel)) = wb; }
-void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  { *((volatile iodata_t*)((ptrdiff_t)AddrSel)) = wb; }
 
 /**
  * @brief Default function to read in SPI interface.
@@ -123,24 +102,6 @@ uint8_t wizchip_spi_readbyte(void)        {return 0;}
  */
 //void 	wizchip_spi_writebyte(uint8_t wb) {};
 void 	wizchip_spi_writebyte(uint8_t wb) {}
-
-/**
- * @brief Default function to burst read in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}; 
-void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}
-
-/**
- * @brief Default function to burst write in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {};
-void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {}
-
-
 static uint8_t    _DNS_[4];      // DNS server ip address
 static dhcp_mode  _DHCP_;        // DHCP mode
 
@@ -153,21 +114,10 @@ void wizchip_sw_reset(void)
 {
    uint8_t gw[4], sn[4], sip[4];
    uint8_t mac[6];
-//A20150601
-#if _WIZCHIP_IO_MODE_  == _WIZCHIP_IO_MODE_BUS_INDIR_
-   uint16_t mr = (uint16_t)getMR();
-   setMR(mr | MR_IND);
-#endif
-//
    getSHAR(mac);
    getGAR(gw);  getSUBR(sn);  getSIPR(sip);
    setMR(MR_RST);
    getMR(); // for delay
-//A2015051 : For indirect bus mode 
-#if _WIZCHIP_IO_MODE_  == _WIZCHIP_IO_MODE_BUS_INDIR_
-   setMR(mr | MR_IND);
-#endif
-//
    setSHAR(mac);
    setGAR(gw);
    setSUBR(sn);
