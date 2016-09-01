@@ -191,69 +191,6 @@
 #endif      
 
 
-/********************************************************
-* WIZCHIP BASIC IF functions for SPI, SDIO, I2C , ETC.
-*********************************************************/
-/**
- * @ingroup DATA_TYPE
- * @brief The set of callback functions for W5500:@ref WIZCHIP_IO_Functions W5200:@ref WIZCHIP_IO_Functions_W5200
- */
-typedef struct __WIZCHIP
-{
-   uint16_t  if_mode;               ///< host interface mode
-   uint8_t   id[6];                 ///< @b WIZCHIP ID such as @b 5100, @b 5200, @b 5500, and so on.
-   /**
-    * The set of critical section callback func.
-    */
-   struct _CRIS
-   {
-      void (*_enter)  (void);       ///< crtical section enter 
-      void (*_exit) (void);         ///< critial section exit  
-   }CRIS;  
-   /**
-    *  The set of @ref \_WIZCHIP_ select control callback func.
-    */
-   struct _CS
-   {
-      void (*_select)  (void);      ///< @ref \_WIZCHIP_ selected
-      void (*_deselect)(void);      ///< @ref \_WIZCHIP_ deselected
-   }CS;  
-   /**
-    * The set of interface IO callback func.
-    */
-   union _IF
-   {	 
-      /**
-       * For BUS interface IO
-       */
-      //M20156501 : Modify the function name for integrating with W5300
-      //struct
-      //{
-      //   uint8_t  (*_read_byte)  (uint32_t AddrSel);
-      //   void     (*_write_byte) (uint32_t AddrSel, uint8_t wb);
-      //}BUS;      
-      struct
-      {
-         iodata_t  (*_read_data)   (uint32_t AddrSel);
-         void      (*_write_data)  (uint32_t AddrSel, iodata_t wb);
-      }BUS;      
-
-      /**
-       * For SPI interface IO
-       */
-      struct
-      {
-         uint8_t (*_read_byte)   (void);
-         void    (*_write_byte)  (uint8_t wb);
-         void    (*_read_burst)  (uint8_t* pBuf, uint16_t len);
-         void    (*_write_burst) (uint8_t* pBuf, uint16_t len);
-      }SPI;
-      // To be added
-      //
-   }IF;
-}_WIZCHIP;
-
-extern _WIZCHIP  WIZCHIP;
 
 /**
  * @ingroup DATA_TYPE
