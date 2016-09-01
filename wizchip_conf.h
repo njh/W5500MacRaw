@@ -372,76 +372,6 @@ typedef struct wiz_PhyConf_t
    }wiz_PhyConf;
 #endif   
 
-/**
- * @ingroup DATA_TYPE
- *  It used in setting dhcp_mode of @ref wiz_NetInfo.
- */
-typedef enum
-{
-   NETINFO_STATIC = 1,    ///< Static IP configuration by manually.
-   NETINFO_DHCP           ///< Dynamic IP configruation from a DHCP sever
-}dhcp_mode;
-
-/**
- * @ingroup DATA_TYPE
- *  Network Information for WIZCHIP
- */
-typedef struct wiz_NetInfo_t
-{
-   uint8_t mac[6];  ///< Source Mac Address
-   uint8_t ip[4];   ///< Source IP Address
-   uint8_t sn[4];   ///< Subnet Mask 
-   uint8_t gw[4];   ///< Gateway IP Address
-   uint8_t dns[4];  ///< DNS server IP Address
-   dhcp_mode dhcp;  ///< 1 - Static, 2 - DHCP
-}wiz_NetInfo;
-
-/**
- * @ingroup DATA_TYPE
- *  Network mode
- */
-typedef enum
-{
-#if _WIZCHIP_ == 5500   
-   NM_FORCEARP    = (1<<1),  ///< Force to APP send whenever udp data is sent. Valid only in W5500
-#endif   
-   NM_WAKEONLAN   = (1<<5),  ///< Wake On Lan 
-   NM_PINGBLOCK   = (1<<4),  ///< Block ping-request
-   NM_PPPOE       = (1<<3),  ///< PPPoE mode
-}netmode_type;
-
-/**
- * @ingroup DATA_TYPE
- *  Used in CN_SET_TIMEOUT or CN_GET_TIMEOUT of @ref ctlwizchip() for timeout configruation.
- */
-typedef struct wiz_NetTimeout_t
-{
-   uint8_t  retry_cnt;     ///< retry count 
-   uint16_t time_100us;    ///< time unit 100us
-}wiz_NetTimeout;
-
-/**
- * @ingroup extra_functions
- * @brief Controls to the WIZCHIP.
- * @details Resets WIZCHIP & internal PHY, Configures PHY mode, Monitor PHY(Link,Speed,Half/Full/Auto),
- * controls interrupt & mask and so on.
- * @param cwtype : Decides to the control type
- * @param arg : arg type is dependent on cwtype.
- * @return  0 : Success \n
- *         -1 : Fail because of invalid \ref ctlwizchip_type or unsupported \ref ctlwizchip_type in WIZCHIP 
- */          
-int8_t ctlwizchip(ctlwizchip_type cwtype, void* arg);
-
-/**
- * @ingroup extra_functions
- * @brief Controls to network.
- * @details Controls to network environment, mode, timeout and so on.
- * @param cntype : Input. Decides to the control type
- * @param arg : Inout. arg type is dependent on cntype.
- * @return -1 : Fail because of invalid \ref ctlnetwork_type or unsupported \ref ctlnetwork_type in WIZCHIP \n
- *          0 : Success      
- */          
-int8_t ctlnetwork(ctlnetwork_type cntype, void* arg);
 
 
 /* 
@@ -497,49 +427,5 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
  */   
    int8_t wizphy_setphypmode(uint8_t pmode);    
 #endif
-
-/**
-* @ingroup extra_functions
- * @brief Set the network information for WIZCHIP
- * @param pnetinfo : @ref wizNetInfo
- */
-void wizchip_setnetinfo(wiz_NetInfo* pnetinfo);
-
-/**
- * @ingroup extra_functions
- * @brief Get the network information for WIZCHIP
- * @param pnetinfo : @ref wizNetInfo
- */
-void wizchip_getnetinfo(wiz_NetInfo* pnetinfo);
-
-/**
- * @ingroup extra_functions
- * @brief Set the network mode such WOL, PPPoE, Ping Block, and etc. 
- * @param pnetinfo Value of network mode. Refer to @ref netmode_type.
- */
-int8_t wizchip_setnetmode(netmode_type netmode);
-
-/**
- * @ingroup extra_functions
- * @brief Get the network mode such WOL, PPPoE, Ping Block, and etc. 
- * @return Value of network mode. Refer to @ref netmode_type.
- */
-netmode_type wizchip_getnetmode(void);
-
-/**
- * @ingroup extra_functions
- * @brief Set retry time value(@ref _RTR_) and retry count(@ref _RCR_).
- * @details @ref _RTR_ configures the retransmission timeout period and @ref _RCR_ configures the number of time of retransmission.  
- * @param nettime @ref _RTR_ value and @ref _RCR_ value. Refer to @ref wiz_NetTimeout. 
- */
-void wizchip_settimeout(wiz_NetTimeout* nettime);
-
-/**
- * @ingroup extra_functions
- * @brief Get retry time value(@ref _RTR_) and retry count(@ref _RCR_).
- * @details @ref _RTR_ configures the retransmission timeout period and @ref _RCR_ configures the number of time of retransmission.  
- * @param nettime @ref _RTR_ value and @ref _RCR_ value. Refer to @ref wiz_NetTimeout. 
- */
-void wizchip_gettimeout(wiz_NetTimeout* nettime);
 
 #endif   // _WIZCHIP_CONF_H_
