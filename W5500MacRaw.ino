@@ -63,7 +63,7 @@ int read(uint8_t *buffer, uint16_t bufsize)
 
 void setup() {
     // Setup serial port for debugging
-    Serial.begin(38400);
+    Serial.begin(115200);
     Serial.println("[W5500MacRaw]");
 
     byte mac_address[] = {
