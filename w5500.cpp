@@ -4,21 +4,6 @@
 //! \brief W5500 HAL Interface.
 //! \version 1.0.2
 //! \date 2013/10/21
-//! \par  Revision history
-//!       <2015/02/05> Notice
-//!        The version history is not updated after this point.
-//!        Download the latest version directly from GitHub. Please visit the our GitHub repository for ioLibrary.
-//!        >> https://github.com/Wiznet/ioLibrary_Driver
-//!       <2014/05/01> V1.0.2
-//!         1. Implicit type casting -> Explicit type casting. Refer to M20140501
-//!            Fixed the problem on porting into under 32bit MCU
-//!            Issued by Mathias ClauBen, wizwiki forum ID Think01 and bobh
-//!            Thank for your interesting and serious advices.
-//!       <2013/12/20> V1.0.1
-//!         1. Remove warning
-//!         2. WIZCHIP_READ_BUF WIZCHIP_WRITE_BUF in case _WIZCHIP_IO_MODE_SPI_FDM_
-//!            for loop optimized(removed). refer to M20131220
-//!       <2013/10/21> 1st Release
 //! \author MidnightCow
 //! \copyright
 //!
@@ -227,10 +212,7 @@ void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 
     if(len == 0)  return;
     ptr = getSn_TX_WR(sn);
-    //M20140501 : implict type casting -> explict type casting
-    //addrsel = (ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
     addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
-    //
     WIZCHIP_WRITE_BUF(addrsel,wizdata, len);
 
     ptr += len;
@@ -244,10 +226,8 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 
     if(len == 0) return;
     ptr = getSn_RX_RD(sn);
-    //M20140501 : implict type casting -> explict type casting
-    //addrsel = ((ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
     addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
-    //
+
     WIZCHIP_READ_BUF(addrsel, wizdata, len);
     ptr += len;
 

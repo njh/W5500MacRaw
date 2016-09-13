@@ -4,12 +4,6 @@
 //! \brief W5500 HAL Header File.
 //! \version 1.0.0
 //! \date 2013/10/21
-//! \par  Revision history
-//!       <2015/02/05> Notice
-//!        The version history is not updated after this point.
-//!        Download the latest version directly from GitHub. Please visit the our GitHub repository for ioLibrary.
-//!        >> https://github.com/Wiznet/ioLibrary_Driver
-//!       <2013/10/21> 1st Release
 //! \author MidnightCow
 //! \copyright
 //!
@@ -152,8 +146,6 @@
  * - \ref IM_IR5 : PPPoE Close Interrupt Mask
  * - \ref IM_IR4 : Magic Packet Interrupt Mask
  */
-//M20150401 : Rename SYMBOE ( Re-define error in a compile)
-//#define IMR                (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _IMR_                (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
@@ -178,8 +170,6 @@
  * to the packet that is transmitted by \ref Sn_CR (CONNECT, DISCON, CLOSE, SEND, SEND_MAC, SEND_KEEP command).
  * If the peer does not respond within the @ref _RTR_ time, W5500 retransmits the packet or issues timeout.
  */
-//M20150401 : Rename SYMBOE ( Re-define error in a compile)
-//#define RTR                (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _RTR_                (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
@@ -187,8 +177,6 @@
  * @details @ref _RCR_ configures the number of time of retransmission.
  * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (@ref Sn_IR_TIMEOUT = '1').
  */
-//M20150401 : Rename SYMBOE ( Re-define error in a compile)
-//#define RCR                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _RCR_                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
@@ -1168,7 +1156,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref INTLEVEL register.
  * @sa setINTLEVEL()
  */
-//M20150401 : Type explict declaration
 /*
 #define getINTLEVEL() \
 		((WIZCHIP_READ(INTLEVEL) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(INTLEVEL,1)))
@@ -1253,7 +1240,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref _RTR_ register.
  * @sa setRTR()
  */
-//M20150401 : Type explict declaration
 /*
 #define getRTR() \
 		((WIZCHIP_READ(_RTR_) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(_RTR_,1)))
@@ -1344,7 +1330,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @sa setPSID()
  */
 //uint16_t getPSID(void);
-//M20150401 : Type explict declaration
 /*
 #define getPSID() \
 		((WIZCHIP_READ(PSID) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(PSID,1)))
@@ -1367,7 +1352,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref PMRU register.
  * @sa setPMRU()
  */
-//M20150401 : Type explict declaration
 /*
 #define getPMRU() \
 		((WIZCHIP_READ(PMRU) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(PMRU,1)))
@@ -1379,7 +1363,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @brief Get unreachable IP address
  * @param (uint8_t*)uipr Pointer variable to get unreachable IP address. It should be allocated 4 bytes.
  */
-//M20150401 : Size Error of UIPR (6 -> 4)
 /*
 #define getUIPR(uipr) \
 		WIZCHIP_READ_BUF(UIPR,uipr,6)
@@ -1391,7 +1374,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @brief Get @ref UPORTR register
  * @return uint16_t. Value of @ref UPORTR register.
  */
-//M20150401 : Type explict declaration 
 /*
 #define getUPORTR() \
 	((WIZCHIP_READ(UPORTR) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(UPORTR,1)))
@@ -1524,7 +1506,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref Sn_PORT.
  * @sa setSn_PORT()
  */
-//M20150401 : Type explict declaration 
 /*
 #define getSn_PORT(sn) \
 		((WIZCHIP_READ(Sn_PORT(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_PORT(sn),1)))
@@ -1585,7 +1566,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref Sn_DPORT.
  * @sa setSn_DPORT()
  */
-//M20150401 : Type explict declaration
 /*
 #define getSn_DPORT(sn) \
 		((WIZCHIP_READ(Sn_DPORT(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_DPORT(sn),1)))
@@ -1610,7 +1590,6 @@ void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
  * @return uint16_t. Value of @ref Sn_MSSR.
  * @sa setSn_MSSR()
  */
-//M20150401 : Type explict declaration
 /*
 #define getSn_MSSR(sn) \
 		((WIZCHIP_READ(Sn_MSSR(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_MSSR(sn),1)))
@@ -1705,11 +1684,6 @@ uint16_t getSn_TX_FSR(uint8_t sn);
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
-//M20150401 : Type explict declaration
-/*
-#define getSn_TX_RD(sn) \
-		((WIZCHIP_READ(Sn_TX_RD(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_RD(sn),1)))
-*/
 #define getSn_TX_RD(sn) \
 		(((uint16_t)WIZCHIP_READ(Sn_TX_RD(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_RD(sn),1)))		
 
@@ -1730,11 +1704,6 @@ uint16_t getSn_TX_FSR(uint8_t sn);
  * @return uint16_t. Value of @ref Sn_TX_WR.
  * @sa setSn_TX_WR()
  */
-//M20150401 : Type explict declaration
-/*
-#define getSn_TX_WR(sn) \
-		((WIZCHIP_READ(Sn_TX_WR(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))
-*/
 #define getSn_TX_WR(sn) \
 		(((uint16_t)WIZCHIP_READ(Sn_TX_WR(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))		
 
@@ -1764,11 +1733,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @return uint16_t. Value of @ref Sn_RX_RD.
  * @sa setSn_RX_RD()
  */
-//M20150401 : Type explict declaration 
-/*
-#define getSn_RX_RD(sn) \
-		((WIZCHIP_READ(Sn_RX_RD(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1)))
-*/		
 #define getSn_RX_RD(sn) \
 		(((uint16_t)WIZCHIP_READ(Sn_RX_RD(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1)))		
 
@@ -1777,11 +1741,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
-//M20150401 : Type explict declaration
-/*  
-#define getSn_RX_WR(sn) \
-		((WIZCHIP_READ(Sn_RX_WR(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_WR(sn),1)))
-*/		
 #define getSn_RX_WR(sn) \
 		(((uint16_t)WIZCHIP_READ(Sn_RX_WR(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_WR(sn),1)))		
 
@@ -1802,11 +1761,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @return uint16_t. Value of @ref Sn_FRAG.
  * @sa setSn_FRAG()
  */
-//M20150401 : Type explict declaration  
-/*
-#define getSn_FRAG(sn) \
-		((WIZCHIP_READ(Sn_FRAG(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1)))
-*/		
 #define getSn_FRAG(sn) \
       (((uint16_t)WIZCHIP_READ(Sn_FRAG(sn)) << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1)))		
 
@@ -1839,11 +1793,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n RX max buffer size.
  */
-//M20150401 : Type explict declaration
-/*
-#define getSn_RxMAX(sn) \
-		(getSn_RXBUF_SIZE(sn) << 10)
-*/
 #define getSn_RxMAX(sn) \
 		(((uint16_t)getSn_RXBUF_SIZE(sn)) << 10)		
 
@@ -1853,11 +1802,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n TX max buffer size.
  */
-//M20150401 : Type explict declaration
-/*
-#define getSn_TxMAX(sn) \
-		(getSn_TXBUF_SIZE(sn) << 10)
-*/
 #define getSn_TxMAX(sn) \
 		(((uint16_t)getSn_TXBUF_SIZE(sn)) << 10)
 

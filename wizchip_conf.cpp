@@ -4,18 +4,6 @@
 //! \brief WIZCHIP Config Header File.
 //! \version 1.0.1
 //! \date 2013/10/21
-//! \par  Revision history
-//!       <2015/02/05> Notice
-//!        The version history is not updated after this point.
-//!        Download the latest version directly from GitHub. Please visit the our GitHub repository for ioLibrary.
-//!        >> https://github.com/Wiznet/ioLibrary_Driver
-//!       <2014/05/01> V1.0.1  Refer to M20140501
-//!        1. Explicit type casting in wizchip_bus_readdata() & wizchip_bus_writedata()
-//            Issued by Mathias ClauBen.
-//!           uint32_t type converts into ptrdiff_t first. And then recoverting it into uint8_t*
-//!           For remove the warning when pointer type size is not 32bit.
-//!           If ptrdiff_t doesn't support in your complier, You should must replace ptrdiff_t into your suitable pointer type.
-//!       <2013/10/21> 1st Release
 //! \author MidnightCow
 //! \copyright
 //!
@@ -53,10 +41,6 @@
 //
 
 #include "wizchip_conf.h"
-
-/////////////
-//M20150401 : Remove ; in the default callback function such as wizchip_cris_enter(), wizchip_cs_select() and etc.
-/////////////
 
 /**
  * @brief Default function to enable interrupt.
@@ -136,7 +120,6 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
     if(txsize)
     {
         tmp = 0;
-        //M20150601 : For integrating with W5300
         for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
         {
             tmp += txsize[i];
