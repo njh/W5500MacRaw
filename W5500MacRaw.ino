@@ -1,9 +1,9 @@
 #include <SPI.h>
-#include "w5100.h"
+#include "w5500.h"
 
 const int sockNum = 0;
 
-W5100Class w5100;
+W5500Class w5500;
 
 
 void printPaddedHex(uint8_t byte)
@@ -37,22 +37,22 @@ int read(uint8_t *buffer, uint16_t bufsize)
 
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
 
-    int16_t ret = w5100.getRXReceivedSize(sockNum);
+    int16_t ret = w5500.getRXReceivedSize(sockNum);
     if (ret > 0) {
         uint8_t head[8];
         uint16_t data_len=0;
 
-        ptr = w5100.readSnRX_RD(sockNum);
+        ptr = w5500.readSnRX_RD(sockNum);
 
-        w5100.read_data(sockNum, ptr, head, 2);
+        w5500.read_data(sockNum, ptr, head, 2);
         ptr+=2;
         data_len = head[0];
         data_len = (data_len<<8) + head[1] - 2;
 
-        w5100.read_data(sockNum, ptr, buffer, data_len);
+        w5500.read_data(sockNum, ptr, buffer, data_len);
         ptr += data_len;
-        w5100.writeSnRX_RD(sockNum, ptr);
-        w5100.execCmdSn(sockNum, Sock_RECV);
+        w5500.writeSnRX_RD(sockNum, ptr);
+        w5500.execCmdSn(sockNum, Sock_RECV);
     }
 
     SPI.endTransaction();
@@ -64,31 +64,31 @@ int read(uint8_t *buffer, uint16_t bufsize)
 void setup() {
     // Setup serial port for debugging
     Serial.begin(38400);
-    Serial.println("[W5100MacRaw]");
+    Serial.println("[W5500MacRaw]");
 
     byte mac_address[] = {
         0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
     };
 
     // Initialise the basic info
-    w5100.init();
+    w5500.init();
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    w5100.writeSHAR(mac_address);
+    w5500.writeSHAR(mac_address);
     SPI.endTransaction();
 
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    w5100.writeSnMR(sockNum, SnMR::MACRAW);
-    w5100.execCmdSn(sockNum, Sock_OPEN);
+    w5500.writeSnMR(sockNum, SnMR::MACRAW);
+    w5500.execCmdSn(sockNum, Sock_OPEN);
     SPI.endTransaction();
 
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    uint8_t socketStatus = w5100.readSnSR(sockNum);
+    uint8_t socketStatus = w5500.readSnSR(sockNum);
     SPI.endTransaction();
     Serial.print("socketStatus=0x");
     Serial.println(socketStatus, HEX);
 
     SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
-    uint8_t retryCount = w5100.readRCR();
+    uint8_t retryCount = w5500.readRCR();
     SPI.endTransaction();
 
     Serial.print("retryCount=");
