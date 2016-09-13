@@ -15,30 +15,30 @@
 //!
 //! Copyright (c)  2013, WIZnet Co., LTD.
 //! All rights reserved.
-//! 
-//! Redistribution and use in source and binary forms, with or without 
-//! modification, are permitted provided that the following conditions 
-//! are met: 
-//! 
-//!     * Redistributions of source code must retain the above copyright 
-//! notice, this list of conditions and the following disclaimer. 
+//!
+//! Redistribution and use in source and binary forms, with or without
+//! modification, are permitted provided that the following conditions
+//! are met:
+//!
+//!     * Redistributions of source code must retain the above copyright
+//! notice, this list of conditions and the following disclaimer.
 //!     * Redistributions in binary form must reproduce the above copyright
 //! notice, this list of conditions and the following disclaimer in the
-//! documentation and/or other materials provided with the distribution. 
-//!     * Neither the name of the <ORGANIZATION> nor the names of its 
-//! contributors may be used to endorse or promote products derived 
-//! from this software without specific prior written permission. 
-//! 
+//! documentation and/or other materials provided with the distribution.
+//!     * Neither the name of the <ORGANIZATION> nor the names of its
+//! contributors may be used to endorse or promote products derived
+//! from this software without specific prior written permission.
+//!
 //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 //! THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -86,8 +86,8 @@
  * - @ref WIZCHIP_register : @ref Common_register_group and @ref Socket_register_group
  * - @ref WIZCHIP_IO_Functions : @ref Basic_IO_function, @ref Common_register_access_function and @ref Socket_register_access_function
  */
- 
- 
+
+
 /**
  * @defgroup WIZCHIP_register WIZCHIP register
  * @ingroup W5500
@@ -158,9 +158,9 @@
  * @sa UIPR, UPORTR : ICMP message.
  * @sa PHYCFGR, VERSIONR : etc.
  */
- 
-  
- 
+
+
+
 /**
  * @defgroup Socket_register_group Socket register
  * @ingroup WIZCHIP_register
@@ -173,14 +173,14 @@
  * @sa Sn_MSSR, Sn_TOS, Sn_TTL, Sn_KPALVTR, Sn_FRAG : Internet protocol.
  * @sa Sn_RXBUF_SIZE, Sn_TXBUF_SIZE, Sn_TX_FSR, Sn_TX_RD, Sn_TX_WR, Sn_RX_RSR, Sn_RX_RD, Sn_RX_WR : Data communication
  */
- 
- 
- 
- /**
- * @defgroup Basic_IO_function Basic I/O function
- * @ingroup WIZCHIP_IO_Functions
- * @brief These are basic input/output functions to read values from register or write values to register.
- */
+
+
+
+/**
+* @defgroup Basic_IO_function Basic I/O function
+* @ingroup WIZCHIP_IO_Functions
+* @brief These are basic input/output functions to read values from register or write values to register.
+*/
 
 /**
  * @defgroup Common_register_access_function Common register access functions
@@ -193,7 +193,7 @@
  * @ingroup WIZCHIP_IO_Functions
  * @brief These are functions to access <b>socket registers</b>.
  */
- 
+
 //------------------------------- defgroup end --------------------------------------------
 //----------------------------- W5500 Common Registers IOMAP -----------------------------
 /**
@@ -281,7 +281,7 @@
  * - \ref IM_IR5 : PPPoE Close Interrupt Mask
  * - \ref IM_IR4 : Magic Packet Interrupt Mask
  */
-//M20150401 : Rename SYMBOE ( Re-define error in a compile) 
+//M20150401 : Rename SYMBOE ( Re-define error in a compile)
 //#define IMR                (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _IMR_                (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
@@ -298,7 +298,7 @@
  * @brief Socket Interrupt Mask Register(R/W)
  * @details Each bit of @ref SIMR corresponds to each bit of @ref SIR.
  * When a bit of @ref SIMR is and the corresponding bit of @ref SIR is  Interrupt will be issued.
- * In other words, if a bit of @ref SIMR is  an interrupt will be not issued even if the corresponding bit of @ref SIR is 
+ * In other words, if a bit of @ref SIMR is  an interrupt will be not issued even if the corresponding bit of @ref SIR is
  */
 #define SIMR               (_W5500_IO_BASE_ + (0x0018 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
@@ -310,7 +310,7 @@
  * to the packet that is transmitted by \ref Sn_CR (CONNECT, DISCON, CLOSE, SEND, SEND_MAC, SEND_KEEP command).
  * If the peer does not respond within the @ref _RTR_ time, W5500 retransmits the packet or issues timeout.
  */
-//M20150401 : Rename SYMBOE ( Re-define error in a compile)  
+//M20150401 : Rename SYMBOE ( Re-define error in a compile)
 //#define RTR                (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _RTR_                (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
@@ -321,7 +321,7 @@
  * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (@ref Sn_IR_TIMEOUT = '1').
  */
 //M20150401 : Rename SYMBOE ( Re-define error in a compile)
-//#define RCR                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))  
+//#define RCR                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
 #define _RCR_                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
@@ -556,7 +556,7 @@
  */
 #define Sn_TTL(N)          (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 // Reserved			         (_W5500_IO_BASE_ + (0x0017 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0018 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3)) 
+// Reserved			         (_W5500_IO_BASE_ + (0x0018 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 // Reserved			         (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 // Reserved			         (_W5500_IO_BASE_ + (0x001A << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 // Reserved			         (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
@@ -658,8 +658,8 @@
  * @ingroup Socket_register_group
  * @brief socket interrupt mask register(R)
  * @details @ref Sn_IMR masks the interrupt of Socket n.
- * Each bit corresponds to each bit of @ref Sn_IR. When a Socket n Interrupt is occurred and the corresponding bit of @ref Sn_IMR is 
- * the corresponding bit of @ref Sn_IR becomes  When both the corresponding bit of @ref Sn_IMR and @ref Sn_IR are and the n-th bit of @ref IR is 
+ * Each bit corresponds to each bit of @ref Sn_IR. When a Socket n Interrupt is occurred and the corresponding bit of @ref Sn_IMR is
+ * the corresponding bit of @ref Sn_IR becomes  When both the corresponding bit of @ref Sn_IMR and @ref Sn_IR are and the n-th bit of @ref IR is
  * Host is interrupted by asserted INTn PIN to low.
  */
 #define Sn_IMR(N)          (_W5500_IO_BASE_ + (0x002C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
@@ -719,7 +719,7 @@
  * @brief Enable PPPoE
  * @details 0 : DisablePPPoE mode\n
  * 1 : EnablePPPoE mode\n
- * If you use ADSL, this bit should be 
+ * If you use ADSL, this bit should be
  */
 #define MR_PPPOE                     0x08
 
@@ -740,7 +740,7 @@
 
 /**
  * @brief Get the destination unreachable message in UDP sending.
- * @details When receiving the ICMP (Destination port unreachable) packet, this bit is set as 
+ * @details When receiving the ICMP (Destination port unreachable) packet, this bit is set as
  * When this bit is  Destination Information such as IP address and Port number may be checked with the corresponding @ref UIPR & @ref UPORTR.
  */
 #define IR_UNREACH                   0x40
@@ -768,7 +768,7 @@
 #define PHYCFGR_OPMDC_100F           (3<<3)
 #define PHYCFGR_OPMDC_100H           (2<<3)
 #define PHYCFGR_OPMDC_10F            (1<<3)
-#define PHYCFGR_OPMDC_10H            (0<<3)           
+#define PHYCFGR_OPMDC_10H            (0<<3)
 #define PHYCFGR_DPX_FULL             (1<<2)
 #define PHYCFGR_DPX_HALF             (0<<2)
 #define PHYCFGR_SPD_100              (1<<1)
@@ -839,7 +839,7 @@
  * @brief Unicast Block in UDP Multicasting
  * @details 0 : disable Unicast Blocking\n
  * 1 : enable Unicast Blocking\n
- * This bit blocks receiving the unicast packet during UDP mode(P[3:0] = 010 and MULTI = 
+ * This bit blocks receiving the unicast packet during UDP mode(P[3:0] = 010 and MULTI =
  */
 #define Sn_MR_UCASTB                 0x10
 
@@ -887,7 +887,7 @@
  * @brief Multicast Blocking in @ref Sn_MR_MACRAW mode
  * @details 0 : using IGMP version 2\n
  * 1 : using IGMP version 1\n
- * This bit is applied only during UDP mode(P[3:0] = 010 and MULTI = 
+ * This bit is applied only during UDP mode(P[3:0] = 010 and MULTI =
  * It configures the version for IGMP messages (Join/Leave/Report).
  */
 #define Sn_MR_MMB                    Sn_MR_ND
@@ -942,7 +942,7 @@
  * In this mode, Socket n operates as a TCP serverand waits for  connection-request (SYN packet) from any TCP client
  * The @ref Sn_SR changes the state from \ref SOCK_INIT to \ref SOCKET_LISTEN.
  * When a TCP clientconnection request is successfully established,
- * the @ref Sn_SR changes from SOCK_LISTEN to SOCK_ESTABLISHED and the @ref Sn_IR(0) becomes 
+ * the @ref Sn_SR changes from SOCK_LISTEN to SOCK_ESTABLISHED and the @ref Sn_IR(0) becomes
  * But when a TCP clientconnection request is failed, @ref Sn_IR(3) becomes and the status of @ref Sn_SR changes to SOCK_CLOSED.
  */
 #define Sn_CR_LISTEN                 0x02
@@ -1153,7 +1153,7 @@
 //#define SOCK_PPPOE                   0x5F
 
 /* IP PROTOCOL */
-#define IPPROTO_IP                   0        //< Dummy for IP 
+#define IPPROTO_IP                   0        //< Dummy for IP
 #define IPPROTO_ICMP                 1        //< Control message protocol
 #define IPPROTO_IGMP                 2        //< Internet group management protocol
 #define IPPROTO_GGP                  3        //< Gateway^2 (deprecated)
@@ -2079,33 +2079,33 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 /////////////////////////////////////
 // Sn_TXBUF & Sn_RXBUF IO function //
 /////////////////////////////////////
-/**  
+/**
  * @brief Socket_register_access_function
  * @brief Gets the max buffer size of socket sn passed as parameter.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n RX max buffer size.
  */
-//M20150401 : Type explict declaration 
+//M20150401 : Type explict declaration
 /*
 #define getSn_RxMAX(sn) \
 		(getSn_RXBUF_SIZE(sn) << 10)
-*/		
+*/
 #define getSn_RxMAX(sn) \
 		(((uint16_t)getSn_RXBUF_SIZE(sn)) << 10)		
 
-/**  
+/**
  * @brief Socket_register_access_function
  * @brief Gets the max buffer size of socket sn passed as parameters.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n TX max buffer size.
  */
-//M20150401 : Type explict declaration 
+//M20150401 : Type explict declaration
 /*
 #define getSn_TxMAX(sn) \
 		(getSn_TXBUF_SIZE(sn) << 10)
-*/		
+*/
 #define getSn_TxMAX(sn) \
-		(((uint16_t)getSn_TXBUF_SIZE(sn)) << 10)		
+		(((uint16_t)getSn_TXBUF_SIZE(sn)) << 10)
 
 /**
  * @ingroup Basic_IO_function
