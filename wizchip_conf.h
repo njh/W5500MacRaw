@@ -43,14 +43,6 @@
 //
 //*****************************************************************************
 
-/**
- * @defgroup extra_functions 2. WIZnet Extra Functions
- *
- * @brief These functions is optional function. It could be replaced at WIZCHIP I/O function because they were made by WIZCHIP I/O functions.
- * @details There are functions of configuring WIZCHIP, network, interrupt, phy, network information and timer. \n
- *
- */
-
 #ifndef  _WIZCHIP_CONF_H_
 #define  _WIZCHIP_CONF_H_
 
@@ -61,7 +53,6 @@
 
 #if _WIZCHIP_ == 5500
 /**
- * @ingroup DATA_TYPE
  *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
  *  and it indicates the real PHY status configured by HW or SW in all WIZCHIP. \n
  *  Valid only in W5500.
@@ -85,13 +76,11 @@ typedef struct wiz_PhyConf_t
  */
 
 /**
- * @ingroup extra_functions
  * @brief Reset WIZCHIP by softly.
  */
 void   wizchip_sw_reset(void);
 
 /**
- * @ingroup extra_functions
  * @brief Initializes WIZCHIP with socket buffer size
  * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
  * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
@@ -106,27 +95,27 @@ int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in W
 #endif
 
 #if _WIZCHIP_ == 5500
+
 void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
 /**
- * @ingroup extra_functions
  * @brief Set the phy information for WIZCHIP without power mode
  * @param phyconf : @ref wiz_PhyConf
  */
 void   wizphy_setphyconf(wiz_PhyConf* phyconf);
+
 /**
-* @ingroup extra_functions
 * @brief Get phy configuration information.
 * @param phyconf : @ref wiz_PhyConf
 */
 void   wizphy_getphyconf(wiz_PhyConf* phyconf);
+
 /**
-* @ingroup extra_functions
 * @brief Get phy status.
 * @param phyconf : @ref wiz_PhyConf
 */
 void   wizphy_getphystat(wiz_PhyConf* phyconf);
+
 /**
-* @ingroup extra_functions
 * @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
 * @param pmode Settig value of power down mode.
 */
