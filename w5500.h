@@ -424,7 +424,7 @@
 /**
  * @brief Transmit memory size register(R/W)
  * @details @ref Sn_TXBUF_SIZE configures the TX buffer block size of Socket n. Socket n TX Buffer Block size can be configured with 1,2,4,8, and 16 Kbytes.
- * If a different size is configured, the data can�t be normally transmitted to a peer.
+ * If a different size is configured, the data can•t be normally transmitted to a peer.
  * Although Socket n TX Buffer Block size is initially configured to 2Kbytes,
  * user can be re-configure its size using @ref Sn_TXBUF_SIZE. The total sum of @ref Sn_TXBUF_SIZE can not be exceed 16Kbytes.
  * When exceeded, the data transmission error is occurred.
@@ -469,7 +469,7 @@
  * @brief Received data size register(R)
  * @details @ref Sn_RX_RSR indicates the data size received and saved in Socket n RX Buffer.
  * @ref Sn_RX_RSR does not exceed the @ref Sn_RXBUF_SIZE and is calculated as the difference between
- * �Socket n RX Write Pointer (@ref Sn_RX_WR)and �Socket n RX Read Pointer (@ref Sn_RX_RD)
+ * •Socket n RX Write Pointer (@ref Sn_RX_WR)and •Socket n RX Read Pointer (@ref Sn_RX_RD)
  */
 #define Sn_RX_RSR(N)       (_W5500_IO_BASE_ + (0x0026 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
@@ -510,7 +510,7 @@
 
 /**
  * @brief Keep Alive Timer register(R/W)
- * @details @ref Sn_KPALVTR configures the transmitting timer of �KEEP ALIVE(KA)packet of SOCKETn. It is valid only in TCP mode,
+ * @details @ref Sn_KPALVTR configures the transmitting timer of •KEEP ALIVE(KA)packet of SOCKETn. It is valid only in TCP mode,
  * and ignored in other modes. The time unit is 5s.
  * KA packet is transmittable after @ref Sn_SR is changed to SOCK_ESTABLISHED and after the data is transmitted or received to/from a peer at least once.
  * In case of '@ref Sn_KPALVTR > 0', W5500 automatically transmits KA packet after time-period for checking the TCP connection (Auto-keepalive-process).
