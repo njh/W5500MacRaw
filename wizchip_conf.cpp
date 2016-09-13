@@ -137,42 +137,22 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
     {
         tmp = 0;
         //M20150601 : For integrating with W5300
-#if _WIZCHIP_ == 5300
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            if(txsize[i] >= 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation
-            tmp += txsize[i];
-            if(tmp > 128) return -1;
-        }
-        if(tmp % 8) return -1;
-#else
         for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
         {
             tmp += txsize[i];
             if(tmp > 16) return -1;
         }
-#endif
         for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
             setSn_TXBUF_SIZE(i, txsize[i]);
     }
     if(rxsize)
     {
         tmp = 0;
-#if _WIZCHIP_ == 5300
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            if(rxsize[i] >= 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation
-            tmp += rxsize[i];
-            if(tmp > 128) return -1;
-        }
-        if(tmp % 8) return -1;
-#else
         for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
         {
             tmp += rxsize[i];
             if(tmp > 16) return -1;
         }
-#endif
 
         for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
             setSn_RXBUF_SIZE(i, rxsize[i]);
@@ -184,45 +164,23 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 int8_t wizphy_getphylink(void)
 {
     int8_t tmp;
-#if   _WIZCHIP_ == 5200
-    if(getPHYSTATUS() & PHYSTATUS_LINK)
-        tmp = PHY_LINK_ON;
-    else
-        tmp = PHY_LINK_OFF;
-#elif _WIZCHIP_ == 5500
     if(getPHYCFGR() & PHYCFGR_LNK_ON)
         tmp = PHY_LINK_ON;
     else
         tmp = PHY_LINK_OFF;
-#else
-    tmp = -1;
-#endif
     return tmp;
 }
-
-#if _WIZCHIP_ > 5100
 
 int8_t wizphy_getphypmode(void)
 {
     int8_t tmp = 0;
-#if   _WIZCHIP_ == 5200
-    if(getPHYSTATUS() & PHYSTATUS_POWERDOWN)
-        tmp = PHY_POWER_DOWN;
-    else
-        tmp = PHY_POWER_NORM;
-#elif _WIZCHIP_ == 5500
     if(getPHYCFGR() & PHYCFGR_OPMDC_PDOWN)
         tmp = PHY_POWER_DOWN;
     else
         tmp = PHY_POWER_NORM;
-#else
-    tmp = -1;
-#endif
     return tmp;
 }
-#endif
 
-#if _WIZCHIP_ == 5500
 void wizphy_reset(void)
 {
     uint8_t tmp = getPHYCFGR();
@@ -364,11 +322,7 @@ void wizchip_getnetinfo(wiz_NetInfo* pnetinfo)
 int8_t wizchip_setnetmode(netmode_type netmode)
 {
     uint8_t tmp = 0;
-#if _WIZCHIP_ != 5500
-    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK)) return -1;
-#else
     if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK | NM_FORCEARP)) return -1;
-#endif
     tmp = getMR();
     tmp |= (uint8_t)netmode;
     setMR(tmp);

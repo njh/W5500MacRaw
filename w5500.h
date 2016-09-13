@@ -51,9 +51,6 @@
 #include <stdint.h>
 #include "wizchip_conf.h"
 
-/// @cond DOXY_APPLY_CODE
-#if   (_WIZCHIP_ == 5500)
-/// @endcond
 
 #define _W5500_IO_BASE_              0x00000000
 
@@ -1901,9 +1898,5 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
  * @param len Data length
  */
 void wiz_recv_ignore(uint8_t sn, uint16_t len);
-
-/// @cond DOXY_APPLY_CODE
-#endif
-/// @endcond
 
 #endif   // _W5500_H_

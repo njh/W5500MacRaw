@@ -59,7 +59,7 @@
 #define _W5500_SPI_FDM_OP_LEN2_     0x02
 #define _W5500_SPI_FDM_OP_LEN4_     0x03
 
-#if   (_WIZCHIP_ == 5500)
+
 ////////////////////////////////////////////////////
 
 uint8_t  WIZCHIP_READ(uint32_t AddrSel)

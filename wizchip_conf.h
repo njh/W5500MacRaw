@@ -47,11 +47,10 @@
 #define  _WIZCHIP_CONF_H_
 
 #include <stdint.h>
+#include "w5500.h"
 
 
 
-
-#if _WIZCHIP_ == 5500
 /**
  *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
  *  and it indicates the real PHY status configured by HW or SW in all WIZCHIP. \n
@@ -66,7 +65,6 @@ typedef struct wiz_PhyConf_t
     //uint8_t power;  ///< set by @ref PHY_POWER_NORM or @ref PHY_POWER_DOWN
     //uint8_t link;   ///< Valid only in CW_GET_PHYSTATUS. set by @ref PHY_LINK_ON or PHY_DUPLEX_OFF
 } wiz_PhyConf;
-#endif
 
 
 
@@ -89,12 +87,10 @@ void   wizchip_sw_reset(void);
  */
 int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
 
-#if _WIZCHIP_ > 5100
 int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
 int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
-#endif
 
-#if _WIZCHIP_ == 5500
+
 
 void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
 /**
@@ -120,6 +116,5 @@ void   wizphy_getphystat(wiz_PhyConf* phyconf);
 * @param pmode Settig value of power down mode.
 */
 int8_t wizphy_setphypmode(uint8_t pmode);
-#endif
 
 #endif   // _WIZCHIP_CONF_H_
