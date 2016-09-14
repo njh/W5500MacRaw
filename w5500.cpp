@@ -90,7 +90,7 @@ inline void wizchip_spi_write_byte(uint8_t wb)
 
 ////////////////////////////////////////////////////
 
-uint8_t  WIZCHIP_READ(uint32_t AddrSel)
+uint8_t  wizchip_read(uint32_t AddrSel)
 {
     uint8_t ret;
 
@@ -108,7 +108,7 @@ uint8_t  WIZCHIP_READ(uint32_t AddrSel)
     return ret;
 }
 
-void     WIZCHIP_WRITE(uint32_t AddrSel, uint8_t wb )
+void     wizchip_write(uint32_t AddrSel, uint8_t wb )
 {
     wizchip_cs_select();
 
@@ -122,7 +122,7 @@ void     WIZCHIP_WRITE(uint32_t AddrSel, uint8_t wb )
     wizchip_cs_deselect();
 }
 
-void     WIZCHIP_READ_BUF (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void     wizchip_read_buf (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i;
 
@@ -139,7 +139,7 @@ void     WIZCHIP_READ_BUF (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     wizchip_cs_deselect();
 }
 
-void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i;
 
@@ -163,12 +163,12 @@ uint16_t getSn_TX_FSR(uint8_t sn)
 
     do
     {
-        val1 = WIZCHIP_READ(Sn_TX_FSR(sn));
-        val1 = (val1 << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+        val1 = wizchip_read(Sn_TX_FSR(sn));
+        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
         if (val1 != 0)
         {
-            val = WIZCHIP_READ(Sn_TX_FSR(sn));
-            val = (val << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+            val = wizchip_read(Sn_TX_FSR(sn));
+            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
         }
     } while (val != val1);
     return val;
@@ -181,12 +181,12 @@ uint16_t getSn_RX_RSR(uint8_t sn)
 
     do
     {
-        val1 = WIZCHIP_READ(Sn_RX_RSR(sn));
-        val1 = (val1 << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+        val1 = wizchip_read(Sn_RX_RSR(sn));
+        val1 = (val1 << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
         if (val1 != 0)
         {
-            val = WIZCHIP_READ(Sn_RX_RSR(sn));
-            val = (val << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+            val = wizchip_read(Sn_RX_RSR(sn));
+            val = (val << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
         }
     } while (val != val1);
     return val;
@@ -200,7 +200,7 @@ void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
     if(len == 0)  return;
     ptr = getSn_TX_WR(sn);
     addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
-    WIZCHIP_WRITE_BUF(addrsel,wizdata, len);
+    wizchip_write_buf(addrsel,wizdata, len);
 
     ptr += len;
     setSn_TX_WR(sn,ptr);
@@ -215,7 +215,7 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
     ptr = getSn_RX_RD(sn);
     addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
 
-    WIZCHIP_READ_BUF(addrsel, wizdata, len);
+    wizchip_read_buf(addrsel, wizdata, len);
     ptr += len;
 
     setSn_RX_RD(sn,ptr);
