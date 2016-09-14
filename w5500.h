@@ -44,8 +44,6 @@
 
 #include <stdint.h>
 #include <Arduino.h>
-#include "wizchip_conf.h"
-
 
 #define _W5500_IO_BASE_              0x00000000
 
@@ -1805,5 +1803,87 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
  * @param len Data length
  */
 void wiz_recv_ignore(uint8_t sn, uint16_t len);
+
+
+#define _WIZCHIP_SOCK_NUM_   8   ///< The count of independant socket of @b WIZCHIP
+
+
+/**
+ *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
+ *  and it indicates the real PHY status configured by HW or SW in all WIZCHIP. \n
+ *  Valid only in W5500.
+ */
+typedef struct wiz_PhyConf_t
+{
+    uint8_t by;       ///< set by @ref PHY_CONFBY_HW or @ref PHY_CONFBY_SW
+    uint8_t mode;     ///< set by @ref PHY_MODE_MANUAL or @ref PHY_MODE_AUTONEGO
+    uint8_t speed;    ///< set by @ref PHY_SPEED_10 or @ref PHY_SPEED_100
+    uint8_t duplex;   ///< set by @ref PHY_DUPLEX_HALF @ref PHY_DUPLEX_FULL
+    //uint8_t power;  ///< set by @ref PHY_POWER_NORM or @ref PHY_POWER_DOWN
+    //uint8_t link;   ///< Valid only in CW_GET_PHYSTATUS. set by @ref PHY_LINK_ON or PHY_DUPLEX_OFF
+} wiz_PhyConf;
+
+#define PHY_CONFBY_HW            0     ///< Configured PHY operation mode by HW pin
+#define PHY_CONFBY_SW            1     ///< Configured PHY operation mode by SW register   
+#define PHY_MODE_MANUAL          0     ///< Configured PHY operation mode with user setting.
+#define PHY_MODE_AUTONEGO        1     ///< Configured PHY operation mode with auto-negotiation
+#define PHY_SPEED_10             0     ///< Link Speed 10
+#define PHY_SPEED_100            1     ///< Link Speed 100
+#define PHY_DUPLEX_HALF          0     ///< Link Half-Duplex
+#define PHY_DUPLEX_FULL          1     ///< Link Full-Duplex
+#define PHY_LINK_OFF             0     ///< Link Off
+#define PHY_LINK_ON              1     ///< Link On
+#define PHY_POWER_NORM           0     ///< PHY power normal mode
+#define PHY_POWER_DOWN           1     ///< PHY power down mode 
+
+
+/*
+ * The following functions are implemented for internal use.
+ * but You can call these functions for code size reduction instead of ctlwizchip() and ctlnetwork().
+ */
+
+/**
+ * @brief Reset WIZCHIP by softly.
+ */
+void   wizchip_sw_reset(void);
+
+/**
+ * @brief Initializes WIZCHIP with socket buffer size
+ * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
+ * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
+ * @return 0 : succcess \n
+ *        -1 : fail. Invalid buffer size
+ */
+int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
+
+int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
+int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
+
+
+
+void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
+/**
+ * @brief Set the phy information for WIZCHIP without power mode
+ * @param phyconf : @ref wiz_PhyConf
+ */
+void   wizphy_setphyconf(wiz_PhyConf* phyconf);
+
+/**
+* @brief Get phy configuration information.
+* @param phyconf : @ref wiz_PhyConf
+*/
+void   wizphy_getphyconf(wiz_PhyConf* phyconf);
+
+/**
+* @brief Get phy status.
+* @param phyconf : @ref wiz_PhyConf
+*/
+void   wizphy_getphystat(wiz_PhyConf* phyconf);
+
+/**
+* @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
+* @param pmode Settig value of power down mode.
+*/
+int8_t wizphy_setphypmode(uint8_t pmode);
 
 #endif   // _W5500_H_
