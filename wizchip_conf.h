@@ -50,6 +50,8 @@
 #include "w5500.h"
 
 
+#define _WIZCHIP_SOCK_NUM_   8   ///< The count of independant socket of @b WIZCHIP
+
 
 /**
  *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
@@ -66,6 +68,18 @@ typedef struct wiz_PhyConf_t
     //uint8_t link;   ///< Valid only in CW_GET_PHYSTATUS. set by @ref PHY_LINK_ON or PHY_DUPLEX_OFF
 } wiz_PhyConf;
 
+#define PHY_CONFBY_HW            0     ///< Configured PHY operation mode by HW pin
+#define PHY_CONFBY_SW            1     ///< Configured PHY operation mode by SW register   
+#define PHY_MODE_MANUAL          0     ///< Configured PHY operation mode with user setting.
+#define PHY_MODE_AUTONEGO        1     ///< Configured PHY operation mode with auto-negotiation
+#define PHY_SPEED_10             0     ///< Link Speed 10
+#define PHY_SPEED_100            1     ///< Link Speed 100
+#define PHY_DUPLEX_HALF          0     ///< Link Half-Duplex
+#define PHY_DUPLEX_FULL          1     ///< Link Full-Duplex
+#define PHY_LINK_OFF             0     ///< Link Off
+#define PHY_LINK_ON              1     ///< Link On
+#define PHY_POWER_NORM           0     ///< PHY power normal mode
+#define PHY_POWER_DOWN           1     ///< PHY power down mode 
 
 
 /*
