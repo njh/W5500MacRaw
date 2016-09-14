@@ -42,52 +42,6 @@
 
 #include "wizchip_conf.h"
 
-/**
- * @brief Default function to enable interrupt.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	  wizchip_cris_enter(void)           {};
-
-/**
- * @brief Default function to disable interrupt.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	  wizchip_cris_exit(void)          {};
-
-/**
- * @brief Default function to select chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	wizchip_cs_select(void)            {};
-void 	wizchip_cs_select(void)            {}
-
-/**
- * @brief Default function to deselect chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	wizchip_cs_deselect(void)          {};
-
-/**
- * @brief Default function to read in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//uint8_t wizchip_spi_readbyte(void)        {return 0;};
-uint8_t wizchip_spi_readbyte(void)        {
-    return 0;
-}
-
-/**
- * @brief Default function to write in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-//void 	wizchip_spi_writebyte(uint8_t wb) {};
-void 	wizchip_spi_writebyte(uint8_t wb) {}
 static uint8_t    _DNS_[4];      // DNS server ip address
 static dhcp_mode  _DHCP_;        // DHCP mode
 

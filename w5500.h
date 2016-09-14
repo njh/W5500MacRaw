@@ -43,6 +43,7 @@
 #define  _W5500_H_
 
 #include <stdint.h>
+#include <Arduino.h>
 #include "wizchip_conf.h"
 
 
@@ -980,35 +981,6 @@
 #define IPPROTO_RAW                  255      //< Raw IP packet
 
 
-/**
- * @brief Enter a critical section
- *
- * @details It is provided to protect your shared code which are executed without distribution. \n \n
- *
- * In non-OS environment, It can be just implemented by disabling whole interrupt.\n
- * In OS environment, You can replace it to critical section api supported by OS.
- *
- * \sa WIZCHIP_READ(), WIZCHIP_WRITE(), WIZCHIP_READ_BUF(), WIZCHIP_WRITE_BUF()
- * \sa WIZCHIP_CRITICAL_EXIT()
- */
-#define WIZCHIP_CRITICAL_ENTER()    WIZCHIP.CRIS._enter()
-
-#ifdef _exit
-#undef _exit
-#endif
-
-/**
- * @brief Exit a critical section
- *
- * @details It is provided to protect your shared code which are executed without distribution. \n\n
- *
- * In non-OS environment, It can be just implemented by disabling whole interrupt. \n
- * In OS environment, You can replace it to critical section api supported by OS.
- *
- * @sa WIZCHIP_READ(), WIZCHIP_WRITE(), WIZCHIP_READ_BUF(), WIZCHIP_WRITE_BUF()
- * @sa WIZCHIP_CRITICAL_ENTER()
- */
-#define WIZCHIP_CRITICAL_EXIT()     WIZCHIP.CRIS._exit()
 
 
 ////////////////////////
