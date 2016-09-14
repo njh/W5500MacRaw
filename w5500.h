@@ -45,8 +45,6 @@
 #include <stdint.h>
 #include <Arduino.h>
 
-#define _W5500_IO_BASE_              0x00000000
-
 #define _W5500_SPI_READ_			   (0x00 << 2) //< SPI interface Read operation in Control Phase
 #define _W5500_SPI_WRITE_			   (0x01 << 2) //< SPI interface Write operation in Control Phase
 
@@ -73,37 +71,37 @@
  * - \ref MR_PPPOE      : PPPoE mode
  * - \ref MR_FARP			: Force ARP mode
  */
-#define MR                 (_W5500_IO_BASE_ + (0x0000 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define MR                 ((0x0000 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Gateway IP Register address(R/W)
  * @details @ref GAR configures the default gateway address.
  */
-#define GAR                (_W5500_IO_BASE_ + (0x0001 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define GAR                ((0x0001 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Subnet mask Register address(R/W)
  * @details @ref SUBR configures the subnet mask address.
  */
-#define SUBR               (_W5500_IO_BASE_ + (0x0005 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define SUBR               ((0x0005 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Source MAC Register address(R/W)
  * @details @ref SHAR configures the source hardware address.
  */
-#define SHAR               (_W5500_IO_BASE_ + (0x0009 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define SHAR               ((0x0009 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Source IP Register address(R/W)
  * @details @ref SIPR configures the source IP address.
  */
-#define SIPR               (_W5500_IO_BASE_ + (0x000F << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define SIPR               ((0x000F << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Set Interrupt low level timer register address(R/W)
  * @details @ref INTLEVEL configures the Interrupt Assert Time.
  */
-#define INTLEVEL           (_W5500_IO_BASE_ + (0x0013 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define INTLEVEL           ((0x0013 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Interrupt Register(R/W)
@@ -119,7 +117,7 @@
  * - \ref IR_PPPoE	  : PPPoE connection close
  * - \ref IR_MP		  : Magic packet
  */
-#define IR                 (_W5500_IO_BASE_ + (0x0015 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define IR                 ((0x0015 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Interrupt mask register(R/W)
@@ -136,14 +134,14 @@
  * - \ref IM_IR5 : PPPoE Close Interrupt Mask
  * - \ref IM_IR4 : Magic Packet Interrupt Mask
  */
-#define _IMR_                (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define _IMR_                ((0x0016 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Socket Interrupt Register(R/W)
  * @details @ref SIR indicates the interrupt status of Socket.\n
  * Each bit of @ref SIR be still until @ref Sn_IR is cleared by the host.\n
  * If @ref Sn_IR is not equal to x00 the n-th bit of @ref SIR is and INTn PIN is asserted until @ref SIR is x00 */
-#define SIR                (_W5500_IO_BASE_ + (0x0017 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define SIR                ((0x0017 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Socket Interrupt Mask Register(R/W)
@@ -151,7 +149,7 @@
  * When a bit of @ref SIMR is and the corresponding bit of @ref SIR is  Interrupt will be issued.
  * In other words, if a bit of @ref SIMR is  an interrupt will be not issued even if the corresponding bit of @ref SIR is
  */
-#define SIMR               (_W5500_IO_BASE_ + (0x0018 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define SIMR               ((0x0018 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Timeout register address( 1 is 100us )(R/W)
@@ -160,44 +158,44 @@
  * to the packet that is transmitted by \ref Sn_CR (CONNECT, DISCON, CLOSE, SEND, SEND_MAC, SEND_KEEP command).
  * If the peer does not respond within the @ref _RTR_ time, W5500 retransmits the packet or issues timeout.
  */
-#define _RTR_                (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define _RTR_                ((0x0019 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Retry count register(R/W)
  * @details @ref _RCR_ configures the number of time of retransmission.
  * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (@ref Sn_IR_TIMEOUT = '1').
  */
-#define _RCR_                (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define _RCR_                ((0x001B << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PPP LCP Request Timer register  in PPPoE mode(R/W)
  * @details @ref PTIMER configures the time for sending LCP echo request. The unit of time is 25ms.
  */
-#define PTIMER             (_W5500_IO_BASE_ + (0x001C << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PTIMER             ((0x001C << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PPP LCP Magic number register  in PPPoE mode(R/W)
  * @details @ref PMAGIC configures the 4bytes magic number to be used in LCP negotiation.
  */
-#define PMAGIC             (_W5500_IO_BASE_ + (0x001D << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PMAGIC             ((0x001D << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PPP Destination MAC Register address(R/W)
  * @details @ref PHAR configures the PPPoE server hardware address that is acquired during PPPoE connection process.
  */
-#define PHAR                (_W5500_IO_BASE_ + (0x001E << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PHAR                ((0x001E << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PPP Session Identification Register(R/W)
  * @details @ref PSID configures the PPPoE sever session ID acquired during PPPoE connection process.
  */
-#define PSID               (_W5500_IO_BASE_ + (0x0024 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PSID               ((0x0024 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PPP Maximum Segment Size(MSS) register(R/W)
  * @details @ref PMRU configures the maximum receive unit of PPPoE.
  */
-#define PMRU               (_W5500_IO_BASE_ + (0x0026 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PMRU               ((0x0026 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Unreachable IP register address in UDP mode(R)
@@ -205,7 +203,7 @@
  * which socket is not open and @ref IR_UNREACH bit of @ref IR becomes and @ref UIPR & @ref UPORTR indicates
  * the destination IP address & port number respectively.
  */
-#define UIPR               (_W5500_IO_BASE_ + (0x0028 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define UIPR               ((0x0028 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief Unreachable Port register address in UDP mode(R)
@@ -213,30 +211,19 @@
  * which socket is not open and @ref IR_UNREACH bit of @ref IR becomes and @ref UIPR & @ref UPORTR
  * indicates the destination IP address & port number respectively.
  */
-#define UPORTR              (_W5500_IO_BASE_ + (0x002C << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define UPORTR              ((0x002C << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief PHY Status Register(R/W)
  * @details @ref PHYCFGR configures PHY operation mode and resets PHY. In addition, @ref PHYCFGR indicates the status of PHY such as duplex, Speed, Link.
  */
-#define PHYCFGR            (_W5500_IO_BASE_ + (0x002E << 8) + (WIZCHIP_CREG_BLOCK << 3))
-
-// Reserved			         (_W5500_IO_BASE_ + (0x002F << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0030 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0031 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0032 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0033 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0034 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0035 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0036 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0037 << 8) + (WIZCHIP_CREG_BLOCK << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0038 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define PHYCFGR            ((0x002E << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 /**
  * @brief chip version register address(R)
  * @details @ref VERSIONR always indicates the W5500 version as @b 0x04.
  */
-#define VERSIONR           (_W5500_IO_BASE_ + (0x0039 << 8) + (WIZCHIP_CREG_BLOCK << 3))
+#define VERSIONR           ((0x0039 << 8) + (WIZCHIP_CREG_BLOCK << 3))
 
 
 //----------------------------- W5500 Socket Registers IOMAP -----------------------------
@@ -269,7 +256,7 @@
  *  - @ref Sn_MR_CLOSE	: Unused socket
  *  @note MACRAW mode should be only used in Socket 0.
  */
-#define Sn_MR(N)           (_W5500_IO_BASE_ + (0x0000 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_MR(N)           ((0x0000 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Socket command register(R/W)
@@ -287,7 +274,7 @@
  * - @ref Sn_CR_SEND_KEEP 	: Send keep alive message.
  * - @ref Sn_CR_RECV		: Update RX buffer pointer and receive data.
  */
-#define Sn_CR(N)           (_W5500_IO_BASE_ + (0x0001 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_CR(N)           ((0x0001 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Socket interrupt register(R)
@@ -304,7 +291,7 @@
  * - \ref Sn_IR_DISCON : <b>DISCON Interrupt</b>
  * - \ref Sn_IR_CON : <b>CON Interrupt</b>
  */
-#define Sn_IR(N)           (_W5500_IO_BASE_ + (0x0002 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_IR(N)           ((0x0002 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Socket status register(R)
@@ -326,21 +313,21 @@
  * - @ref SOCK_TIME_WAIT	: Closing state
  * - @ref SOCK_LAST_ACK 	: Closing state
  */
-#define Sn_SR(N)           (_W5500_IO_BASE_ + (0x0003 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_SR(N)           ((0x0003 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief source port register(R/W)
  * @details @ref Sn_PORT configures the source port number of Socket n.
  * It is valid when Socket n is used in TCP/UDP mode. It should be set before OPEN command is ordered.
  */
-#define Sn_PORT(N)         (_W5500_IO_BASE_ + (0x0004 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_PORT(N)         ((0x0004 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Peer MAC register address(R/W)
  * @details @ref Sn_DHAR configures the destination hardware address of Socket n when using SEND_MAC command in UDP mode or
  * it indicates that it is acquired in ARP-process by CONNECT/SEND command.
  */
-#define Sn_DHAR(N)         (_W5500_IO_BASE_ + (0x0006 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_DHAR(N)         ((0x0006 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Peer IP register address(R/W)
@@ -349,7 +336,7 @@
  * In TCP server mode, it indicates an IP address of TCP clientafter successfully establishing connection.
  * In UDP mode, it configures an IP address of peer to be received the UDP packet by SEND or SEND_MAC command.
  */
-#define Sn_DIPR(N)         (_W5500_IO_BASE_ + (0x000C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_DIPR(N)         ((0x000C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Peer port register address(R/W)
@@ -358,35 +345,26 @@
  * In TCP Servermode, it indicates the port number of TCP client after successfully establishing connection.
  * In UDP mode, it configures the port number of peer to be transmitted the UDP packet by SEND/SEND_MAC command.
  */
-#define Sn_DPORT(N)        (_W5500_IO_BASE_ + (0x0010 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_DPORT(N)        ((0x0010 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Maximum Segment Size(Sn_MSSR0) register address(R/W)
  * @details @ref Sn_MSSR configures or indicates the MTU(Maximum Transfer Unit) of Socket n.
  */
-#define Sn_MSSR(N)         (_W5500_IO_BASE_ + (0x0012 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-
-// Reserved			         (_W5500_IO_BASE_ + (0x0014 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_MSSR(N)         ((0x0012 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief IP Type of Service(TOS) Register(R/W)
  * @details @ref Sn_TOS configures the TOS(Type Of Service field in IP Header) of Socket n.
  * It is set before OPEN command.
  */
-#define Sn_TOS(N)          (_W5500_IO_BASE_ + (0x0015 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TOS(N)          ((0x0015 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 /**
  * @brief IP Time to live(TTL) Register(R/W)
  * @details @ref Sn_TTL configures the TTL(Time To Live field in IP header) of Socket n.
  * It is set before OPEN command.
  */
-#define Sn_TTL(N)          (_W5500_IO_BASE_ + (0x0016 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0017 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0018 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x0019 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x001A << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x001B << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x001C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-// Reserved			         (_W5500_IO_BASE_ + (0x001D << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TTL(N)          ((0x0016 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Receive memory size register(R/W)
@@ -397,7 +375,7 @@
  * user can re-configure its size using @ref Sn_RXBUF_SIZE. The total sum of @ref Sn_RXBUF_SIZE can not be exceed 16Kbytes.
  * When exceeded, the data reception error is occurred.
  */
-#define Sn_RXBUF_SIZE(N)   (_W5500_IO_BASE_ + (0x001E << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_RXBUF_SIZE(N)   ((0x001E << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Transmit memory size register(R/W)
@@ -407,7 +385,7 @@
  * user can be re-configure its size using @ref Sn_TXBUF_SIZE. The total sum of @ref Sn_TXBUF_SIZE can not be exceed 16Kbytes.
  * When exceeded, the data transmission error is occurred.
  */
-#define Sn_TXBUF_SIZE(N)   (_W5500_IO_BASE_ + (0x001F << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TXBUF_SIZE(N)   ((0x001F << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Transmit free memory size register(R)
@@ -417,7 +395,7 @@
  * transmit the data with SEND/SEND_MAC command after saving the data in Socket n TX buffer. But, if data is bigger than its checked size,
  * transmit the data after dividing into the checked size and saving in the Socket n TX buffer.
  */
-#define Sn_TX_FSR(N)       (_W5500_IO_BASE_ + (0x0020 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TX_FSR(N)       ((0x0020 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Transmit memory read pointer register address(R)
@@ -428,7 +406,7 @@
  * If its increment value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
  * then the carry bit is ignored and will automatically update with the lower 16bits value.
  */
-#define Sn_TX_RD(N)        (_W5500_IO_BASE_ + (0x0022 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TX_RD(N)        ((0x0022 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Transmit memory write pointer register address(R/W)
@@ -441,7 +419,7 @@
  * then the carry bit is ignored and will automatically update with the lower 16bits value.\n
  * 4. Transmit the saved data in Socket n TX Buffer by using SEND/SEND command
  */
-#define Sn_TX_WR(N)        (_W5500_IO_BASE_ + (0x0024 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_TX_WR(N)        ((0x0024 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Received data size register(R)
@@ -449,7 +427,7 @@
  * @ref Sn_RX_RSR does not exceed the @ref Sn_RXBUF_SIZE and is calculated as the difference between
  * •Socket n RX Write Pointer (@ref Sn_RX_WR)and •Socket n RX Read Pointer (@ref Sn_RX_RD)
  */
-#define Sn_RX_RSR(N)       (_W5500_IO_BASE_ + (0x0026 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_RX_RSR(N)       ((0x0026 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Read point of Receive memory(R/W)
@@ -461,7 +439,7 @@
  * update with the lower 16bits value ignored the carry bit.\n
  * 4. Order RECV command is for notifying the updated @ref Sn_RX_RD to W5500.
  */
-#define Sn_RX_RD(N)        (_W5500_IO_BASE_ + (0x0028 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_RX_RD(N)        ((0x0028 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Write point of Receive memory(R)
@@ -469,7 +447,7 @@
  * If the increased value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
  * then the carry bit is ignored and will automatically update with the lower 16bits value.
  */
-#define Sn_RX_WR(N)        (_W5500_IO_BASE_ + (0x002A << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_RX_WR(N)        ((0x002A << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief socket interrupt mask register(R)
@@ -478,13 +456,13 @@
  * the corresponding bit of @ref Sn_IR becomes  When both the corresponding bit of @ref Sn_IMR and @ref Sn_IR are and the n-th bit of @ref IR is
  * Host is interrupted by asserted INTn PIN to low.
  */
-#define Sn_IMR(N)          (_W5500_IO_BASE_ + (0x002C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_IMR(N)          ((0x002C << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Fragment field value in IP header register(R/W)
  * @details @ref Sn_FRAG configures the FRAG(Fragment field in IP header).
  */
-#define Sn_FRAG(N)         (_W5500_IO_BASE_ + (0x002D << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_FRAG(N)         ((0x002D << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 /**
  * @brief Keep Alive Timer register(R/W)
@@ -496,9 +474,9 @@
  * and KA packet can be transmitted by SEND_KEEP command by the host (Manual-keep-alive-process).
  * Manual-keep-alive-process is ignored in case of '@ref Sn_KPALVTR > 0'.
  */
-#define Sn_KPALVTR(N)      (_W5500_IO_BASE_ + (0x002F << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+#define Sn_KPALVTR(N)      ((0x002F << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
-//#define Sn_TSR(N)          (_W5500_IO_BASE_ + (0x0030 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
+//#define Sn_TSR(N)          ((0x0030 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
 
 //----------------------------- W5500 Register values  -----------------------------
