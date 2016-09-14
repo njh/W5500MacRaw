@@ -230,5 +230,3 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len)
     ptr += len;
     setSn_RX_RD(sn,ptr);
 }
-
-#endif

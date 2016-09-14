@@ -36,17 +36,11 @@
 //! THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************/
-//A20140501 : for use the type - ptrdiff_t
+
 #include <stddef.h>
-//
 
 #include "wizchip_conf.h"
 
-static uint8_t    _DNS_[4];      // DNS server ip address
-static dhcp_mode  _DHCP_;        // DHCP mode
-
-{
-}
 
 
 
@@ -227,58 +221,4 @@ int8_t wizphy_setphypmode(uint8_t pmode)
     }
     return -1;
 }
-#endif
 
-
-void wizchip_setnetinfo(wiz_NetInfo* pnetinfo)
-{
-    setSHAR(pnetinfo->mac);
-    setGAR(pnetinfo->gw);
-    setSUBR(pnetinfo->sn);
-    setSIPR(pnetinfo->ip);
-    _DNS_[0] = pnetinfo->dns[0];
-    _DNS_[1] = pnetinfo->dns[1];
-    _DNS_[2] = pnetinfo->dns[2];
-    _DNS_[3] = pnetinfo->dns[3];
-    _DHCP_   = pnetinfo->dhcp;
-}
-
-void wizchip_getnetinfo(wiz_NetInfo* pnetinfo)
-{
-    getSHAR(pnetinfo->mac);
-    getGAR(pnetinfo->gw);
-    getSUBR(pnetinfo->sn);
-    getSIPR(pnetinfo->ip);
-    pnetinfo->dns[0]= _DNS_[0];
-    pnetinfo->dns[1]= _DNS_[1];
-    pnetinfo->dns[2]= _DNS_[2];
-    pnetinfo->dns[3]= _DNS_[3];
-    pnetinfo->dhcp  = _DHCP_;
-}
-
-int8_t wizchip_setnetmode(netmode_type netmode)
-{
-    uint8_t tmp = 0;
-    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK | NM_FORCEARP)) return -1;
-    tmp = getMR();
-    tmp |= (uint8_t)netmode;
-    setMR(tmp);
-    return 0;
-}
-
-netmode_type wizchip_getnetmode(void)
-{
-    return (netmode_type) getMR();
-}
-
-void wizchip_settimeout(wiz_NetTimeout* nettime)
-{
-    setRCR(nettime->retry_cnt);
-    setRTR(nettime->time_100us);
-}
-
-void wizchip_gettimeout(wiz_NetTimeout* nettime)
-{
-    nettime->retry_cnt = getRCR();
-    nettime->time_100us = getRTR();
-}
