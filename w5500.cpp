@@ -36,18 +36,11 @@
 //! THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
-//#include <stdio.h>
+
 #include "w5500.h"
 #include <SPI.h>
 
 
-#define _W5500_SPI_VDM_OP_          0x00
-#define _W5500_SPI_FDM_OP_LEN1_     0x01
-#define _W5500_SPI_FDM_OP_LEN2_     0x02
-#define _W5500_SPI_FDM_OP_LEN4_     0x03
-
-
-////////////////////////////////////////////////////
 
 uint8_t  Wiznet5500::wizchip_read(uint32_t AddrSel)
 {
@@ -55,7 +48,7 @@ uint8_t  Wiznet5500::wizchip_read(uint32_t AddrSel)
 
     wizchip_cs_select();
 
-    AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_VDM_OP_);
+    AddrSel |= _W5500_SPI_READ_;
 
     wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
     wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
@@ -71,7 +64,7 @@ void Wiznet5500::wizchip_write(uint32_t AddrSel, uint8_t wb )
 {
     wizchip_cs_select();
 
-    AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_VDM_OP_);
+    AddrSel |= _W5500_SPI_WRITE_;
 
     wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
     wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
@@ -87,7 +80,7 @@ void Wiznet5500::wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 
     wizchip_cs_select();
 
-    AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_VDM_OP_);
+    AddrSel |= _W5500_SPI_READ_;
 
     wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
     wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
@@ -104,7 +97,7 @@ void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len
 
     wizchip_cs_select();
 
-    AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_VDM_OP_);
+    AddrSel |= _W5500_SPI_WRITE_;
 
     wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
     wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
