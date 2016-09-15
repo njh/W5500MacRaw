@@ -368,3 +368,127 @@ int8_t Wiznet5500::wizphy_setphypmode(uint8_t pmode)
     }
     return -1;
 }
+
+
+Wiznet5500::Wiznet5500(int8_t cs)
+{
+    _cs = cs;
+}
+
+boolean Wiznet5500::begin(const uint8_t *mac_address)
+{
+    memcpy(_mac_address, mac_address, 6);
+
+    pinMode(_cs, OUTPUT);
+    wizchip_cs_deselect();
+
+    SPI.begin();
+    SPI.setClockDivider(SPI_CLOCK_DIV4); // 4 MHz?
+    SPI.setBitOrder(MSBFIRST);
+    SPI.setDataMode(SPI_MODE0);
+
+    wizchip_sw_reset();
+
+    // Set the size of the Rx and Tx buffers
+    //wizchip_write(RMSR, RxBufferSize);
+    //wizchip_write(TMSR, TxBufferSize);
+
+    // Set our local MAC address
+    setSHAR(_mac_address);
+
+    // Open Socket 0 in MACRaw mode
+    setSn_MR(0, Sn_MR_MACRAW);
+    setSn_CR(0, Sn_CR_OPEN);
+    if (getSn_SR(0) != SOCK_MACRAW) {
+        // Failed to put socket 0 into MACRaw mode
+        return false;
+    }
+
+    // Success
+    return true;
+}
+
+void Wiznet5500::end()
+{
+    setSn_CR(0, Sn_CR_CLOSE);
+
+    // clear all interrupt of the socket
+    setSn_IR(0, 0xFF);
+
+    // Wait for socket to change to closed
+    while(getSn_SR(0) != SOCK_CLOSED);
+}
+
+uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
+{
+    uint16_t len = getSn_RX_RSR(0);
+    if ( len > 0 )
+    {
+        uint8_t head[2];
+        uint16_t data_len=0;
+
+        wizchip_recv_data(0, head, 2);
+        setSn_CR(0, Sn_CR_RECV);
+
+        data_len = head[0];
+        data_len = (data_len<<8) + head[1];
+        data_len -= 2;
+
+        if(data_len > bufsize)
+        {
+            // Packet is bigger than buffer - drop the packet
+            wizchip_recv_ignore(0, data_len);
+            setSn_CR(0, Sn_CR_RECV);
+            return 0;
+        }
+
+        wizchip_recv_data(0, buffer, data_len);
+        setSn_CR(0, Sn_CR_RECV);
+
+        // W5500 doesn't have any built-in MAC address filtering
+        if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
+        {
+            // Addressed to an Ethernet multicast address or our unicast address
+            return data_len;
+        } else {
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+uint16_t Wiznet5500::sendFrame(const uint8_t *buf, uint16_t len)
+{
+    // Wait for space in the transmit buffer
+    while(1)
+    {
+        uint16_t freesize = getSn_TX_FSR(0);
+        if(getSn_SR(0) == SOCK_CLOSED) {
+            return -1;
+        }
+        if (len <= freesize) break;
+    };
+
+    wizchip_send_data(0, buf, len);
+    setSn_CR(0, Sn_CR_SEND);
+
+    while(1)
+    {
+        uint8_t tmp = getSn_IR(0);
+        if (tmp & Sn_IR_SENDOK)
+        {
+            setSn_IR(0, Sn_IR_SENDOK);
+            // Packet sent ok
+            break;
+        }
+        else if (tmp & Sn_IR_TIMEOUT)
+        {
+            setSn_IR(0, Sn_IR_TIMEOUT);
+            // There was a timeout
+            return -1;
+        }
+    }
+
+    return len;
+}

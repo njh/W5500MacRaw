@@ -44,6 +44,7 @@
 
 #include <stdint.h>
 #include <Arduino.h>
+#include <SPI.h>
 
 #define _W5500_SPI_READ_			   (0x00 << 2) //< SPI interface Read operation in Control Phase
 #define _W5500_SPI_WRITE_			   (0x01 << 2) //< SPI interface Write operation in Control Phase
@@ -1703,6 +1704,37 @@ public:
      */
     Wiznet5500(int8_t cs=SS);
 
+
+    /**
+     * Initialise the Ethernet controller
+     * Must be called before sending or receiving Ethernet frames
+     *
+     * @param address the local MAC address for the Ethernet interface
+     * @return Returns true if setting up the Ethernet interface was successful
+     */
+    boolean begin(const uint8_t *address);
+
+    /**
+     * Shut down the Ethernet controlled
+     */
+    void end();
+  
+    /**
+     * Send an Ethernet frame
+     * @param data a pointer to the data to send
+     * @param datalen the length of the data in the packet
+     * @return the number of bytes transmitted
+     */
+    uint16_t sendFrame(const uint8_t *data, uint16_t datalen);
+
+    /**
+     * Read an Ethernet frame
+     * @param buffer a pointer to a buffer to write the packet to
+     * @param bufsize the available space in the buffer
+     * @return the length of the received packet
+     *         or 0 if no packet was received
+     */
+    uint16_t readFrame(uint8_t *buffer, uint16_t bufsize);
 
 
 private:
