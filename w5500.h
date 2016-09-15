@@ -959,40 +959,6 @@
 
 
 
-////////////////////////
-// Basic I/O Function //
-////////////////////////
-
-/**
- * @brief It reads 1 byte value from a register.
- * @param AddrSel Register address
- * @return The value of register
- */
-uint8_t  wizchip_read(uint32_t AddrSel);
-
-/**
- * @brief It writes 1 byte value to a register.
- * @param AddrSel Register address
- * @param wb Write data
- * @return void
- */
-void wizchip_write(uint32_t AddrSel, uint8_t wb );
-
-/**
- * @brief It reads sequence data from registers.
- * @param AddrSel Register address
- * @param pBuf Pointer buffer to read data
- * @param len Data length
- */
-void wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
-
-/**
- * @brief It writes sequence data to registers.
- * @param AddrSel Register address
- * @param pBuf Pointer buffer to write data
- * @param len Data length
- */
-void wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 
 /////////////////////////////////
 // Common Register I/O function //
@@ -1576,13 +1542,6 @@ void wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 		wizchip_read(Sn_TXBUF_SIZE(sn))
 
 /**
- * @brief Get @ref Sn_TX_FSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_TX_FSR.
- */
-uint16_t getSn_TX_FSR(uint8_t sn);
-
-/**
  * @brief Get @ref Sn_TX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
@@ -1610,13 +1569,6 @@ uint16_t getSn_TX_FSR(uint8_t sn);
 #define getSn_TX_WR(sn) \
 		(((uint16_t)wizchip_read(Sn_TX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))		
 
-
-/**
- * @brief Get @ref Sn_RX_RSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_RX_RSR.
- */
-uint16_t getSn_RX_RSR(uint8_t sn);
 
 
 /**
@@ -1708,43 +1660,6 @@ uint16_t getSn_RX_RSR(uint8_t sn);
 #define getSn_TxMAX(sn) \
 		(((uint16_t)getSn_TXBUF_SIZE(sn)) << 10)
 
-/**
- * @brief It copies data to internal TX memory
- *
- * @details This function reads the Tx write pointer register and after that,
- * it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to internal TX memory
- * and updates the Tx write pointer register.
- * This function is being called by send() and sendto() function also.
- *
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param wizdata Pointer buffer to write data
- * @param len Data length
- * @sa wiz_recv_data()
- */
-void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
-
-/**
- * @brief It copies data to your buffer from internal RX memory
- *
- * @details This function read the Rx read pointer register and after that,
- * it copies the received data from internal RX memory
- * to <i>wizdata(pointer variable)</i> of the length of <i>len(variable)</i> bytes.
- * This function is being called by recv() also.
- *
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param wizdata Pointer buffer to read data
- * @param len Data length
- * @sa wiz_send_data()
- */
-void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
-
-/**
- * @brief It discard the received data in RX memory.
- * @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX memory.
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param len Data length
- */
-void wiz_recv_ignore(uint8_t sn, uint16_t len);
 
 
 #define _WIZCHIP_SOCK_NUM_   8   ///< The count of independant socket of @b WIZCHIP
@@ -1779,53 +1694,193 @@ typedef struct wiz_PhyConf_t
 #define PHY_POWER_DOWN           1     ///< PHY power down mode 
 
 
-/*
- * The following functions are implemented for internal use.
- * but You can call these functions for code size reduction instead of ctlwizchip() and ctlnetwork().
- */
+class Wiznet5500 {
 
-/**
- * @brief Reset WIZCHIP by softly.
- */
-void   wizchip_sw_reset(void);
-
-/**
- * @brief Initializes WIZCHIP with socket buffer size
- * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
- * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
- * @return 0 : succcess \n
- *        -1 : fail. Invalid buffer size
- */
-int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
-
-int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
-int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
+public:
+    /**
+     * Constructor that uses the default hardware SPI pins
+     * @param cs the Arduino Chip Select / Slave Select pin (default 10)
+     */
+    Wiznet5500(int8_t cs=SS);
 
 
 
-void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
-/**
- * @brief Set the phy information for WIZCHIP without power mode
- * @param phyconf : @ref wiz_PhyConf
- */
-void   wizphy_setphyconf(wiz_PhyConf* phyconf);
+private:
 
-/**
-* @brief Get phy configuration information.
-* @param phyconf : @ref wiz_PhyConf
-*/
-void   wizphy_getphyconf(wiz_PhyConf* phyconf);
+    uint8_t _cs;
+    uint8_t _mac_address[6];
 
-/**
-* @brief Get phy status.
-* @param phyconf : @ref wiz_PhyConf
-*/
-void   wizphy_getphystat(wiz_PhyConf* phyconf);
+    /**
+     * Default function to select chip.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline void wizchip_cs_select()
+    {
+        digitalWrite(SS, LOW);
+    }
 
-/**
-* @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
-* @param pmode Settig value of power down mode.
-*/
-int8_t wizphy_setphypmode(uint8_t pmode);
+    /**
+     * Default function to deselect chip.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline void wizchip_cs_deselect()
+    {
+        digitalWrite(SS, HIGH);
+    }
+
+    /**
+     * @brief Default function to read in SPI interface.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline uint8_t wizchip_spi_read_byte(void)
+    {
+        return SPI.transfer(0);
+    }
+
+    /**
+     * @brief Default function to write in SPI interface.
+     * @note This function help not to access wrong address. If you do not describe this function or register any functions,
+     * null function is called.
+     */
+    inline void wizchip_spi_write_byte(uint8_t wb)
+    {
+        SPI.transfer(wb);
+    }
+
+    ////////////////////////
+    // Basic I/O Function //
+    ////////////////////////
+
+    /**
+     * @brief It reads 1 byte value from a register.
+     * @param AddrSel Register address
+     * @return The value of register
+     */
+    uint8_t  wizchip_read(uint32_t AddrSel);
+
+    /**
+     * @brief It writes 1 byte value to a register.
+     * @param AddrSel Register address
+     * @param wb Write data
+     * @return void
+     */
+    void wizchip_write(uint32_t AddrSel, uint8_t wb );
+
+    /**
+     * @brief It reads sequence data from registers.
+     * @param AddrSel Register address
+     * @param pBuf Pointer buffer to read data
+     * @param len Data length
+     */
+    void wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+
+    /**
+     * @brief It writes sequence data to registers.
+     * @param AddrSel Register address
+     * @param pBuf Pointer buffer to write data
+     * @param len Data length
+     */
+    void wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+
+    /**
+     * @brief Get @ref Sn_TX_FSR register
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
+     * @return uint16_t. Value of @ref Sn_TX_FSR.
+     */
+    uint16_t getSn_TX_FSR(uint8_t sn);
+
+
+    /**
+     * @brief Get @ref Sn_RX_RSR register
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
+     * @return uint16_t. Value of @ref Sn_RX_RSR.
+     */
+    uint16_t getSn_RX_RSR(uint8_t sn);
+
+    /**
+     * @brief Reset WIZCHIP by softly.
+     */
+    void   wizchip_sw_reset(void);
+
+    /**
+     * @brief Initializes WIZCHIP with socket buffer size
+     * @param txsize Socket tx buffer sizes. If null, initialized the default size 2KB.
+     * @param rxsize Socket rx buffer sizes. If null, initialized the default size 2KB.
+     * @return 0 : succcess \n
+     *        -1 : fail. Invalid buffer size
+     */
+    int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize);
+
+    int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
+    int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
+
+
+
+    void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
+    /**
+     * @brief Set the phy information for WIZCHIP without power mode
+     * @param phyconf : @ref wiz_PhyConf
+     */
+    void   wizphy_setphyconf(wiz_PhyConf* phyconf);
+
+    /**
+    * @brief Get phy configuration information.
+    * @param phyconf : @ref wiz_PhyConf
+    */
+    void   wizphy_getphyconf(wiz_PhyConf* phyconf);
+
+    /**
+    * @brief Get phy status.
+    * @param phyconf : @ref wiz_PhyConf
+    */
+    void   wizphy_getphystat(wiz_PhyConf* phyconf);
+
+    /**
+    * @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
+    * @param pmode Settig value of power down mode.
+    */
+    int8_t wizphy_setphypmode(uint8_t pmode);
+
+    /**
+     * @brief It copies data to internal TX memory
+     *
+     * @details This function reads the Tx write pointer register and after that,
+     * it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to internal TX memory
+     * and updates the Tx write pointer register.
+     * This function is being called by send() and sendto() function also.
+     *
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
+     * @param wizdata Pointer buffer to write data
+     * @param len Data length
+     * @sa wiz_recv_data()
+     */
+    void wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
+
+    /**
+     * @brief It copies data to your buffer from internal RX memory
+     *
+     * @details This function read the Rx read pointer register and after that,
+     * it copies the received data from internal RX memory
+     * to <i>wizdata(pointer variable)</i> of the length of <i>len(variable)</i> bytes.
+     * This function is being called by recv() also.
+     *
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
+     * @param wizdata Pointer buffer to read data
+     * @param len Data length
+     * @sa wiz_send_data()
+     */
+    void wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+
+    /**
+     * @brief It discard the received data in RX memory.
+     * @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX memory.
+     * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
+     * @param len Data length
+     */
+    void wizchip_recv_ignore(uint8_t sn, uint16_t len);
+};
 
 #endif   // _W5500_H_

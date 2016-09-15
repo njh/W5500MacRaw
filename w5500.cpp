@@ -47,50 +47,9 @@
 #define _W5500_SPI_FDM_OP_LEN4_     0x03
 
 
-/**
- * Default function to select chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-inline void wizchip_cs_select()
-{
-    digitalWrite(SS, LOW);
-}
-
-/**
- * Default function to deselect chip.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-inline void wizchip_cs_deselect()
-{
-    digitalWrite(SS, HIGH);
-}
-
-/**
- * @brief Default function to read in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-inline uint8_t wizchip_spi_read_byte(void)
-{
-    return SPI.transfer(0);
-}
-
-/**
- * @brief Default function to write in SPI interface.
- * @note This function help not to access wrong address. If you do not describe this function or register any functions,
- * null function is called.
- */
-inline void wizchip_spi_write_byte(uint8_t wb)
-{
-    SPI.transfer(wb);
-}
-
-
 ////////////////////////////////////////////////////
 
-uint8_t  wizchip_read(uint32_t AddrSel)
+uint8_t  Wiznet5500::wizchip_read(uint32_t AddrSel)
 {
     uint8_t ret;
 
@@ -108,7 +67,7 @@ uint8_t  wizchip_read(uint32_t AddrSel)
     return ret;
 }
 
-void     wizchip_write(uint32_t AddrSel, uint8_t wb )
+void Wiznet5500::wizchip_write(uint32_t AddrSel, uint8_t wb )
 {
     wizchip_cs_select();
 
@@ -122,7 +81,7 @@ void     wizchip_write(uint32_t AddrSel, uint8_t wb )
     wizchip_cs_deselect();
 }
 
-void     wizchip_read_buf (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void Wiznet5500::wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i;
 
@@ -139,7 +98,7 @@ void     wizchip_read_buf (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     wizchip_cs_deselect();
 }
 
-void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 {
     uint16_t i;
 
@@ -157,7 +116,7 @@ void     wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
 }
 
 
-uint16_t getSn_TX_FSR(uint8_t sn)
+uint16_t Wiznet5500::getSn_TX_FSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
 
@@ -175,7 +134,7 @@ uint16_t getSn_TX_FSR(uint8_t sn)
 }
 
 
-uint16_t getSn_RX_RSR(uint8_t sn)
+uint16_t Wiznet5500::getSn_RX_RSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
 
@@ -192,7 +151,7 @@ uint16_t getSn_RX_RSR(uint8_t sn)
     return val;
 }
 
-void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void Wiznet5500::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr = 0;
     uint32_t addrsel = 0;
@@ -206,7 +165,7 @@ void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
     setSn_TX_WR(sn,ptr);
 }
 
-void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void Wiznet5500::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr = 0;
     uint32_t addrsel = 0;
@@ -222,7 +181,7 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 }
 
 
-void wiz_recv_ignore(uint8_t sn, uint16_t len)
+void Wiznet5500::wizchip_recv_ignore(uint8_t sn, uint16_t len)
 {
     uint16_t ptr = 0;
 
@@ -232,7 +191,7 @@ void wiz_recv_ignore(uint8_t sn, uint16_t len)
 }
 
 
-void wizchip_sw_reset(void)
+void Wiznet5500::wizchip_sw_reset(void)
 {
     uint8_t gw[4], sn[4], sip[4];
     uint8_t mac[6];
@@ -248,7 +207,7 @@ void wizchip_sw_reset(void)
     setSIPR(sip);
 }
 
-int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
+int8_t Wiznet5500::wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 {
     int8_t i;
     int8_t tmp = 0;
@@ -280,7 +239,7 @@ int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
 }
 
 
-int8_t wizphy_getphylink(void)
+int8_t Wiznet5500::wizphy_getphylink(void)
 {
     int8_t tmp;
     if(getPHYCFGR() & PHYCFGR_LNK_ON)
@@ -290,7 +249,7 @@ int8_t wizphy_getphylink(void)
     return tmp;
 }
 
-int8_t wizphy_getphypmode(void)
+int8_t Wiznet5500::wizphy_getphypmode(void)
 {
     int8_t tmp = 0;
     if(getPHYCFGR() & PHYCFGR_OPMDC_PDOWN)
@@ -300,7 +259,7 @@ int8_t wizphy_getphypmode(void)
     return tmp;
 }
 
-void wizphy_reset(void)
+void Wiznet5500::wizphy_reset(void)
 {
     uint8_t tmp = getPHYCFGR();
     tmp &= PHYCFGR_RST;
@@ -310,7 +269,7 @@ void wizphy_reset(void)
     setPHYCFGR(tmp);
 }
 
-void wizphy_setphyconf(wiz_PhyConf* phyconf)
+void Wiznet5500::wizphy_setphyconf(wiz_PhyConf* phyconf)
 {
     uint8_t tmp = 0;
     if(phyconf->by == PHY_CONFBY_SW)
@@ -340,7 +299,7 @@ void wizphy_setphyconf(wiz_PhyConf* phyconf)
     wizphy_reset();
 }
 
-void wizphy_getphyconf(wiz_PhyConf* phyconf)
+void Wiznet5500::wizphy_getphyconf(wiz_PhyConf* phyconf)
 {
     uint8_t tmp = 0;
     tmp = getPHYCFGR();
@@ -379,14 +338,14 @@ void wizphy_getphyconf(wiz_PhyConf* phyconf)
     }
 }
 
-void wizphy_getphystat(wiz_PhyConf* phyconf)
+void Wiznet5500::wizphy_getphystat(wiz_PhyConf* phyconf)
 {
     uint8_t tmp = getPHYCFGR();
     phyconf->duplex = (tmp & PHYCFGR_DPX_FULL) ? PHY_DUPLEX_FULL : PHY_DUPLEX_HALF;
     phyconf->speed  = (tmp & PHYCFGR_SPD_100) ? PHY_SPEED_100 : PHY_SPEED_10;
 }
 
-int8_t wizphy_setphypmode(uint8_t pmode)
+int8_t Wiznet5500::wizphy_setphypmode(uint8_t pmode)
 {
     uint8_t tmp = 0;
     tmp = getPHYCFGR();
