@@ -91,7 +91,7 @@ void Wiznet5500::wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     wizchip_cs_deselect();
 }
 
-void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
     uint16_t i;
 

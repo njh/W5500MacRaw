@@ -1815,7 +1815,7 @@ private:
      * @param pBuf Pointer buffer to write data
      * @param len Data length
      */
-    void wizchip_write_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+    void wizchip_write_buf(uint32_t AddrSel, const uint8_t* pBuf, uint16_t len);
 
     /**
      * @brief Get @ref Sn_TX_FSR register
