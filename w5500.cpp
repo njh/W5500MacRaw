@@ -42,6 +42,20 @@
 
 
 
+void Wiznet5500::wizchip_write(uint32_t AddrSel, uint8_t wb )
+{
+    wizchip_cs_select();
+
+    AddrSel |= _W5500_SPI_WRITE_;
+
+    wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
+    wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
+    wizchip_spi_write_byte((AddrSel & 0x000000FF) >>  0);
+    wizchip_spi_write_byte(wb);
+
+    wizchip_cs_deselect();
+}
+
 uint8_t  Wiznet5500::wizchip_read(uint32_t AddrSel)
 {
     uint8_t ret;
@@ -60,8 +74,10 @@ uint8_t  Wiznet5500::wizchip_read(uint32_t AddrSel)
     return ret;
 }
 
-void Wiznet5500::wizchip_write(uint32_t AddrSel, uint8_t wb )
+void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, const uint8_t* pBuf, uint16_t len)
 {
+    uint16_t i;
+
     wizchip_cs_select();
 
     AddrSel |= _W5500_SPI_WRITE_;
@@ -69,7 +85,8 @@ void Wiznet5500::wizchip_write(uint32_t AddrSel, uint8_t wb )
     wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
     wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
     wizchip_spi_write_byte((AddrSel & 0x000000FF) >>  0);
-    wizchip_spi_write_byte(wb);
+    for(i = 0; i < len; i++)
+        wizchip_spi_write_byte(pBuf[i]);
 
     wizchip_cs_deselect();
 }
@@ -91,28 +108,9 @@ void Wiznet5500::wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
     wizchip_cs_deselect();
 }
 
-void Wiznet5500::wizchip_write_buf(uint32_t AddrSel, const uint8_t* pBuf, uint16_t len)
-{
-    uint16_t i;
-
-    wizchip_cs_select();
-
-    AddrSel |= _W5500_SPI_WRITE_;
-
-    wizchip_spi_write_byte((AddrSel & 0x00FF0000) >> 16);
-    wizchip_spi_write_byte((AddrSel & 0x0000FF00) >>  8);
-    wizchip_spi_write_byte((AddrSel & 0x000000FF) >>  0);
-    for(i = 0; i < len; i++)
-        wizchip_spi_write_byte(pBuf[i]);
-
-    wizchip_cs_deselect();
-}
-
-
 uint16_t Wiznet5500::getSn_TX_FSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
-
     do
     {
         val1 = wizchip_read(Sn_TX_FSR(sn));
@@ -130,7 +128,6 @@ uint16_t Wiznet5500::getSn_TX_FSR(uint8_t sn)
 uint16_t Wiznet5500::getSn_RX_RSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
-
     do
     {
         val1 = wizchip_read(Sn_RX_RSR(sn));
@@ -155,6 +152,7 @@ void Wiznet5500::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t 
     wizchip_write_buf(addrsel,wizdata, len);
 
     ptr += len;
+
     setSn_TX_WR(sn,ptr);
 }
 
