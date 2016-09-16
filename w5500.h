@@ -477,488 +477,6 @@
  */
 #define Sn_KPALVTR(N)      ((0x002F << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
 
-//#define Sn_TSR(N)          ((0x0030 << 8) + (WIZCHIP_SREG_BLOCK(N) << 3))
-
-
-//----------------------------- W5500 Register values  -----------------------------
-
-/* MODE register values */
-/**
- * @brief Reset
- * @details If this bit is  All internal registers will be initialized. It will be automatically cleared as after S/W reset.
- */
-#define MR_RST                       0x80
-
-/**
- * @brief Wake on LAN
- * @details 0 : Disable WOL mode\n
- * 1 : Enable WOL mode\n
- * If WOL mode is enabled and the received magic packet over UDP has been normally processed, the Interrupt PIN (INTn) asserts to low.
- * When using WOL mode, the UDP Socket should be opened with any source port number. (Refer to Socket n Mode Register (@ref Sn_MR) for opening Socket.)
- * @note The magic packet over UDP supported by W5500 consists of 6 bytes synchronization stream (xFFFFFFFFFFFF and
- * 16 times Target MAC address stream in UDP payload. The options such like password are ignored. You can use any UDP source port number for WOL mode.
- */
-#define MR_WOL                       0x20
-
-/**
- * @brief Ping block
- * @details 0 : Disable Ping block\n
- * 1 : Enable Ping block\n
- * If the bit is  it blocks the response to a ping request.
- */
-#define MR_PB                        0x10
-
-/**
- * @brief Enable PPPoE
- * @details 0 : DisablePPPoE mode\n
- * 1 : EnablePPPoE mode\n
- * If you use ADSL, this bit should be
- */
-#define MR_PPPOE                     0x08
-
-/**
- * @brief Enable UDP_FORCE_ARP CHECHK
- * @details 0 : Disable Force ARP mode\n
- * 1 : Enable Force ARP mode\n
- * In Force ARP mode, It forces on sending ARP Request whenever data is sent.
- */
-#define MR_FARP                      0x02
-
-/* IR register values */
-/**
- * @brief Check IP conflict.
- * @details Bit is set as when own source IP address is same with the sender IP address in the received ARP request.
- */
-#define IR_CONFLICT                  0x80
-
-/**
- * @brief Get the destination unreachable message in UDP sending.
- * @details When receiving the ICMP (Destination port unreachable) packet, this bit is set as
- * When this bit is  Destination Information such as IP address and Port number may be checked with the corresponding @ref UIPR & @ref UPORTR.
- */
-#define IR_UNREACH                   0x40
-
-/**
- * @brief Get the PPPoE close message.
- * @details When PPPoE is disconnected during PPPoE mode, this bit is set.
- */
-#define IR_PPPoE                     0x20
-
-/**
- * @brief Get the magic packet interrupt.
- * @details When WOL mode is enabled and receives the magic packet over UDP, this bit is set.
- */
-#define IR_MP                        0x10
-
-
-/* PHYCFGR register value */
-#define PHYCFGR_RST                  ~(1<<7)  //< For PHY reset, must operate AND mask.
-#define PHYCFGR_OPMD                 (1<<6)   // Configre PHY with OPMDC value
-#define PHYCFGR_OPMDC_ALLA           (7<<3)
-#define PHYCFGR_OPMDC_PDOWN          (6<<3)
-#define PHYCFGR_OPMDC_NA             (5<<3)
-#define PHYCFGR_OPMDC_100FA          (4<<3)
-#define PHYCFGR_OPMDC_100F           (3<<3)
-#define PHYCFGR_OPMDC_100H           (2<<3)
-#define PHYCFGR_OPMDC_10F            (1<<3)
-#define PHYCFGR_OPMDC_10H            (0<<3)
-#define PHYCFGR_DPX_FULL             (1<<2)
-#define PHYCFGR_DPX_HALF             (0<<2)
-#define PHYCFGR_SPD_100              (1<<1)
-#define PHYCFGR_SPD_10               (0<<1)
-#define PHYCFGR_LNK_ON               (1<<0)
-#define PHYCFGR_LNK_OFF              (0<<0)
-
-/* IMR register values */
-/**
- * @brief IP Conflict Interrupt Mask.
- * @details 0: Disable IP Conflict Interrupt\n
- * 1: Enable IP Conflict Interrupt
- */
-#define IM_IR7                  	 0x80
-
-/**
- * @brief Destination unreachable Interrupt Mask.
- * @details 0: Disable Destination unreachable Interrupt\n
- * 1: Enable Destination unreachable Interrupt
- */
-#define IM_IR6                  	 0x40
-
-/**
- * @brief PPPoE Close Interrupt Mask.
- * @details 0: Disable PPPoE Close Interrupt\n
- * 1: Enable PPPoE Close Interrupt
- */
-#define IM_IR5                  	 0x20
-
-/**
- * @brief Magic Packet Interrupt Mask.
- * @details 0: Disable Magic Packet Interrupt\n
- * 1: Enable Magic Packet Interrupt
- */
-#define IM_IR4                  	 0x10
-
-/* Sn_MR Default values */
-/**
- * @brief Support UDP Multicasting
- * @details 0 : disable Multicasting\n
- * 1 : enable Multicasting\n
- * This bit is applied only during UDP mode(P[3:0] = 010.\n
- * To use multicasting, @ref Sn_DIPR & @ref Sn_DPORT should be respectively configured with the multicast group IP address & port number
- * before Socket n is opened by OPEN command of @ref Sn_CR.
- */
-#define Sn_MR_MULTI                  0x80
-
-/**
- * @brief Broadcast block in UDP Multicasting.
- * @details 0 : disable Broadcast Blocking\n
- * 1 : enable Broadcast Blocking\n
- * This bit blocks to receive broadcasting packet during UDP mode(P[3:0] = 010.\m
- * In addition, This bit does when MACRAW mode(P[3:0] = 100
- */
-#define Sn_MR_BCASTB                 0x40
-
-/**
- * @brief No Delayed Ack(TCP), Multicast flag
- * @details 0 : Disable No Delayed ACK option\n
- * 1 : Enable No Delayed ACK option\n
- * This bit is applied only during TCP mode (P[3:0] = 001.\n
- * When this bit is  It sends the ACK packet without delay as soon as a Data packet is received from a peer.\n
- * When this bit is  It sends the ACK packet after waiting for the timeout time configured by @ref _RTR_.
- */
-#define Sn_MR_ND                     0x20
-
-/**
- * @brief Unicast Block in UDP Multicasting
- * @details 0 : disable Unicast Blocking\n
- * 1 : enable Unicast Blocking\n
- * This bit blocks receiving the unicast packet during UDP mode(P[3:0] = 010 and MULTI =
- */
-#define Sn_MR_UCASTB                 0x10
-
-/**
- * @brief MAC LAYER RAW SOCK
- * @details This configures the protocol mode of Socket n.
- * @note MACRAW mode should be only used in Socket 0.
- */
-#define Sn_MR_MACRAW                 0x04
-
-//#define Sn_MR_IPRAW                  0x03     /**< IP LAYER RAW SOCK */
-
-/**
- * @brief UDP
- * @details This configures the protocol mode of Socket n.
- */
-#define Sn_MR_UDP                    0x02
-
-/**
- * @brief TCP
- * @details This configures the protocol mode of Socket n.
- */
-#define Sn_MR_TCP                    0x01
-
-/**
- * @brief Unused socket
- * @details This configures the protocol mode of Socket n.
- */
-#define Sn_MR_CLOSE                  0x00
-
-/* Sn_MR values used with Sn_MR_MACRAW */
-/**
- * @brief MAC filter enable in @ref Sn_MR_MACRAW mode
- * @details 0 : disable MAC Filtering\n
- * 1 : enable MAC Filtering\n
- * This bit is applied only during MACRAW mode(P[3:0] = 100.\n
- * When set as  W5500 can only receive broadcasting packet or packet sent to itself.
- * When this bit is  W5500 can receive all packets on Ethernet.
- * If user wants to implement Hybrid TCP/IP stack,
- * it is recommended that this bit is set as for reducing host overhead to process the all received packets.
- */
-#define Sn_MR_MFEN                   Sn_MR_MULTI
-
-/**
- * @brief Multicast Blocking in @ref Sn_MR_MACRAW mode
- * @details 0 : using IGMP version 2\n
- * 1 : using IGMP version 1\n
- * This bit is applied only during UDP mode(P[3:0] = 010 and MULTI =
- * It configures the version for IGMP messages (Join/Leave/Report).
- */
-#define Sn_MR_MMB                    Sn_MR_ND
-
-/**
- * @brief IPv6 packet Blocking in @ref Sn_MR_MACRAW mode
- * @details 0 : disable IPv6 Blocking\n
- * 1 : enable IPv6 Blocking\n
- * This bit is applied only during MACRAW mode (P[3:0] = 100. It blocks to receiving the IPv6 packet.
- */
-#define Sn_MR_MIP6B                  Sn_MR_UCASTB
-
-/* Sn_MR value used with Sn_MR_UDP & Sn_MR_MULTI */
-/**
- * @brief IGMP version used in UDP mulitcasting
- * @details 0 : disable Multicast Blocking\n
- * 1 : enable Multicast Blocking\n
- * This bit is applied only when MACRAW mode(P[3:0] = 100. It blocks to receive the packet with multicast MAC address.
- */
-#define Sn_MR_MC                     Sn_MR_ND
-
-/* Sn_MR alternate values */
-/**
- * @brief For Berkeley Socket API
- */
-#define SOCK_STREAM                  Sn_MR_TCP
-
-/**
- * @brief For Berkeley Socket API
- */
-#define SOCK_DGRAM                   Sn_MR_UDP
-
-
-/* Sn_CR values */
-/**
- * @brief Initialize or open socket
- * @details Socket n is initialized and opened according to the protocol selected in Sn_MR(P3:P0).
- * The table below shows the value of @ref Sn_SR corresponding to @ref Sn_MR.\n
- * <table>
- *   <tr>  <td>\b Sn_MR (P[3:0])</td> <td>\b Sn_SR</td>            		 </tr>
- *   <tr>  <td>Sn_MR_CLOSE  (000)</td> <td></td>         	   		 </tr>
- *   <tr>  <td>Sn_MR_TCP  (001)</td> <td>SOCK_INIT (0x13)</td>  		 </tr>
- *   <tr>  <td>Sn_MR_UDP  (010)</td>  <td>SOCK_UDP (0x22)</td>  		 </tr>
- *   <tr>  <td>S0_MR_MACRAW  (100)</td>  <td>SOCK_MACRAW (0x02)</td>  </tr>
- * </table>
- */
-#define Sn_CR_OPEN                   0x01
-
-/**
- * @brief Wait connection request in TCP mode(Server mode)
- * @details This is valid only in TCP mode (\ref Sn_MR(P3:P0) = \ref Sn_MR_TCP).
- * In this mode, Socket n operates as a TCP serverand waits for  connection-request (SYN packet) from any TCP client
- * The @ref Sn_SR changes the state from \ref SOCK_INIT to \ref SOCKET_LISTEN.
- * When a TCP clientconnection request is successfully established,
- * the @ref Sn_SR changes from SOCK_LISTEN to SOCK_ESTABLISHED and the @ref Sn_IR(0) becomes
- * But when a TCP clientconnection request is failed, @ref Sn_IR(3) becomes and the status of @ref Sn_SR changes to SOCK_CLOSED.
- */
-#define Sn_CR_LISTEN                 0x02
-
-/**
- * @brief Send connection request in TCP mode(Client mode)
- * @details  To connect, a connect-request (SYN packet) is sent to <b>TCP server</b>configured by @ref Sn_DIPR & Sn_DPORT(destination address & port).
- * If the connect-request is successful, the @ref Sn_SR is changed to @ref SOCK_ESTABLISHED and the Sn_IR(0) becomes \n\n
- * The connect-request fails in the following three cases.\n
- * 1. When a @b ARPTO occurs (@ref Sn_IR[3] =  ) because destination hardware address is not acquired through the ARP-process.\n
- * 2. When a @b SYN/ACK packet is not received and @b TCPTO (Sn_IR(3) =  )\n
- * 3. When a @b RST packet is received instead of a @b SYN/ACK packet. In these cases, @ref Sn_SR is changed to @ref SOCK_CLOSED.
- * @note This is valid only in TCP mode and operates when Socket n acts as <b>TCP client</b>
- */
-#define Sn_CR_CONNECT                0x04
-
-/**
- * @brief Send closing request in TCP mode
- * @details Regardless of <b>TCP server</b>or <b>TCP client</b> the DISCON command processes the disconnect-process (b>Active close</b>or <b>Passive close</b>.\n
- * @par Active close
- * it transmits disconnect-request(FIN packet) to the connected peer\n
- * @par Passive close
- * When FIN packet is received from peer, a FIN packet is replied back to the peer.\n
- * @details When the disconnect-process is successful (that is, FIN/ACK packet is received successfully), @ref Sn_SR is changed to @ref SOCK_CLOSED.\n
- * Otherwise, TCPTO occurs (\ref Sn_IR(3)='1') and then @ref Sn_SR is changed to @ref SOCK_CLOSED.
- * @note Valid only in TCP mode.
- */
-#define Sn_CR_DISCON                 0x08
-
-/**
- * @brief Close socket
- * @details Sn_SR is changed to @ref SOCK_CLOSED.
- */
-#define Sn_CR_CLOSE                  0x10
-
-/**
- * @brief Update TX buffer pointer and send data
- * @details SEND transmits all the data in the Socket n TX buffer.\n
- * For more details, please refer to Socket n TX Free Size Register (@ref Sn_TX_FSR), Socket n,
- * TX Write Pointer Register(@ref Sn_TX_WR), and Socket n TX Read Pointer Register(@ref Sn_TX_RD).
- */
-#define Sn_CR_SEND                   0x20
-
-/**
- * @brief Send data with MAC address, so without ARP process
- * @details The basic operation is same as SEND.\n
- * Normally SEND transmits data after destination hardware address is acquired by the automatic ARP-process(Address Resolution Protocol).\n
- * But SEND_MAC transmits data without the automatic ARP-process.\n
- * In this case, the destination hardware address is acquired from @ref Sn_DHAR configured by host, instead of APR-process.
- * @note Valid only in UDP mode.
- */
-#define Sn_CR_SEND_MAC               0x21
-
-/**
- * @brief Send keep alive message
- * @details It checks the connection status by sending 1byte keep-alive packet.\n
- * If the peer can not respond to the keep-alive packet during timeout time, the connection is terminated and the timeout interrupt will occur.
- * @note Valid only in TCP mode.
- */
-#define Sn_CR_SEND_KEEP              0x22
-
-/**
- * @brief Update RX buffer pointer and receive data
- * @details RECV completes the processing of the received data in Socket n RX Buffer by using a RX read pointer register (@ref Sn_RX_RD).\n
- * For more details, refer to Socket n RX Received Size Register (@ref Sn_RX_RSR), Socket n RX Write Pointer Register (@ref Sn_RX_WR),
- * and Socket n RX Read Pointer Register (@ref Sn_RX_RD).
- */
-#define Sn_CR_RECV                   0x40
-
-/* Sn_IR values */
-/**
- * @brief SEND_OK Interrupt
- * @details This is issued when SEND command is completed.
- */
-#define Sn_IR_SENDOK                 0x10
-
-/**
- * @brief TIMEOUT Interrupt
- * @details This is issued when ARPTO or TCPTO occurs.
- */
-#define Sn_IR_TIMEOUT                0x08
-
-/**
- * @brief RECV Interrupt
- * @details This is issued whenever data is received from a peer.
- */
-#define Sn_IR_RECV                   0x04
-
-/**
- * @brief DISCON Interrupt
- * @details This is issued when FIN or FIN/ACK packet is received from a peer.
- */
-#define Sn_IR_DISCON                 0x02
-
-/**
- * @brief CON Interrupt
- * @details This is issued one time when the connection with peer is successful and then @ref Sn_SR is changed to @ref SOCK_ESTABLISHED.
- */
-#define Sn_IR_CON                    0x01
-
-/* Sn_SR values */
-/**
- * @brief Closed
- * @details This indicates that Socket n is released.\n
- * When DICON, CLOSE command is ordered, or when a timeout occurs, it is changed to @ref SOCK_CLOSED regardless of previous status.
- */
-#define SOCK_CLOSED                  0x00
-
-/**
- * @brief Initiate state
- * @details This indicates Socket n is opened with TCP mode.\n
- * It is changed to @ref SOCK_INIT when @ref Sn_MR(P[3:0]) = 001 and OPEN command is ordered.\n
- * After @ref SOCK_INIT, user can use LISTEN /CONNECT command.
- */
-#define SOCK_INIT                    0x13
-
-/**
- * @brief Listen state
- * @details This indicates Socket n is operating as <b>TCP server</b>mode and waiting for connection-request (SYN packet) from a peer <b>TCP client</b>.\n
- * It will change to @ref SOCK_ESTALBLISHED when the connection-request is successfully accepted.\n
- * Otherwise it will change to @ref SOCK_CLOSED after TCPTO @ref Sn_IR(TIMEOUT) = '1') is occurred.
- */
-#define SOCK_LISTEN                  0x14
-
-/**
- * @brief Connection state
- * @details This indicates Socket n sent the connect-request packet (SYN packet) to a peer.\n
- * It is temporarily shown when @ref Sn_SR is changed from @ref SOCK_INIT to @ref SOCK_ESTABLISHED by CONNECT command.\n
- * If connect-accept(SYN/ACK packet) is received from the peer at SOCK_SYNSENT, it changes to @ref SOCK_ESTABLISHED.\n
- * Otherwise, it changes to @ref SOCK_CLOSED after TCPTO (@ref Sn_IR[TIMEOUT] = '1') is occurred.
- */
-#define SOCK_SYNSENT                 0x15
-
-/**
- * @brief Connection state
- * @details It indicates Socket n successfully received the connect-request packet (SYN packet) from a peer.\n
- * If socket n sends the response (SYN/ACK  packet) to the peer successfully,  it changes to @ref SOCK_ESTABLISHED. \n
- * If not, it changes to @ref SOCK_CLOSED after timeout (@ref Sn_IR[TIMEOUT] = '1') is occurred.
- */
-#define SOCK_SYNRECV                 0x16
-
-/**
- * @brief Success to connect
- * @details This indicates the status of the connection of Socket n.\n
- * It changes to @ref SOCK_ESTABLISHED when the <b>TCP SERVER</b>processed the SYN packet from the <b>TCP CLIENT</b>during @ref SOCK_LISTEN, or
- * when the CONNECT command is successful.\n
- * During @ref SOCK_ESTABLISHED, DATA packet can be transferred using SEND or RECV command.
- */
-#define SOCK_ESTABLISHED             0x17
-
-/**
- * @brief Closing state
- * @details These indicate Socket n is closing.\n
- * These are shown in disconnect-process such as active-close and passive-close.\n
- * When Disconnect-process is successfully completed, or when timeout occurs, these change to @ref SOCK_CLOSED.
- */
-#define SOCK_FIN_WAIT                0x18
-
-/**
- * @brief Closing state
- * @details These indicate Socket n is closing.\n
- * These are shown in disconnect-process such as active-close and passive-close.\n
- * When Disconnect-process is successfully completed, or when timeout occurs, these change to @ref SOCK_CLOSED.
- */
-#define SOCK_CLOSING                 0x1A
-
-/**
- * @brief Closing state
- * @details These indicate Socket n is closing.\n
- * These are shown in disconnect-process such as active-close and passive-close.\n
- * When Disconnect-process is successfully completed, or when timeout occurs, these change to @ref SOCK_CLOSED.
- */
-#define SOCK_TIME_WAIT               0x1B
-
-/**
- * @brief Closing state
- * @details This indicates Socket n received the disconnect-request (FIN packet) from the connected peer.\n
- * This is half-closing status, and data can be transferred.\n
- * For full-closing, DISCON command is used. But For just-closing, CLOSE command is used.
- */
-#define SOCK_CLOSE_WAIT              0x1C
-
-/**
- * @brief Closing state
- * @details This indicates Socket n is waiting for the response (FIN/ACK packet) to the disconnect-request (FIN packet) by passive-close.\n
- * It changes to @ref SOCK_CLOSED when Socket n received the response successfully, or when timeout(@ref Sn_IR[TIMEOUT] = '1') is occurred.
- */
-#define SOCK_LAST_ACK                0x1D
-
-/**
- * @brief UDP socket
- * @details This indicates Socket n is opened in UDP mode(@ref Sn_MR(P[3:0]) = '010').\n
- * It changes to SOCK_UDP when @ref Sn_MR(P[3:0]) = '010' and @ref Sn_CR_OPEN command is ordered.\n
- * Unlike TCP mode, data can be transfered without the connection-process.
- */
-#define SOCK_UDP                     0x22
-
-//#define SOCK_IPRAW                   0x32     /**< IP raw mode socket */
-
-/**
- * @brief MAC raw mode socket
- * @details This indicates Socket 0 is opened in MACRAW mode (S0_MR(P[3:0]) = 100and is valid only in Socket 0.\n
- * It changes to SOCK_MACRAW when S0_MR(P[3:0] = 100and OPEN command is ordered.\n
- * Like UDP mode socket, MACRAW mode Socket 0 can transfer a MAC packet (Ethernet frame) without the connection-process.
- */
-#define SOCK_MACRAW                  0x42
-
-//#define SOCK_PPPOE                   0x5F
-
-/* IP PROTOCOL */
-#define IPPROTO_IP                   0        //< Dummy for IP
-#define IPPROTO_ICMP                 1        //< Control message protocol
-#define IPPROTO_IGMP                 2        //< Internet group management protocol
-#define IPPROTO_GGP                  3        //< Gateway^2 (deprecated)
-#define IPPROTO_TCP                  6        //< TCP
-#define IPPROTO_PUP                  12       //< PUP
-#define IPPROTO_UDP                  17       //< UDP
-#define IPPROTO_IDP                  22       //< XNS idp
-#define IPPROTO_ND                   77       //< UNOFFICIAL net disk protocol
-#define IPPROTO_RAW                  255      //< Raw IP packet
-
-
-
 
 
 /////////////////////////////////
@@ -1681,19 +1199,6 @@ typedef struct wiz_PhyConf_t
     //uint8_t link;   ///< Valid only in CW_GET_PHYSTATUS. set by @ref PHY_LINK_ON or PHY_DUPLEX_OFF
 } wiz_PhyConf;
 
-#define PHY_CONFBY_HW            0     ///< Configured PHY operation mode by HW pin
-#define PHY_CONFBY_SW            1     ///< Configured PHY operation mode by SW register   
-#define PHY_MODE_MANUAL          0     ///< Configured PHY operation mode with user setting.
-#define PHY_MODE_AUTONEGO        1     ///< Configured PHY operation mode with auto-negotiation
-#define PHY_SPEED_10             0     ///< Link Speed 10
-#define PHY_SPEED_100            1     ///< Link Speed 100
-#define PHY_DUPLEX_HALF          0     ///< Link Half-Duplex
-#define PHY_DUPLEX_FULL          1     ///< Link Full-Duplex
-#define PHY_LINK_OFF             0     ///< Link Off
-#define PHY_LINK_ON              1     ///< Link On
-#define PHY_POWER_NORM           0     ///< PHY power normal mode
-#define PHY_POWER_DOWN           1     ///< PHY power down mode 
-
 
 class Wiznet5500 {
 
@@ -1913,6 +1418,123 @@ private:
      * @param len Data length
      */
     void wizchip_recv_ignore(uint8_t sn, uint16_t len);
+
+
+    /** Mode register values */
+    enum {
+        MR_RST = 0x80,    ///< Reset
+        MR_WOL = 0x20,    ///< Wake on LAN
+        MR_PB = 0x10,     ///< Ping block
+        MR_PPPOE = 0x08,  ///< Enable PPPoE
+        MR_FARP = 0x02,   ///< Enable UDP_FORCE_ARP CHECHK
+    };
+
+    /* Interrupt Register values */
+    enum {
+        IR_CONFLICT = 0x80,  ///< Check IP conflict
+        IR_UNREACH = 0x40,   ///< Get the destination unreachable message in UDP sending
+        IR_PPPoE = 0x20,     ///< Get the PPPoE close message
+        IR_MP = 0x10,        ///< Get the magic packet interrupt
+    };
+
+    /* Interrupt Mask Register values */
+    enum {
+        IM_IR7 = 0x80,   ///< IP Conflict Interrupt Mask
+        IM_IR6 = 0x40,   ///< Destination unreachable Interrupt Mask
+        IM_IR5 = 0x20,   ///< PPPoE Close Interrupt Mask
+        IM_IR4 = 0x10,   ///< Magic Packet Interrupt Mask
+    };
+
+    /** Socket Mode Register values */
+    enum {
+        Sn_MR_CLOSE = 0x00,  ///< Unused socket
+        Sn_MR_TCP = 0x01,    ///< TCP
+        Sn_MR_UDP = 0x02,    ///< UDP
+        Sn_MR_MACRAW = 0x04, ///< MAC LAYER RAW SOCK
+        Sn_MR_UCASTB = 0x10, ///< Unicast Block in UDP Multicasting
+        Sn_MR_ND = 0x20,     ///< No Delayed Ack(TCP), Multicast flag
+        Sn_MR_BCASTB = 0x40, ///< Broadcast block in UDP Multicasting
+        Sn_MR_MULTI = 0x80,  ///< Support UDP Multicasting
+        Sn_MR_MIP6B = 0x10,  ///< IPv6 packet Blocking in @ref Sn_MR_MACRAW mode
+        Sn_MR_MMB = 0x20,    ///< Multicast Blocking in @ref Sn_MR_MACRAW mode
+        Sn_MR_MFEN = 0x80,   ///< MAC filter enable in @ref Sn_MR_MACRAW mode
+    };
+
+    /** Socket Command Register values */
+    enum {
+        Sn_CR_OPEN = 0x01,      ///< Initialise or open socket
+        Sn_CR_LISTEN = 0x02,    ///< Wait connection request in TCP mode (Server mode)
+        Sn_CR_CONNECT = 0x04,   ///< Send connection request in TCP mode (Client mode)
+        Sn_CR_DISCON = 0x08,    ///< Send closing request in TCP mode
+        Sn_CR_CLOSE = 0x10,     ///< Close socket
+        Sn_CR_SEND = 0x20,      ///< Update TX buffer pointer and send data
+        Sn_CR_SEND_MAC = 0x21,  ///< Send data with MAC address, so without ARP process
+        Sn_CR_SEND_KEEP = 0x22, ///< Send keep alive message
+        Sn_CR_RECV = 0x40,      ///< Update RX buffer pointer and receive data
+    };
+
+    /** Socket Interrupt register values */
+    enum {
+        Sn_IR_CON = 0x01,      ///< CON Interrupt
+        Sn_IR_DISCON = 0x02,   ///< DISCON Interrupt
+        Sn_IR_RECV = 0x04,     ///< RECV Interrupt
+        Sn_IR_TIMEOUT = 0x08,  ///< TIMEOUT Interrupt
+        Sn_IR_SENDOK = 0x10,   ///< SEND_OK Interrupt
+    };
+
+    /** Socket Status Register values */
+    enum {
+        SOCK_CLOSED = 0x00,      ///< Closed
+        SOCK_INIT = 0x13,        ///< Initiate state
+        SOCK_LISTEN = 0x14,      ///< Listen state
+        SOCK_SYNSENT = 0x15,     ///< Connection state
+        SOCK_SYNRECV = 0x16,     ///< Connection state
+        SOCK_ESTABLISHED = 0x17, ///< Success to connect
+        SOCK_FIN_WAIT = 0x18,    ///< Closing state
+        SOCK_CLOSING = 0x1A,     ///< Closing state
+        SOCK_TIME_WAIT = 0x1B,   ///< Closing state
+        SOCK_CLOSE_WAIT = 0x1C,  ///< Closing state
+        SOCK_LAST_ACK = 0x1D,    ///< Closing state
+        SOCK_UDP = 0x22,         ///< UDP socket
+        SOCK_MACRAW = 0x42,      ///< MAC raw mode socket
+    };
+
+
+    /* PHYCFGR register value */
+    enum {
+        PHYCFGR_RST = ~(1<<7),  //< For PHY reset, must operate AND mask.
+        PHYCFGR_OPMD = (1<<6),   // Configre PHY with OPMDC value
+        PHYCFGR_OPMDC_ALLA = (7<<3),
+        PHYCFGR_OPMDC_PDOWN = (6<<3),
+        PHYCFGR_OPMDC_NA = (5<<3),
+        PHYCFGR_OPMDC_100FA = (4<<3),
+        PHYCFGR_OPMDC_100F = (3<<3),
+        PHYCFGR_OPMDC_100H = (2<<3),
+        PHYCFGR_OPMDC_10F = (1<<3),
+        PHYCFGR_OPMDC_10H = (0<<3),
+        PHYCFGR_DPX_FULL = (1<<2),
+        PHYCFGR_DPX_HALF = (0<<2),
+        PHYCFGR_SPD_100 = (1<<1),
+        PHYCFGR_SPD_10 = (0<<1),
+        PHYCFGR_LNK_ON = (1<<0),
+        PHYCFGR_LNK_OFF = (0<<0),
+    };
+
+    enum {
+        PHY_CONFBY_HW = 0,     ///< Configured PHY operation mode by HW pin
+        PHY_CONFBY_SW = 1,     ///< Configured PHY operation mode by SW register   
+        PHY_MODE_MANUAL = 0,     ///< Configured PHY operation mode with user setting.
+        PHY_MODE_AUTONEGO = 1,     ///< Configured PHY operation mode with auto-negotiation
+        PHY_SPEED_10 = 0,     ///< Link Speed 10
+        PHY_SPEED_100 = 1,     ///< Link Speed 100
+        PHY_DUPLEX_HALF = 0,     ///< Link Half-Duplex
+        PHY_DUPLEX_FULL = 1,     ///< Link Full-Duplex
+        PHY_LINK_OFF = 0,     ///< Link Off
+        PHY_LINK_ON = 1,     ///< Link On
+        PHY_POWER_NORM = 0,     ///< PHY power normal mode
+        PHY_POWER_DOWN = 1,     ///< PHY power down mode 
+    };
+
 };
 
 #endif   // _W5500_H_
