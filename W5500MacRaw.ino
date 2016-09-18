@@ -38,6 +38,7 @@ void setup() {
     // Setup serial port for debugging
     Serial.begin(115200);
     Serial.println("[W5500MacRaw]");
+    printMACAddress(mac_address);
 
     w5500.begin(mac_address);
 }
