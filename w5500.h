@@ -488,7 +488,7 @@
  * @sa getMR()
  */
 #define setMR(mr) \
-	wizchip_write(MR,mr)
+	wizchip_write(WIZCHIP_CREG_BLOCK, MR, mr)
 
 
 /**
@@ -497,7 +497,7 @@
  * @sa setMR()
  */
 #define getMR() \
-		wizchip_read(MR)
+		wizchip_read(WIZCHIP_CREG_BLOCK, MR)
 
 /**
  * @brief Set gateway IP address
@@ -505,7 +505,7 @@
  * @sa getGAR()
  */
 #define setGAR(gar) \
-		wizchip_write_buf(GAR,gar,4)
+		wizchip_write_buf(WIZCHIP_CREG_BLOCK, GAR, gar, 4)
 
 /**
  * @brief Get gateway IP address
@@ -513,7 +513,7 @@
  * @sa setGAR()
  */
 #define getGAR(gar) \
-		wizchip_read_buf(GAR,gar,4)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, GAR, gar, 4)
 
 /**
  * @brief Set subnet mask address
@@ -521,7 +521,7 @@
  * @sa getSUBR()
  */
 #define setSUBR(subr) \
-		wizchip_write_buf(SUBR, subr,4)
+		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SUBR, subr, 4)
 
 
 /**
@@ -530,7 +530,7 @@
  * @sa setSUBR()
  */
 #define getSUBR(subr) \
-		wizchip_read_buf(SUBR, subr, 4)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SUBR, subr, 4)
 
 /**
  * @brief Set local MAC address
@@ -538,7 +538,7 @@
  * @sa getSHAR()
  */
 #define setSHAR(shar) \
-		wizchip_write_buf(SHAR, shar, 6)
+		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SHAR, shar, 6)
 
 /**
  * @brief Get local MAC address
@@ -546,7 +546,7 @@
  * @sa setSHAR()
  */
 #define getSHAR(shar) \
-		wizchip_read_buf(SHAR, shar, 6)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SHAR, shar, 6)
 
 /**
  * @brief Set local IP address
@@ -554,7 +554,7 @@
  * @sa getSIPR()
  */
 #define setSIPR(sipr) \
-		wizchip_write_buf(SIPR, sipr, 4)
+		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SIPR, sipr, 4)
 
 /**
  * @brief Get local IP address
@@ -562,7 +562,7 @@
  * @sa setSIPR()
  */
 #define getSIPR(sipr) \
-		wizchip_read_buf(SIPR, sipr, 4)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SIPR, sipr, 4)
 
 /**
  * @brief Set INTLEVEL register
@@ -570,8 +570,8 @@
  * @sa getINTLEVEL()
  */
 #define setINTLEVEL(intlevel)  {\
-		wizchip_write(INTLEVEL,   (uint8_t)(intlevel >> 8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(INTLEVEL,1), (uint8_t) intlevel); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, INTLEVEL,   (uint8_t)(intlevel >> 8)); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(INTLEVEL,1), (uint8_t) intlevel); \
 	}
 
 
@@ -581,7 +581,7 @@
  * @sa setINTLEVEL()
  */
 #define getINTLEVEL() \
-		(((uint16_t)wizchip_read(INTLEVEL) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(INTLEVEL,1)))
+		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, INTLEVEL) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(INTLEVEL,1)))
 
 /**
  * @brief Set @ref IR register
@@ -589,7 +589,7 @@
  * @sa getIR()
  */
 #define setIR(ir) \
-		wizchip_write(IR, (ir & 0xF0))
+		wizchip_write(WIZCHIP_CREG_BLOCK, IR, (ir & 0xF0))
 
 /**
  * @brief Get @ref IR register
@@ -597,14 +597,14 @@
  * @sa setIR()
  */
 #define getIR() \
-		(wizchip_read(IR) & 0xF0)
+		(wizchip_read(WIZCHIP_CREG_BLOCK, IR) & 0xF0)
 /**
  * @brief Set @ref _IMR_ register
  * @param (uint8_t)imr Value to set @ref _IMR_ register.
  * @sa getIMR()
  */
 #define setIMR(imr) \
-		wizchip_write(_IMR_, imr)
+		wizchip_write(WIZCHIP_CREG_BLOCK, _IMR_, imr)
 
 /**
  * @brief Get @ref _IMR_ register
@@ -612,7 +612,7 @@
  * @sa setIMR()
  */
 #define getIMR() \
-		wizchip_read(_IMR_)
+		wizchip_read(WIZCHIP_CREG_BLOCK, _IMR_)
 
 /**
  * @brief Set @ref SIR register
@@ -620,7 +620,7 @@
  * @sa getSIR()
  */
 #define setSIR(sir) \
-		wizchip_write(SIR, sir)
+		wizchip_write(WIZCHIP_CREG_BLOCK, SIR, sir)
 
 /**
  * @brief Get @ref SIR register
@@ -628,14 +628,14 @@
  * @sa setSIR()
  */
 #define getSIR() \
-		wizchip_read(SIR)
+		wizchip_read(WIZCHIP_CREG_BLOCK, SIR)
 /**
  * @brief Set @ref SIMR register
  * @param (uint8_t)simr Value to set @ref SIMR register.
  * @sa getSIMR()
  */
 #define setSIMR(simr) \
-		wizchip_write(SIMR, simr)
+		wizchip_write(WIZCHIP_CREG_BLOCK, SIMR, simr)
 
 /**
  * @brief Get @ref SIMR register
@@ -643,7 +643,7 @@
  * @sa setSIMR()
  */
 #define getSIMR() \
-		wizchip_read(SIMR)
+		wizchip_read(WIZCHIP_CREG_BLOCK, SIMR)
 
 /**
  * @brief Set @ref _RTR_ register
@@ -651,8 +651,8 @@
  * @sa getRTR()
  */
 #define setRTR(rtr)   {\
-		wizchip_write(_RTR_,   (uint8_t)(rtr >> 8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(_RTR_,1), (uint8_t) rtr); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, _RTR_,   (uint8_t)(rtr >> 8)); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(_RTR_,1), (uint8_t) rtr); \
 	}
 
 /**
@@ -661,7 +661,7 @@
  * @sa setRTR()
  */
 #define getRTR() \
-		(((uint16_t)wizchip_read(_RTR_) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(_RTR_,1)))
+		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, _RTR_) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(_RTR_,1)))
 
 
 /**
@@ -670,7 +670,7 @@
  * @sa getRCR()
  */
 #define setRCR(rcr) \
-		wizchip_write(_RCR_, rcr)
+		wizchip_write(WIZCHIP_CREG_BLOCK, _RCR_, rcr)
 
 /**
  * @brief Get @ref _RCR_ register
@@ -678,7 +678,7 @@
  * @sa setRCR()
  */
 #define getRCR() \
-		wizchip_read(_RCR_)
+		wizchip_read(WIZCHIP_CREG_BLOCK, _RCR_)
 
 //================================================== test done ===========================================================
 
@@ -688,7 +688,7 @@
  * @sa getPTIMER()
  */
 #define setPTIMER(ptimer) \
-		wizchip_write(PTIMER, ptimer)
+		wizchip_write(WIZCHIP_CREG_BLOCK, PTIMER, ptimer)
 
 /**
  * @brief Get @ref PTIMER register
@@ -696,7 +696,7 @@
  * @sa setPTIMER()
  */
 #define getPTIMER() \
-		wizchip_read(PTIMER)
+		wizchip_read(WIZCHIP_CREG_BLOCK, PTIMER)
 
 /**
  * @brief Set @ref PMAGIC register
@@ -704,7 +704,7 @@
  * @sa getPMAGIC()
  */
 #define setPMAGIC(pmagic) \
-		wizchip_write(PMAGIC, pmagic)
+		wizchip_write(WIZCHIP_CREG_BLOCK, PMAGIC, pmagic)
 
 /**
  * @brief Get @ref PMAGIC register
@@ -712,7 +712,7 @@
  * @sa setPMAGIC()
  */
 #define getPMAGIC() \
-		wizchip_read(PMAGIC)
+		wizchip_read(WIZCHIP_CREG_BLOCK, PMAGIC)
 
 /**
  * @brief Set @ref PHAR address
@@ -720,7 +720,7 @@
  * @sa getPHAR()
  */
 #define setPHAR(phar) \
-		wizchip_write_buf(PHAR, phar, 6)
+		wizchip_write_buf(WIZCHIP_CREG_BLOCK, PHAR, phar, 6)
 
 /**
  * @brief Get @ref PHAR address
@@ -728,7 +728,7 @@
  * @sa setPHAR()
  */
 #define getPHAR(phar) \
-		wizchip_read_buf(PHAR, phar, 6)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, PHAR, phar, 6)
 
 /**
  * @brief Set @ref PSID register
@@ -736,8 +736,8 @@
  * @sa getPSID()
  */
 #define setPSID(psid)  {\
-		wizchip_write(PSID,   (uint8_t)(psid >> 8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(PSID,1), (uint8_t) psid); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, PSID,   (uint8_t)(psid >> 8)); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PSID,1), (uint8_t) psid); \
 	}
 
 /**
@@ -747,7 +747,7 @@
  */
 //uint16_t getPSID(void);
 #define getPSID() \
-		(((uint16_t)wizchip_read(PSID) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(PSID,1)))
+		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, PSID) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PSID,1)))
 
 /**
  * @brief Set @ref PMRU register
@@ -755,8 +755,8 @@
  * @sa getPMRU()
  */
 #define setPMRU(pmru) { \
-		wizchip_write(PMRU,   (uint8_t)(pmru>>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(PMRU,1), (uint8_t) pmru); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, PMRU,   (uint8_t)(pmru>>8)); \
+		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PMRU,1), (uint8_t) pmru); \
 	}
 
 /**
@@ -765,21 +765,21 @@
  * @sa setPMRU()
  */
 #define getPMRU() \
-		(((uint16_t)wizchip_read(PMRU) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(PMRU,1)))
+		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, PMRU) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(PMRU,1)))
 
 /**
  * @brief Get unreachable IP address
  * @param (uint8_t*)uipr Pointer variable to get unreachable IP address. It should be allocated 4 bytes.
  */
 #define getUIPR(uipr) \
-		wizchip_read_buf(UIPR,uipr,4)
+		wizchip_read_buf(WIZCHIP_CREG_BLOCK, UIPR,uipr,4)
 
 /**
  * @brief Get @ref UPORTR register
  * @return uint16_t. Value of @ref UPORTR register.
  */
 #define getUPORTR() \
-	(((uint16_t)wizchip_read(UPORTR) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(UPORTR,1)))	
+	(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, UPORTR) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(UPORTR,1)))	
 
 /**
  * @brief Set @ref PHYCFGR register
@@ -787,7 +787,7 @@
  * @sa getPHYCFGR()
  */
 #define setPHYCFGR(phycfgr) \
-		wizchip_write(PHYCFGR, phycfgr)
+		wizchip_write(WIZCHIP_CREG_BLOCK, PHYCFGR, phycfgr)
 
 /**
  * @brief Get @ref PHYCFGR register
@@ -795,14 +795,14 @@
  * @sa setPHYCFGR()
  */
 #define getPHYCFGR() \
-		wizchip_read(PHYCFGR)
+		wizchip_read(WIZCHIP_CREG_BLOCK, PHYCFGR)
 
 /**
  * @brief Get @ref VERSIONR register
  * @return uint8_t. Value of @ref VERSIONR register.
  */
 #define getVERSIONR() \
-		wizchip_read(VERSIONR)
+		wizchip_read(WIZCHIP_CREG_BLOCK, VERSIONR)
 
 /////////////////////////////////////
 
@@ -816,7 +816,7 @@
  * @sa getSn_MR()
  */
 #define setSn_MR(sn, mr) \
-		wizchip_write(Sn_MR(sn),mr)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_MR(sn), mr)
 
 /**
  * @brief Get @ref Sn_MR register
@@ -825,7 +825,7 @@
  * @sa setSn_MR()
  */
 #define getSn_MR(sn) \
-	wizchip_read(Sn_MR(sn))
+	wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_MR(sn))
 
 /**
  * @brief Set @ref Sn_CR register
@@ -834,7 +834,7 @@
  * @sa getSn_CR()
  */
 #define setSn_CR(sn, cr) \
-		wizchip_write(Sn_CR(sn), cr)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_CR(sn), cr)
 
 /**
  * @brief Get @ref Sn_CR register
@@ -843,7 +843,7 @@
  * @sa setSn_CR()
  */
 #define getSn_CR(sn) \
-		wizchip_read(Sn_CR(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_CR(sn))
 
 /**
  * @brief Set @ref Sn_IR register
@@ -852,7 +852,7 @@
  * @sa getSn_IR()
  */
 #define setSn_IR(sn, ir) \
-		wizchip_write(Sn_IR(sn), (ir & 0x1F))
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_IR(sn), (ir & 0x1F))
 
 /**
  * @brief Get @ref Sn_IR register
@@ -861,7 +861,7 @@
  * @sa setSn_IR()
  */
 #define getSn_IR(sn) \
-		(wizchip_read(Sn_IR(sn)) & 0x1F)
+		(wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_IR(sn)) & 0x1F)
 
 /**
  * @brief Set @ref Sn_IMR register
@@ -870,7 +870,7 @@
  * @sa getSn_IMR()
  */
 #define setSn_IMR(sn, imr) \
-		wizchip_write(Sn_IMR(sn), (imr & 0x1F))
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_IMR(sn), (imr & 0x1F))
 
 /**
  * @brief Get @ref Sn_IMR register
@@ -879,7 +879,7 @@
  * @sa setSn_IMR()
  */
 #define getSn_IMR(sn) \
-		(wizchip_read(Sn_IMR(sn)) & 0x1F)
+		(wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_IMR(sn)) & 0x1F)
 
 /**
  * @brief Get @ref Sn_SR register
@@ -887,7 +887,7 @@
  * @return uint8_t. Value of @ref Sn_SR.
  */
 #define getSn_SR(sn) \
-		wizchip_read(Sn_SR(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_SR(sn))
 
 /**
  * @brief Set @ref Sn_PORT register
@@ -896,8 +896,8 @@
  * @sa getSn_PORT()
  */
 #define setSn_PORT(sn, port)  { \
-		wizchip_write(Sn_PORT(sn),   (uint8_t)(port >> 8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_PORT(sn),1), (uint8_t) port); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_PORT(sn),   (uint8_t)(port >> 8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_PORT(sn),1), (uint8_t) port); \
 	}
 
 /**
@@ -907,7 +907,7 @@
  * @sa setSn_PORT()
  */
 #define getSn_PORT(sn) \
-		(((uint16_t)wizchip_read(Sn_PORT(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_PORT(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_PORT(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_PORT,1)))		
 
 /**
  * @brief Set @ref Sn_DHAR register
@@ -916,7 +916,7 @@
  * @sa getSn_DHAR()
  */
 #define setSn_DHAR(sn, dhar) \
-		wizchip_write_buf(Sn_DHAR(sn), dhar, 6)
+		wizchip_write_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DHAR(sn), dhar, 6)
 
 /**
  * @brief Get @ref Sn_MR register
@@ -925,7 +925,7 @@
  * @sa setSn_DHAR()
  */
 #define getSn_DHAR(sn, dhar) \
-		wizchip_read_buf(Sn_DHAR(sn), dhar, 6)
+		wizchip_read_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DHAR(sn), dhar, 6)
 
 /**
  * @brief Set @ref Sn_DIPR register
@@ -934,7 +934,7 @@
  * @sa getSn_DIPR()
  */
 #define setSn_DIPR(sn, dipr) \
-		wizchip_write_buf(Sn_DIPR(sn), dipr, 4)
+		wizchip_write_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DIPR(sn), dipr, 4)
 
 /**
  * @brief Get @ref Sn_DIPR register
@@ -943,7 +943,7 @@
  * @sa setSn_DIPR()
  */
 #define getSn_DIPR(sn, dipr) \
-		wizchip_read_buf(Sn_DIPR(sn), dipr, 4)
+		wizchip_read_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DIPR(sn), dipr, 4)
 
 /**
  * @brief Set @ref Sn_DPORT register
@@ -952,8 +952,8 @@
  * @sa getSn_DPORT()
  */
 #define setSn_DPORT(sn, dport) { \
-		wizchip_write(Sn_DPORT(sn),   (uint8_t) (dport>>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_DPORT(sn),1), (uint8_t)  dport); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_DPORT(sn),   (uint8_t) (dport>>8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_DPORT(sn),1), (uint8_t)  dport); \
 	}
 
 /**
@@ -963,7 +963,7 @@
  * @sa setSn_DPORT()
  */
 #define getSn_DPORT(sn) \
-		(((uint16_t)wizchip_read(Sn_DPORT(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_DPORT(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_DPORT(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_DPORT,1)))		
 
 /**
  * @brief Set @ref Sn_MSSR register
@@ -972,8 +972,8 @@
  * @sa setSn_MSSR()
  */
 #define setSn_MSSR(sn, mss) { \
-		wizchip_write(Sn_MSSR(sn),   (uint8_t)(mss>>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_MSSR(sn),1), (uint8_t) mss); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_MSSR(sn),   (uint8_t)(mss>>8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_MSSR(sn),1), (uint8_t) mss); \
 	}
 
 /**
@@ -983,7 +983,7 @@
  * @sa setSn_MSSR()
  */
 #define getSn_MSSR(sn) \
-		(((uint16_t)wizchip_read(Sn_MSSR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_MSSR(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_MSSR(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_MSSR,1)))		
 
 /**
  * @brief Set @ref Sn_TOS register
@@ -992,7 +992,7 @@
  * @sa getSn_TOS()
  */
 #define setSn_TOS(sn, tos) \
-		wizchip_write(Sn_TOS(sn), tos)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TOS(sn), tos)
 
 /**
  * @brief Get @ref Sn_TOS register
@@ -1001,7 +1001,7 @@
  * @sa setSn_TOS()
  */
 #define getSn_TOS(sn) \
-		wizchip_read(Sn_TOS(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TOS(sn))
 
 /**
  * @brief Set @ref Sn_TTL register
@@ -1010,7 +1010,7 @@
  * @sa getSn_TTL()
  */
 #define setSn_TTL(sn, ttl) \
-		wizchip_write(Sn_TTL(sn), ttl)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TTL(sn), ttl)
 
 
 /**
@@ -1020,7 +1020,7 @@
  * @sa setSn_TTL()
  */
 #define getSn_TTL(sn) \
-		wizchip_read(Sn_TTL(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TTL(sn))
 
 
 /**
@@ -1030,7 +1030,7 @@
  * @sa getSn_RXBUF_SIZE()
  */
 #define setSn_RXBUF_SIZE(sn, rxbufsize) \
-		wizchip_write(Sn_RXBUF_SIZE(sn),rxbufsize)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_RXBUF_SIZE(sn),rxbufsize)
 
 
 /**
@@ -1040,7 +1040,7 @@
  * @sa setSn_RXBUF_SIZE()
  */
 #define getSn_RXBUF_SIZE(sn) \
-		wizchip_read(Sn_RXBUF_SIZE(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RXBUF_SIZE(sn))
 
 /**
  * @brief Set @ref Sn_TXBUF_SIZE register
@@ -1049,7 +1049,7 @@
  * @sa getSn_TXBUF_SIZE()
  */
 #define setSn_TXBUF_SIZE(sn, txbufsize) \
-		wizchip_write(Sn_TXBUF_SIZE(sn), txbufsize)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TXBUF_SIZE(sn), txbufsize)
 
 /**
  * @brief Get @ref Sn_TXBUF_SIZE register
@@ -1058,7 +1058,7 @@
  * @sa setSn_TXBUF_SIZE()
  */
 #define getSn_TXBUF_SIZE(sn) \
-		wizchip_read(Sn_TXBUF_SIZE(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TXBUF_SIZE(sn))
 
 /**
  * @brief Get @ref Sn_TX_RD register
@@ -1066,7 +1066,7 @@
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
 #define getSn_TX_RD(sn) \
-		(((uint16_t)wizchip_read(Sn_TX_RD(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_RD(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_RD(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_RD,1)))		
 
 /**
  * @brief Set @ref Sn_TX_WR register
@@ -1075,8 +1075,8 @@
  * @sa GetSn_TX_WR()
  */
 #define setSn_TX_WR(sn, txwr) { \
-		wizchip_write(Sn_TX_WR(sn),   (uint8_t)(txwr>>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1), (uint8_t) txwr); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR(sn),   (uint8_t)(txwr>>8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1), (uint8_t) txwr); \
 		}
 
 /**
@@ -1086,7 +1086,7 @@
  * @sa setSn_TX_WR()
  */
 #define getSn_TX_WR(sn) \
-		(((uint16_t)wizchip_read(Sn_TX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_TX_WR(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_WR(sn), 1)))		
 
 
 
@@ -1097,8 +1097,8 @@
  * @sa getSn_RX_RD()
  */
 #define setSn_RX_RD(sn, rxrd) { \
-		wizchip_write(Sn_RX_RD(sn),   (uint8_t)(rxrd>>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1), (uint8_t) rxrd); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD(sn),   (uint8_t)(rxrd>>8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1), (uint8_t) rxrd); \
 	}
 
 /**
@@ -1108,7 +1108,7 @@
  * @sa setSn_RX_RD()
  */
 #define getSn_RX_RD(sn) \
-		(((uint16_t)wizchip_read(Sn_RX_RD(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RD(sn),1)))		
 
 /**
  * @brief Get @ref Sn_RX_WR register
@@ -1116,7 +1116,7 @@
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
 #define getSn_RX_WR(sn) \
-		(((uint16_t)wizchip_read(Sn_RX_WR(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_RX_WR(sn),1)))		
+		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_WR(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_WR(sn),1)))		
 
 /**
  * @brief Set @ref Sn_FRAG register
@@ -1125,8 +1125,8 @@
  * @sa getSn_FRAD()
  */
 #define setSn_FRAG(sn, frag) { \
-		wizchip_write(Sn_FRAG(sn),  (uint8_t)(frag >>8)); \
-		wizchip_write(WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1), (uint8_t) frag); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_FRAG(sn),  (uint8_t)(frag >>8)); \
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1), (uint8_t) frag); \
 	}
 
 /**
@@ -1136,7 +1136,7 @@
  * @sa setSn_FRAG()
  */
 #define getSn_FRAG(sn) \
-      (((uint16_t)wizchip_read(Sn_FRAG(sn)) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(Sn_FRAG(sn),1)))		
+      (((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_FRAG(sn)) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_FRAG,1)))		
 
 /**
  * @brief Set @ref Sn_KPALVTR register
@@ -1145,7 +1145,7 @@
  * @sa getSn_KPALVTR()
  */
 #define setSn_KPALVTR(sn, kpalvt) \
-		wizchip_write(Sn_KPALVTR(sn), kpalvt)
+		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_KPALVTR(sn), kpalvt)
 
 /**
  * @brief Get @ref Sn_KPALVTR register
@@ -1154,7 +1154,7 @@
  * @sa setSn_KPALVTR()
  */
 #define getSn_KPALVTR(sn) \
-		wizchip_read(Sn_KPALVTR(sn))
+		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_KPALVTR(sn))
 
 //////////////////////////////////////
 
@@ -1296,7 +1296,7 @@ private:
      * @param AddrSel Register address
      * @return The value of register
      */
-    uint8_t  wizchip_read(uint32_t AddrSel);
+    uint8_t wizchip_read(uint8_t block, uint32_t AddrSel);
 
     /**
      * @brief It writes 1 byte value to a register.
@@ -1304,7 +1304,7 @@ private:
      * @param wb Write data
      * @return void
      */
-    void wizchip_write(uint32_t AddrSel, uint8_t wb );
+    void wizchip_write(uint8_t block, uint32_t AddrSel, uint8_t wb);
 
     /**
      * @brief It reads sequence data from registers.
@@ -1312,7 +1312,7 @@ private:
      * @param pBuf Pointer buffer to read data
      * @param len Data length
      */
-    void wizchip_read_buf(uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
+    void wizchip_read_buf(uint8_t block, uint32_t AddrSel, uint8_t* pBuf, uint16_t len);
 
     /**
      * @brief It writes sequence data to registers.
@@ -1320,7 +1320,7 @@ private:
      * @param pBuf Pointer buffer to write data
      * @param len Data length
      */
-    void wizchip_write_buf(uint32_t AddrSel, const uint8_t* pBuf, uint16_t len);
+    void wizchip_write_buf(uint8_t block, uint32_t AddrSel, const uint8_t* pBuf, uint16_t len);
 
     /**
      * @brief Get @ref Sn_TX_FSR register
