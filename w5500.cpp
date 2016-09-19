@@ -190,38 +190,6 @@ void Wiznet5500::wizchip_sw_reset(void)
     setSHAR(_mac_address);
 }
 
-int8_t Wiznet5500::wizchip_init(uint8_t* txsize, uint8_t* rxsize)
-{
-    int8_t i;
-    int8_t tmp = 0;
-    wizchip_sw_reset();
-    if(txsize)
-    {
-        tmp = 0;
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            tmp += txsize[i];
-            if(tmp > 16) return -1;
-        }
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-            setSn_TXBUF_SIZE(i, txsize[i]);
-    }
-    if(rxsize)
-    {
-        tmp = 0;
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-        {
-            tmp += rxsize[i];
-            if(tmp > 16) return -1;
-        }
-
-        for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
-            setSn_RXBUF_SIZE(i, rxsize[i]);
-    }
-    return 0;
-}
-
-
 int8_t Wiznet5500::wizphy_getphylink(void)
 {
     int8_t tmp;
