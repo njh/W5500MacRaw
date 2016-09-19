@@ -148,7 +148,7 @@ void Wiznet5500::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t 
 
     if(len == 0)  return;
     ptr = getSn_TX_WR(sn);
-    addrsel = ((uint32_t)ptr << 8) + WIZCHIP_TXBUF_BLOCK(sn);
+    addrsel = ((uint32_t)ptr << 8);
     wizchip_write_buf(WIZCHIP_TXBUF_BLOCK(sn), addrsel, wizdata, len);
 
     ptr += len;
@@ -163,7 +163,7 @@ void Wiznet5500::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
 
     if(len == 0) return;
     ptr = getSn_RX_RD(sn);
-    addrsel = ((uint32_t)ptr << 8) + WIZCHIP_RXBUF_BLOCK(sn);
+    addrsel = ((uint32_t)ptr << 8);
 
     wizchip_read_buf(WIZCHIP_RXBUF_BLOCK(sn), addrsel, wizdata, len);
     ptr += len;
