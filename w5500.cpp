@@ -184,18 +184,10 @@ void Wiznet5500::wizchip_recv_ignore(uint8_t sn, uint16_t len)
 
 void Wiznet5500::wizchip_sw_reset(void)
 {
-    uint8_t gw[4], sn[4], sip[4];
-    uint8_t mac[6];
-    getSHAR(mac);
-    getGAR(gw);
-    getSUBR(sn);
-    getSIPR(sip);
     setMR(MR_RST);
     getMR(); // for delay
-    setSHAR(mac);
-    setGAR(gw);
-    setSUBR(sn);
-    setSIPR(sip);
+
+    setSHAR(_mac_address);
 }
 
 int8_t Wiznet5500::wizchip_init(uint8_t* txsize, uint8_t* rxsize)
