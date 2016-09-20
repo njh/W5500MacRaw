@@ -124,10 +124,10 @@ uint16_t Wiznet5500::getSn_TX_FSR()
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_FSR);
+        val1 = wizchip_read_word(BlockSelectSReg, Sn_TX_FSR);
         if (val1 != 0)
         {
-            val = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_FSR);
+            val = wizchip_read_word(BlockSelectSReg, Sn_TX_FSR);
         }
     } while (val != val1);
     return val;
@@ -139,10 +139,10 @@ uint16_t Wiznet5500::getSn_RX_RSR()
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RSR);
+        val1 = wizchip_read_word(BlockSelectSReg, Sn_RX_RSR);
         if (val1 != 0)
         {
-            val = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RSR);
+            val = wizchip_read_word(BlockSelectSReg, Sn_RX_RSR);
         }
     } while (val != val1);
     return val;
@@ -154,7 +154,7 @@ void Wiznet5500::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
 
     if(len == 0)  return;
     ptr = getSn_TX_WR();
-    wizchip_write_buf(WIZCHIP_TXBUF_BLOCK, ptr, wizdata, len);
+    wizchip_write_buf(BlockSelectTxBuf, ptr, wizdata, len);
 
     ptr += len;
 
@@ -167,7 +167,7 @@ void Wiznet5500::wizchip_recv_data(uint8_t *wizdata, uint16_t len)
 
     if(len == 0) return;
     ptr = getSn_RX_RD();
-    wizchip_read_buf(WIZCHIP_RXBUF_BLOCK, ptr, wizdata, len);
+    wizchip_read_buf(BlockSelectRxBuf, ptr, wizdata, len);
     ptr += len;
 
     setSn_RX_RD(ptr);

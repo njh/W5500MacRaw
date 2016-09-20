@@ -45,20 +45,13 @@
 #include <SPI.h>
 
 
-#define WIZCHIP_CREG_BLOCK       (0x00 << 3) //< Common register block
-#define WIZCHIP_SREG_BLOCK       (0x01 << 3) //< Socket N register block
-#define WIZCHIP_TXBUF_BLOCK      (0x02 << 3) //< Socket N Tx buffer address block
-#define WIZCHIP_RXBUF_BLOCK      (0x03 << 3) //< Socket N Rx buffer address block
-
-
-
 /**
  * @brief Set Mode Register
  * @param (uint8_t)mr The value to be set.
  * @sa getMR()
  */
 #define setMR(mr) \
-	wizchip_write(WIZCHIP_CREG_BLOCK, MR, mr)
+	wizchip_write(BlockSelectCReg, MR, mr)
 
 
 /**
@@ -67,7 +60,7 @@
  * @sa setMR()
  */
 #define getMR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, MR)
+		wizchip_read(BlockSelectCReg, MR)
 
 /**
  * @brief Set local MAC address
@@ -75,7 +68,7 @@
  * @sa getSHAR()
  */
 #define setSHAR(shar) \
-		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SHAR, shar, 6)
+		wizchip_write_buf(BlockSelectCReg, SHAR, shar, 6)
 
 /**
  * @brief Get local MAC address
@@ -83,7 +76,7 @@
  * @sa setSHAR()
  */
 #define getSHAR(shar) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SHAR, shar, 6)
+		wizchip_read_buf(BlockSelectCReg, SHAR, shar, 6)
 
 /**
  * @brief Set INTLEVEL register
@@ -91,7 +84,7 @@
  * @sa getINTLEVEL()
  */
 #define setINTLEVEL(intlevel) \
-    wizchip_write_word(WIZCHIP_CREG_BLOCK, INTLEVEL, intlevel)
+    wizchip_write_word(BlockSelectCReg, INTLEVEL, intlevel)
 
 /**
  * @brief Get INTLEVEL register
@@ -99,7 +92,7 @@
  * @sa setINTLEVEL()
  */
 #define getINTLEVEL() \
-		wizchip_read_work(WIZCHIP_CREG_BLOCK, INTLEVEL)
+		wizchip_read_work(BlockSelectCReg, INTLEVEL)
 
 /**
  * @brief Set @ref IR register
@@ -107,7 +100,7 @@
  * @sa getIR()
  */
 #define setIR(ir) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, IR, (ir & 0xF0))
+		wizchip_write(BlockSelectCReg, IR, (ir & 0xF0))
 
 /**
  * @brief Get @ref IR register
@@ -115,14 +108,14 @@
  * @sa setIR()
  */
 #define getIR() \
-		(wizchip_read(WIZCHIP_CREG_BLOCK, IR) & 0xF0)
+		(wizchip_read(BlockSelectCReg, IR) & 0xF0)
 /**
  * @brief Set @ref _IMR_ register
  * @param (uint8_t)imr Value to set @ref _IMR_ register.
  * @sa getIMR()
  */
 #define setIMR(imr) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, _IMR_, imr)
+		wizchip_write(BlockSelectCReg, _IMR_, imr)
 
 /**
  * @brief Get @ref _IMR_ register
@@ -130,7 +123,7 @@
  * @sa setIMR()
  */
 #define getIMR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, _IMR_)
+		wizchip_read(BlockSelectCReg, _IMR_)
 
 /**
  * @brief Set @ref PHYCFGR register
@@ -138,7 +131,7 @@
  * @sa getPHYCFGR()
  */
 #define setPHYCFGR(phycfgr) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, PHYCFGR, phycfgr)
+		wizchip_write(BlockSelectCReg, PHYCFGR, phycfgr)
 
 /**
  * @brief Get @ref PHYCFGR register
@@ -146,14 +139,14 @@
  * @sa setPHYCFGR()
  */
 #define getPHYCFGR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, PHYCFGR)
+		wizchip_read(BlockSelectCReg, PHYCFGR)
 
 /**
  * @brief Get @ref VERSIONR register
  * @return uint8_t. Value of @ref VERSIONR register.
  */
 #define getVERSIONR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, VERSIONR)
+		wizchip_read(BlockSelectCReg, VERSIONR)
 
 /////////////////////////////////////
 
@@ -167,7 +160,7 @@
  * @sa getSn_MR()
  */
 #define setSn_MR(mr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_MR, mr)
+		wizchip_write(BlockSelectSReg, Sn_MR, mr)
 
 /**
  * @brief Get @ref Sn_MR register
@@ -176,7 +169,7 @@
  * @sa setSn_MR()
  */
 #define getSn_MR() \
-	wizchip_read(WIZCHIP_SREG_BLOCK, Sn_MR)
+	wizchip_read(BlockSelectSReg, Sn_MR)
 
 /**
  * @brief Set @ref Sn_CR register
@@ -185,7 +178,7 @@
  * @sa getSn_CR()
  */
 #define setSn_CR(cr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_CR, cr)
+		wizchip_write(BlockSelectSReg, Sn_CR, cr)
 
 /**
  * @brief Get @ref Sn_CR register
@@ -194,7 +187,7 @@
  * @sa setSn_CR()
  */
 #define getSn_CR() \
-		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_CR)
+		wizchip_read(BlockSelectSReg, Sn_CR)
 
 /**
  * @brief Set @ref Sn_IR register
@@ -203,7 +196,7 @@
  * @sa getSn_IR()
  */
 #define setSn_IR(ir) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_IR, (ir & 0x1F))
+		wizchip_write(BlockSelectSReg, Sn_IR, (ir & 0x1F))
 
 /**
  * @brief Get @ref Sn_IR register
@@ -212,7 +205,7 @@
  * @sa setSn_IR()
  */
 #define getSn_IR() \
-		(wizchip_read(WIZCHIP_SREG_BLOCK, Sn_IR) & 0x1F)
+		(wizchip_read(BlockSelectSReg, Sn_IR) & 0x1F)
 
 /**
  * @brief Set @ref Sn_IMR register
@@ -221,7 +214,7 @@
  * @sa getSn_IMR()
  */
 #define setSn_IMR(imr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_IMR, (imr & 0x1F))
+		wizchip_write(BlockSelectSReg, Sn_IMR, (imr & 0x1F))
 
 /**
  * @brief Get @ref Sn_IMR register
@@ -230,7 +223,7 @@
  * @sa setSn_IMR()
  */
 #define getSn_IMR() \
-		(wizchip_read(WIZCHIP_SREG_BLOCK, Sn_IMR) & 0x1F)
+		(wizchip_read(BlockSelectSReg, Sn_IMR) & 0x1F)
 
 /**
  * @brief Get @ref Sn_SR register
@@ -238,7 +231,7 @@
  * @return uint8_t. Value of @ref Sn_SR.
  */
 #define getSn_SR() \
-		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_SR)
+		wizchip_read(BlockSelectSReg, Sn_SR)
 
 /**
  * @brief Set @ref Sn_RXBUF_SIZE register
@@ -247,7 +240,7 @@
  * @sa getSn_RXBUF_SIZE()
  */
 #define setSn_RXBUF_SIZE(rxbufsize) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_RXBUF_SIZE, rxbufsize)
+		wizchip_write(BlockSelectSReg, Sn_RXBUF_SIZE,rxbufsize)
 
 /**
  * @brief Get @ref Sn_RXBUF_SIZE register
@@ -256,7 +249,7 @@
  * @sa setSn_RXBUF_SIZE()
  */
 #define getSn_RXBUF_SIZE() \
-		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_RXBUF_SIZE)
+		wizchip_read(BlockSelectSReg, Sn_RXBUF_SIZE)
 
 /**
  * @brief Set @ref Sn_TXBUF_SIZE register
@@ -265,7 +258,7 @@
  * @sa getSn_TXBUF_SIZE()
  */
 #define setSn_TXBUF_SIZE(txbufsize) \
-		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_TXBUF_SIZE, txbufsize)
+		wizchip_write(BlockSelectSReg, Sn_TXBUF_SIZE, txbufsize)
 
 /**
  * @brief Get @ref Sn_TXBUF_SIZE register
@@ -274,7 +267,7 @@
  * @sa setSn_TXBUF_SIZE()
  */
 #define getSn_TXBUF_SIZE() \
-		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_TXBUF_SIZE)
+		wizchip_read(BlockSelectSReg, Sn_TXBUF_SIZE)
 
 /**
  * @brief Get @ref Sn_TX_RD register
@@ -282,7 +275,7 @@
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
 #define getSn_TX_RD() \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_RD)
+    wizchip_read_word(BlockSelectSReg, Sn_TX_RD)
 
 /**
  * @brief Set @ref Sn_TX_WR register
@@ -291,7 +284,7 @@
  * @sa GetSn_TX_WR()
  */
 #define setSn_TX_WR(txwr) \
-    wizchip_write_word(WIZCHIP_SREG_BLOCK, Sn_TX_WR, txwr)
+    wizchip_write_word(BlockSelectSReg, Sn_TX_WR, txwr)
 
 /**
  * @brief Get @ref Sn_TX_WR register
@@ -300,7 +293,7 @@
  * @sa setSn_TX_WR()
  */
 #define getSn_TX_WR() \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_WR)
+    wizchip_read_word(BlockSelectSReg, Sn_TX_WR)
 
 /**
  * @brief Set @ref Sn_RX_RD register
@@ -309,7 +302,7 @@
  * @sa getSn_RX_RD()
  */
 #define setSn_RX_RD(rxrd) \
-    wizchip_write_word(WIZCHIP_SREG_BLOCK, Sn_RX_RD, rxrd)
+    wizchip_write_word(BlockSelectSReg, Sn_RX_RD, rxrd)
 
 /**
  * @brief Get @ref Sn_RX_RD register
@@ -318,7 +311,7 @@
  * @sa setSn_RX_RD()
  */
 #define getSn_RX_RD() \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RD)
+    wizchip_read_word(BlockSelectSReg, Sn_RX_RD)
 
 /**
  * @brief Get @ref Sn_RX_WR register
@@ -326,7 +319,7 @@
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
 #define getSn_RX_WR() \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_WR)
+    wizchip_read_word(BlockSelectSReg, Sn_RX_WR)
 
 /**
  * @brief Socket_register_access_function
@@ -409,10 +402,24 @@ public:
 private:
 
     //< SPI interface Read operation in Control Phase
-    const uint8_t AccessModeRead = (0x00 << 2);
+    static const uint8_t AccessModeRead = (0x00 << 2);
     
     //< SPI interface Read operation in Control Phase
-    const uint8_t AccessModeWrite = (0x01 << 2);
+    static const uint8_t AccessModeWrite = (0x01 << 2);
+
+    //< Common register block in Control Phase
+    static const uint8_t BlockSelectCReg = (0x00 << 3);
+
+    //< Socket 0 register block in Control Phase
+    static const uint8_t BlockSelectSReg = (0x01 << 3);
+
+    //< Socket 0 Tx buffer address block
+    static const uint8_t BlockSelectTxBuf = (0x02 << 3);
+
+    //< Socket 0 Rx buffer address block
+    static const uint8_t BlockSelectRxBuf = (0x03 << 3);
+
+
 
     uint8_t _cs;
     uint8_t _mac_address[6];
