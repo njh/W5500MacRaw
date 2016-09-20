@@ -37,8 +37,6 @@
 //
 //*****************************************************************************
 
-//
-
 #ifndef  _W5500_H_
 #define  _W5500_H_
 
@@ -46,8 +44,6 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#define _W5500_SPI_READ_			   (0x00 << 2) //< SPI interface Read operation in Control Phase
-#define _W5500_SPI_WRITE_			   (0x01 << 2) //< SPI interface Write operation in Control Phase
 
 #define WIZCHIP_CREG_BLOCK          (0x00 << 3)    //< Common register block
 #define WIZCHIP_SREG_BLOCK(N)       ((1+4*N) << 3) //< Socket N register block
@@ -411,6 +407,12 @@ public:
 
 
 private:
+
+    //< SPI interface Read operation in Control Phase
+    const uint8_t AccessModeRead = (0x00 << 2);
+    
+    //< SPI interface Read operation in Control Phase
+    const uint8_t AccessModeWrite = (0x01 << 2);
 
     uint8_t _cs;
     uint8_t _mac_address[6];

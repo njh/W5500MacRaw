@@ -48,7 +48,7 @@ uint8_t  Wiznet5500::wizchip_read(uint8_t block, uint16_t address)
 
     wizchip_cs_select();
 
-    block |= _W5500_SPI_READ_;
+    block |= AccessModeRead;
 
     wizchip_spi_write_byte((address & 0xFF00) >> 8);
     wizchip_spi_write_byte((address & 0x00FF) >> 0);
@@ -71,7 +71,7 @@ void Wiznet5500::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf
 
     wizchip_cs_select();
 
-    block |= _W5500_SPI_READ_;
+    block |= AccessModeRead;
 
     wizchip_spi_write_byte((address & 0xFF00) >> 8);
     wizchip_spi_write_byte((address & 0x00FF) >> 0);
@@ -86,7 +86,7 @@ void Wiznet5500::wizchip_write(uint8_t block, uint16_t address, uint8_t wb)
 {
     wizchip_cs_select();
 
-    block |= _W5500_SPI_WRITE_;
+    block |= AccessModeWrite;
 
     wizchip_spi_write_byte((address & 0xFF00) >> 8);
     wizchip_spi_write_byte((address & 0x00FF) >> 0);
@@ -108,7 +108,7 @@ void Wiznet5500::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_
 
     wizchip_cs_select();
 
-    block |= _W5500_SPI_WRITE_;
+    block |= AccessModeWrite;
 
     wizchip_spi_write_byte((address & 0xFF00) >> 8);
     wizchip_spi_write_byte((address & 0x00FF) >> 0);
