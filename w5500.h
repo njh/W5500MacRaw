@@ -361,9 +361,6 @@
 
 
 
-#define _WIZCHIP_SOCK_NUM_   8   ///< The count of independant socket of @b WIZCHIP
-
-
 /**
  *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
  *  and it indicates the real PHY status configured by HW or SW in all WIZCHIP. \n
