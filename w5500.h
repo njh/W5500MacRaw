@@ -500,39 +500,6 @@
 		wizchip_read(WIZCHIP_CREG_BLOCK, MR)
 
 /**
- * @brief Set gateway IP address
- * @param (uint8_t*)gar Pointer variable to set gateway IP address. It should be allocated 4 bytes.
- * @sa getGAR()
- */
-#define setGAR(gar) \
-		wizchip_write_buf(WIZCHIP_CREG_BLOCK, GAR, gar, 4)
-
-/**
- * @brief Get gateway IP address
- * @param (uint8_t*)gar Pointer variable to get gateway IP address. It should be allocated 4 bytes.
- * @sa setGAR()
- */
-#define getGAR(gar) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, GAR, gar, 4)
-
-/**
- * @brief Set subnet mask address
- * @param (uint8_t*)subr Pointer variable to set subnet mask address. It should be allocated 4 bytes.
- * @sa getSUBR()
- */
-#define setSUBR(subr) \
-		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SUBR, subr, 4)
-
-
-/**
- * @brief Get subnet mask address
- * @param (uint8_t*)subr Pointer variable to get subnet mask address. It should be allocated 4 bytes.
- * @sa setSUBR()
- */
-#define getSUBR(subr) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SUBR, subr, 4)
-
-/**
  * @brief Set local MAC address
  * @param (uint8_t*)shar Pointer variable to set local MAC address. It should be allocated 6 bytes.
  * @sa getSHAR()
@@ -547,22 +514,6 @@
  */
 #define getSHAR(shar) \
 		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SHAR, shar, 6)
-
-/**
- * @brief Set local IP address
- * @param (uint8_t*)sipr Pointer variable to set local IP address. It should be allocated 4 bytes.
- * @sa getSIPR()
- */
-#define setSIPR(sipr) \
-		wizchip_write_buf(WIZCHIP_CREG_BLOCK, SIPR, sipr, 4)
-
-/**
- * @brief Get local IP address
- * @param (uint8_t*)sipr Pointer variable to get local IP address. It should be allocated 4 bytes.
- * @sa setSIPR()
- */
-#define getSIPR(sipr) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, SIPR, sipr, 4)
 
 /**
  * @brief Set INTLEVEL register
@@ -613,173 +564,6 @@
  */
 #define getIMR() \
 		wizchip_read(WIZCHIP_CREG_BLOCK, _IMR_)
-
-/**
- * @brief Set @ref SIR register
- * @param (uint8_t)sir Value to set @ref SIR register.
- * @sa getSIR()
- */
-#define setSIR(sir) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, SIR, sir)
-
-/**
- * @brief Get @ref SIR register
- * @return uint8_t. Value of @ref SIR register.
- * @sa setSIR()
- */
-#define getSIR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, SIR)
-/**
- * @brief Set @ref SIMR register
- * @param (uint8_t)simr Value to set @ref SIMR register.
- * @sa getSIMR()
- */
-#define setSIMR(simr) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, SIMR, simr)
-
-/**
- * @brief Get @ref SIMR register
- * @return uint8_t. Value of @ref SIMR register.
- * @sa setSIMR()
- */
-#define getSIMR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, SIMR)
-
-/**
- * @brief Set @ref _RTR_ register
- * @param (uint16_t)rtr Value to set @ref _RTR_ register.
- * @sa getRTR()
- */
-#define setRTR(rtr)   {\
-		wizchip_write(WIZCHIP_CREG_BLOCK, _RTR_,   (uint8_t)(rtr >> 8)); \
-		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(_RTR_,1), (uint8_t) rtr); \
-	}
-
-/**
- * @brief Get @ref _RTR_ register
- * @return uint16_t. Value of @ref _RTR_ register.
- * @sa setRTR()
- */
-#define getRTR() \
-		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, _RTR_) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(_RTR_,1)))
-
-
-/**
- * @brief Set @ref _RCR_ register
- * @param (uint8_t)rcr Value to set @ref _RCR_ register.
- * @sa getRCR()
- */
-#define setRCR(rcr) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, _RCR_, rcr)
-
-/**
- * @brief Get @ref _RCR_ register
- * @return uint8_t. Value of @ref _RCR_ register.
- * @sa setRCR()
- */
-#define getRCR() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, _RCR_)
-
-//================================================== test done ===========================================================
-
-/**
- * @brief Set @ref PTIMER register
- * @param (uint8_t)ptimer Value to set @ref PTIMER register.
- * @sa getPTIMER()
- */
-#define setPTIMER(ptimer) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, PTIMER, ptimer)
-
-/**
- * @brief Get @ref PTIMER register
- * @return uint8_t. Value of @ref PTIMER register.
- * @sa setPTIMER()
- */
-#define getPTIMER() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, PTIMER)
-
-/**
- * @brief Set @ref PMAGIC register
- * @param (uint8_t)pmagic Value to set @ref PMAGIC register.
- * @sa getPMAGIC()
- */
-#define setPMAGIC(pmagic) \
-		wizchip_write(WIZCHIP_CREG_BLOCK, PMAGIC, pmagic)
-
-/**
- * @brief Get @ref PMAGIC register
- * @return uint8_t. Value of @ref PMAGIC register.
- * @sa setPMAGIC()
- */
-#define getPMAGIC() \
-		wizchip_read(WIZCHIP_CREG_BLOCK, PMAGIC)
-
-/**
- * @brief Set @ref PHAR address
- * @param (uint8_t*)phar Pointer variable to set PPP destination MAC register address. It should be allocated 6 bytes.
- * @sa getPHAR()
- */
-#define setPHAR(phar) \
-		wizchip_write_buf(WIZCHIP_CREG_BLOCK, PHAR, phar, 6)
-
-/**
- * @brief Get @ref PHAR address
- * @param (uint8_t*)phar Pointer variable to PPP destination MAC register address. It should be allocated 6 bytes.
- * @sa setPHAR()
- */
-#define getPHAR(phar) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, PHAR, phar, 6)
-
-/**
- * @brief Set @ref PSID register
- * @param (uint16_t)psid Value to set @ref PSID register.
- * @sa getPSID()
- */
-#define setPSID(psid)  {\
-		wizchip_write(WIZCHIP_CREG_BLOCK, PSID,   (uint8_t)(psid >> 8)); \
-		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PSID,1), (uint8_t) psid); \
-	}
-
-/**
- * @brief Get @ref PSID register
- * @return uint16_t. Value of @ref PSID register.
- * @sa setPSID()
- */
-//uint16_t getPSID(void);
-#define getPSID() \
-		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, PSID) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PSID,1)))
-
-/**
- * @brief Set @ref PMRU register
- * @param (uint16_t)pmru Value to set @ref PMRU register.
- * @sa getPMRU()
- */
-#define setPMRU(pmru) { \
-		wizchip_write(WIZCHIP_CREG_BLOCK, PMRU,   (uint8_t)(pmru>>8)); \
-		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(PMRU,1), (uint8_t) pmru); \
-	}
-
-/**
- * @brief Get @ref PMRU register
- * @return uint16_t. Value of @ref PMRU register.
- * @sa setPMRU()
- */
-#define getPMRU() \
-		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, PMRU) << 8) + wizchip_read(WIZCHIP_OFFSET_INC(PMRU,1)))
-
-/**
- * @brief Get unreachable IP address
- * @param (uint8_t*)uipr Pointer variable to get unreachable IP address. It should be allocated 4 bytes.
- */
-#define getUIPR(uipr) \
-		wizchip_read_buf(WIZCHIP_CREG_BLOCK, UIPR,uipr,4)
-
-/**
- * @brief Get @ref UPORTR register
- * @return uint16_t. Value of @ref UPORTR register.
- */
-#define getUPORTR() \
-	(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, UPORTR) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(UPORTR,1)))	
 
 /**
  * @brief Set @ref PHYCFGR register
@@ -890,140 +674,6 @@
 		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_SR)
 
 /**
- * @brief Set @ref Sn_PORT register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint16_t)port Value to set @ref Sn_PORT.
- * @sa getSn_PORT()
- */
-#define setSn_PORT(sn, port)  { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_PORT,   (uint8_t)(port >> 8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_PORT,1), (uint8_t) port); \
-	}
-
-/**
- * @brief Get @ref Sn_PORT register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_PORT.
- * @sa setSn_PORT()
- */
-#define getSn_PORT(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_PORT) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_PORT,1)))		
-
-/**
- * @brief Set @ref Sn_DHAR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t*)dhar Pointer variable to set socket n destination hardware address. It should be allocated 6 bytes.
- * @sa getSn_DHAR()
- */
-#define setSn_DHAR(sn, dhar) \
-		wizchip_write_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DHAR, dhar, 6)
-
-/**
- * @brief Get @ref Sn_MR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t*)dhar Pointer variable to get socket n destination hardware address. It should be allocated 6 bytes.
- * @sa setSn_DHAR()
- */
-#define getSn_DHAR(sn, dhar) \
-		wizchip_read_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DHAR, dhar, 6)
-
-/**
- * @brief Set @ref Sn_DIPR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t*)dipr Pointer variable to set socket n destination IP address. It should be allocated 4 bytes.
- * @sa getSn_DIPR()
- */
-#define setSn_DIPR(sn, dipr) \
-		wizchip_write_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DIPR, dipr, 4)
-
-/**
- * @brief Get @ref Sn_DIPR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t*)dipr Pointer variable to get socket n destination IP address. It should be allocated 4 bytes.
- * @sa setSn_DIPR()
- */
-#define getSn_DIPR(sn, dipr) \
-		wizchip_read_buf(WIZCHIP_SREG_BLOCK(sn), Sn_DIPR, dipr, 4)
-
-/**
- * @brief Set @ref Sn_DPORT register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint16_t)dport Value to set @ref Sn_DPORT
- * @sa getSn_DPORT()
- */
-#define setSn_DPORT(sn, dport) { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_DPORT,   (uint8_t) (dport>>8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_DPORT,1), (uint8_t)  dport); \
-	}
-
-/**
- * @brief Get @ref Sn_DPORT register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_DPORT.
- * @sa setSn_DPORT()
- */
-#define getSn_DPORT(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_DPORT) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_DPORT,1)))		
-
-/**
- * @brief Set @ref Sn_MSSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint16_t)mss Value to set @ref Sn_MSSR
- * @sa setSn_MSSR()
- */
-#define setSn_MSSR(sn, mss) { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_MSSR,   (uint8_t)(mss>>8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_MSSR,1), (uint8_t) mss); \
-	}
-
-/**
- * @brief Get @ref Sn_MSSR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_MSSR.
- * @sa setSn_MSSR()
- */
-#define getSn_MSSR(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_MSSR) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn),WIZCHIP_OFFSET_INC(Sn_MSSR,1)))		
-
-/**
- * @brief Set @ref Sn_TOS register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t)tos Value to set @ref Sn_TOS
- * @sa getSn_TOS()
- */
-#define setSn_TOS(sn, tos) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TOS, tos)
-
-/**
- * @brief Get @ref Sn_TOS register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint8_t. Value of Sn_TOS.
- * @sa setSn_TOS()
- */
-#define getSn_TOS(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TOS)
-
-/**
- * @brief Set @ref Sn_TTL register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t)ttl Value to set @ref Sn_TTL
- * @sa getSn_TTL()
- */
-#define setSn_TTL(sn, ttl) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TTL, ttl)
-
-
-/**
- * @brief Get @ref Sn_TTL register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint8_t. Value of @ref Sn_TTL.
- * @sa setSn_TTL()
- */
-#define getSn_TTL(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TTL)
-
-
-/**
  * @brief Set @ref Sn_RXBUF_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)rxbufsize Value to set @ref Sn_RXBUF_SIZE
@@ -1031,7 +681,6 @@
  */
 #define setSn_RXBUF_SIZE(sn, rxbufsize) \
 		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_RXBUF_SIZE,rxbufsize)
-
 
 /**
  * @brief Get @ref Sn_RXBUF_SIZE register
@@ -1088,8 +737,6 @@
 #define getSn_TX_WR(sn) \
 		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_WR, 1)))		
 
-
-
 /**
  * @brief Set @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
@@ -1118,49 +765,6 @@
 #define getSn_RX_WR(sn) \
 		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_WR) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_WR,1)))		
 
-/**
- * @brief Set @ref Sn_FRAG register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint16_t)frag Value to set @ref Sn_FRAG
- * @sa getSn_FRAD()
- */
-#define setSn_FRAG(sn, frag) { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_FRAG,  (uint8_t)(frag >>8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_FRAG,1), (uint8_t) frag); \
-	}
-
-/**
- * @brief Get @ref Sn_FRAG register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint16_t. Value of @ref Sn_FRAG.
- * @sa setSn_FRAG()
- */
-#define getSn_FRAG(sn) \
-      (((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_FRAG) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_FRAG,1)))		
-
-/**
- * @brief Set @ref Sn_KPALVTR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @param (uint8_t)kpalvt Value to set @ref Sn_KPALVTR
- * @sa getSn_KPALVTR()
- */
-#define setSn_KPALVTR(sn, kpalvt) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_KPALVTR, kpalvt)
-
-/**
- * @brief Get @ref Sn_KPALVTR register
- * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
- * @return uint8_t. Value of @ref Sn_KPALVTR.
- * @sa setSn_KPALVTR()
- */
-#define getSn_KPALVTR(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_KPALVTR)
-
-//////////////////////////////////////
-
-/////////////////////////////////////
-// Sn_TXBUF & Sn_RXBUF IO function //
-/////////////////////////////////////
 /**
  * @brief Socket_register_access_function
  * @brief Gets the max buffer size of socket sn passed as parameter.
