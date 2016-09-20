@@ -46,7 +46,7 @@
 
 
 /**
- * @brief Set Mode Register
+ * Set Mode Register
  * @param (uint8_t)mr The value to be set.
  * @sa getMR()
  */
@@ -55,7 +55,7 @@
 
 
 /**
- * @brief Get Mode Register
+ * Get Mode Register
  * @return uint8_t. The value of Mode register.
  * @sa setMR()
  */
@@ -63,7 +63,7 @@
 		wizchip_read(BlockSelectCReg, MR)
 
 /**
- * @brief Set local MAC address
+ * Set local MAC address
  * @param (uint8_t*)shar Pointer variable to set local MAC address. It should be allocated 6 bytes.
  * @sa getSHAR()
  */
@@ -71,7 +71,7 @@
 		wizchip_write_buf(BlockSelectCReg, SHAR, shar, 6)
 
 /**
- * @brief Get local MAC address
+ * Get local MAC address
  * @param (uint8_t*)shar Pointer variable to get local MAC address. It should be allocated 6 bytes.
  * @sa setSHAR()
  */
@@ -79,7 +79,7 @@
 		wizchip_read_buf(BlockSelectCReg, SHAR, shar, 6)
 
 /**
- * @brief Set INTLEVEL register
+ * Set INTLEVEL register
  * @param (uint16_t)intlevel Value to set @ref INTLEVEL register.
  * @sa getINTLEVEL()
  */
@@ -87,7 +87,7 @@
     wizchip_write_word(BlockSelectCReg, INTLEVEL, intlevel)
 
 /**
- * @brief Get INTLEVEL register
+ * Get INTLEVEL register
  * @return uint16_t. Value of @ref INTLEVEL register.
  * @sa setINTLEVEL()
  */
@@ -95,7 +95,7 @@
 		wizchip_read_work(BlockSelectCReg, INTLEVEL)
 
 /**
- * @brief Set @ref IR register
+ * Set @ref IR register
  * @param (uint8_t)ir Value to set @ref IR register.
  * @sa getIR()
  */
@@ -103,14 +103,14 @@
 		wizchip_write(BlockSelectCReg, IR, (ir & 0xF0))
 
 /**
- * @brief Get @ref IR register
+ * Get @ref IR register
  * @return uint8_t. Value of @ref IR register.
  * @sa setIR()
  */
 #define getIR() \
 		(wizchip_read(BlockSelectCReg, IR) & 0xF0)
 /**
- * @brief Set @ref _IMR_ register
+ * Set @ref _IMR_ register
  * @param (uint8_t)imr Value to set @ref _IMR_ register.
  * @sa getIMR()
  */
@@ -118,7 +118,7 @@
 		wizchip_write(BlockSelectCReg, _IMR_, imr)
 
 /**
- * @brief Get @ref _IMR_ register
+ * Get @ref _IMR_ register
  * @return uint8_t. Value of @ref _IMR_ register.
  * @sa setIMR()
  */
@@ -126,7 +126,7 @@
 		wizchip_read(BlockSelectCReg, _IMR_)
 
 /**
- * @brief Set @ref PHYCFGR register
+ * Set @ref PHYCFGR register
  * @param (uint8_t)phycfgr Value to set @ref PHYCFGR register.
  * @sa getPHYCFGR()
  */
@@ -134,7 +134,7 @@
 		wizchip_write(BlockSelectCReg, PHYCFGR, phycfgr)
 
 /**
- * @brief Get @ref PHYCFGR register
+ * Get @ref PHYCFGR register
  * @return uint8_t. Value of @ref PHYCFGR register.
  * @sa setPHYCFGR()
  */
@@ -142,19 +142,14 @@
 		wizchip_read(BlockSelectCReg, PHYCFGR)
 
 /**
- * @brief Get @ref VERSIONR register
+ * Get @ref VERSIONR register
  * @return uint8_t. Value of @ref VERSIONR register.
  */
 #define getVERSIONR() \
 		wizchip_read(BlockSelectCReg, VERSIONR)
 
-/////////////////////////////////////
-
-///////////////////////////////////
-// Socket N register I/O function //
-///////////////////////////////////
 /**
- * @brief Set @ref Sn_MR register
+ * Set @ref Sn_MR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)mr Value to set @ref Sn_MR
  * @sa getSn_MR()
@@ -163,7 +158,7 @@
 		wizchip_write(BlockSelectSReg, Sn_MR, mr)
 
 /**
- * @brief Get @ref Sn_MR register
+ * Get @ref Sn_MR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_MR.
  * @sa setSn_MR()
@@ -172,7 +167,7 @@
 	wizchip_read(BlockSelectSReg, Sn_MR)
 
 /**
- * @brief Set @ref Sn_CR register
+ * Set @ref Sn_CR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)cr Value to set @ref Sn_CR
  * @sa getSn_CR()
@@ -181,7 +176,7 @@
 		wizchip_write(BlockSelectSReg, Sn_CR, cr)
 
 /**
- * @brief Get @ref Sn_CR register
+ * Get @ref Sn_CR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_CR.
  * @sa setSn_CR()
@@ -190,7 +185,7 @@
 		wizchip_read(BlockSelectSReg, Sn_CR)
 
 /**
- * @brief Set @ref Sn_IR register
+ * Set @ref Sn_IR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)ir Value to set @ref Sn_IR
  * @sa getSn_IR()
@@ -199,7 +194,7 @@
 		wizchip_write(BlockSelectSReg, Sn_IR, (ir & 0x1F))
 
 /**
- * @brief Get @ref Sn_IR register
+ * Get @ref Sn_IR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_IR.
  * @sa setSn_IR()
@@ -208,7 +203,7 @@
 		(wizchip_read(BlockSelectSReg, Sn_IR) & 0x1F)
 
 /**
- * @brief Set @ref Sn_IMR register
+ * Set @ref Sn_IMR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)imr Value to set @ref Sn_IMR
  * @sa getSn_IMR()
@@ -217,7 +212,7 @@
 		wizchip_write(BlockSelectSReg, Sn_IMR, (imr & 0x1F))
 
 /**
- * @brief Get @ref Sn_IMR register
+ * Get @ref Sn_IMR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_IMR.
  * @sa setSn_IMR()
@@ -226,7 +221,7 @@
 		(wizchip_read(BlockSelectSReg, Sn_IMR) & 0x1F)
 
 /**
- * @brief Get @ref Sn_SR register
+ * Get @ref Sn_SR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_SR.
  */
@@ -234,7 +229,7 @@
 		wizchip_read(BlockSelectSReg, Sn_SR)
 
 /**
- * @brief Set @ref Sn_RXBUF_SIZE register
+ * Set @ref Sn_RXBUF_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)rxbufsize Value to set @ref Sn_RXBUF_SIZE
  * @sa getSn_RXBUF_SIZE()
@@ -243,7 +238,7 @@
 		wizchip_write(BlockSelectSReg, Sn_RXBUF_SIZE,rxbufsize)
 
 /**
- * @brief Get @ref Sn_RXBUF_SIZE register
+ * Get @ref Sn_RXBUF_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_RXBUF_SIZE.
  * @sa setSn_RXBUF_SIZE()
@@ -252,7 +247,7 @@
 		wizchip_read(BlockSelectSReg, Sn_RXBUF_SIZE)
 
 /**
- * @brief Set @ref Sn_TXBUF_SIZE register
+ * Set @ref Sn_TXBUF_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint8_t)txbufsize Value to set @ref Sn_TXBUF_SIZE
  * @sa getSn_TXBUF_SIZE()
@@ -261,7 +256,7 @@
 		wizchip_write(BlockSelectSReg, Sn_TXBUF_SIZE, txbufsize)
 
 /**
- * @brief Get @ref Sn_TXBUF_SIZE register
+ * Get @ref Sn_TXBUF_SIZE register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_TXBUF_SIZE.
  * @sa setSn_TXBUF_SIZE()
@@ -270,7 +265,7 @@
 		wizchip_read(BlockSelectSReg, Sn_TXBUF_SIZE)
 
 /**
- * @brief Get @ref Sn_TX_RD register
+ * Get @ref Sn_TX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
@@ -278,7 +273,7 @@
     wizchip_read_word(BlockSelectSReg, Sn_TX_RD)
 
 /**
- * @brief Set @ref Sn_TX_WR register
+ * Set @ref Sn_TX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint16_t)txwr Value to set @ref Sn_TX_WR
  * @sa GetSn_TX_WR()
@@ -287,7 +282,7 @@
     wizchip_write_word(BlockSelectSReg, Sn_TX_WR, txwr)
 
 /**
- * @brief Get @ref Sn_TX_WR register
+ * Get @ref Sn_TX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_TX_WR.
  * @sa setSn_TX_WR()
@@ -296,7 +291,7 @@
     wizchip_read_word(BlockSelectSReg, Sn_TX_WR)
 
 /**
- * @brief Set @ref Sn_RX_RD register
+ * Set @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
  * @sa getSn_RX_RD()
@@ -305,7 +300,7 @@
     wizchip_write_word(BlockSelectSReg, Sn_RX_RD, rxrd)
 
 /**
- * @brief Get @ref Sn_RX_RD register
+ * Get @ref Sn_RX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_RX_RD.
  * @sa setSn_RX_RD()
@@ -314,7 +309,7 @@
     wizchip_read_word(BlockSelectSReg, Sn_RX_RD)
 
 /**
- * @brief Get @ref Sn_RX_WR register
+ * Get @ref Sn_RX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
@@ -322,8 +317,8 @@
     wizchip_read_word(BlockSelectSReg, Sn_RX_WR)
 
 /**
- * @brief Socket_register_access_function
- * @brief Gets the max buffer size of socket sn passed as parameter.
+ * Socket_register_access_function
+ * Gets the max buffer size of socket sn passed as parameter.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n RX max buffer size.
  */
@@ -331,8 +326,8 @@
 		(((uint16_t)getSn_RXBUF_SIZE()) << 10)		
 
 /**
- * @brief Socket_register_access_function
- * @brief Gets the max buffer size of socket sn passed as parameters.
+ * Socket_register_access_function
+ * Gets the max buffer size of socket sn passed as parameters.
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n TX max buffer size.
  */
@@ -445,7 +440,7 @@ private:
     }
 
     /**
-     * @brief Default function to read in SPI interface.
+     * Default function to read in SPI interface.
      * @note This function help not to access wrong address. If you do not describe this function or register any functions,
      * null function is called.
      */
@@ -455,7 +450,7 @@ private:
     }
 
     /**
-     * @brief Default function to write in SPI interface.
+     * Default function to write in SPI interface.
      * @note This function help not to access wrong address. If you do not describe this function or register any functions,
      * null function is called.
      */
@@ -464,12 +459,9 @@ private:
         SPI.transfer(wb);
     }
 
-    ////////////////////////
-    // Basic I/O Function //
-    ////////////////////////
 
     /**
-     * @brief It reads 1 byte value from a register.
+     * It reads 1 byte value from a register.
      * @param address Register address
      * @return The value of register
      */
@@ -483,7 +475,7 @@ private:
     uint16_t wizchip_read_word(uint8_t block, uint16_t address);
 
     /**
-     * @brief It reads sequence data from registers.
+     * It reads sequence data from registers.
      * @param address Register address
      * @param pBuf Pointer buffer to read data
      * @param len Data length
@@ -491,7 +483,7 @@ private:
     void wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf, uint16_t len);
 
     /**
-     * @brief It writes 1 byte value to a register.
+     * It writes 1 byte value to a register.
      * @param address Register address
      * @param wb Write data
      * @return void
@@ -507,7 +499,7 @@ private:
     void wizchip_write_word(uint8_t block, uint16_t address, uint16_t word);
 
     /**
-     * @brief It writes sequence data to registers.
+     * It writes sequence data to registers.
      * @param address Register address
      * @param pBuf Pointer buffer to write data
      * @param len Data length
@@ -515,7 +507,7 @@ private:
     void wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf, uint16_t len);
 
     /**
-     * @brief Get @ref Sn_TX_FSR register
+     * Get @ref Sn_TX_FSR register
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @return uint16_t. Value of @ref Sn_TX_FSR.
      */
@@ -523,14 +515,14 @@ private:
 
 
     /**
-     * @brief Get @ref Sn_RX_RSR register
+     * Get @ref Sn_RX_RSR register
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @return uint16_t. Value of @ref Sn_RX_RSR.
      */
     uint16_t getSn_RX_RSR();
 
     /**
-     * @brief Reset WIZCHIP by softly.
+     * Reset WIZCHIP by softly.
      */
     void   wizchip_sw_reset(void);
 
@@ -541,31 +533,31 @@ private:
 
     void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
     /**
-     * @brief Set the phy information for WIZCHIP without power mode
+     * Set the phy information for WIZCHIP without power mode
      * @param phyconf : @ref wiz_PhyConf
      */
     void   wizphy_setphyconf(wiz_PhyConf* phyconf);
 
     /**
-    * @brief Get phy configuration information.
+    * Get phy configuration information.
     * @param phyconf : @ref wiz_PhyConf
     */
     void   wizphy_getphyconf(wiz_PhyConf* phyconf);
 
     /**
-    * @brief Get phy status.
+    * Get phy status.
     * @param phyconf : @ref wiz_PhyConf
     */
     void   wizphy_getphystat(wiz_PhyConf* phyconf);
 
     /**
-    * @brief set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
+    * set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
     * @param pmode Settig value of power down mode.
     */
     int8_t wizphy_setphypmode(uint8_t pmode);
 
     /**
-     * @brief It copies data to internal TX memory
+     * It copies data to internal TX memory
      *
      * @details This function reads the Tx write pointer register and after that,
      * it copies the <i>wizdata(pointer buffer)</i> of the length of <i>len(variable)</i> bytes to internal TX memory
@@ -580,7 +572,7 @@ private:
     void wizchip_send_data(const uint8_t *wizdata, uint16_t len);
 
     /**
-     * @brief It copies data to your buffer from internal RX memory
+     * It copies data to your buffer from internal RX memory
      *
      * @details This function read the Rx read pointer register and after that,
      * it copies the received data from internal RX memory
@@ -595,7 +587,7 @@ private:
     void wizchip_recv_data(uint8_t *wizdata, uint16_t len);
 
     /**
-     * @brief It discard the received data in RX memory.
+     * It discard the received data in RX memory.
      * @details It discards the data of the length of <i>len(variable)</i> bytes in internal RX memory.
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @param len Data length
