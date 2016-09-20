@@ -45,10 +45,10 @@
 #include <SPI.h>
 
 
-#define WIZCHIP_CREG_BLOCK          (0x00 << 3)    //< Common register block
-#define WIZCHIP_SREG_BLOCK(N)       ((1+4*N) << 3) //< Socket N register block
-#define WIZCHIP_TXBUF_BLOCK(N)      ((2+4*N) << 3) //< Socket N Tx buffer address block
-#define WIZCHIP_RXBUF_BLOCK(N)      ((3+4*N) << 3) //< Socket N Rx buffer address block
+#define WIZCHIP_CREG_BLOCK       (0x00 << 3) //< Common register block
+#define WIZCHIP_SREG_BLOCK       (0x01 << 3) //< Socket N register block
+#define WIZCHIP_TXBUF_BLOCK      (0x02 << 3) //< Socket N Tx buffer address block
+#define WIZCHIP_RXBUF_BLOCK      (0x03 << 3) //< Socket N Rx buffer address block
 
 
 
@@ -166,8 +166,8 @@
  * @param (uint8_t)mr Value to set @ref Sn_MR
  * @sa getSn_MR()
  */
-#define setSn_MR(sn, mr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_MR, mr)
+#define setSn_MR(mr) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_MR, mr)
 
 /**
  * @brief Get @ref Sn_MR register
@@ -175,8 +175,8 @@
  * @return uint8_t. Value of @ref Sn_MR.
  * @sa setSn_MR()
  */
-#define getSn_MR(sn) \
-	wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_MR)
+#define getSn_MR() \
+	wizchip_read(WIZCHIP_SREG_BLOCK, Sn_MR)
 
 /**
  * @brief Set @ref Sn_CR register
@@ -184,8 +184,8 @@
  * @param (uint8_t)cr Value to set @ref Sn_CR
  * @sa getSn_CR()
  */
-#define setSn_CR(sn, cr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_CR, cr)
+#define setSn_CR(cr) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_CR, cr)
 
 /**
  * @brief Get @ref Sn_CR register
@@ -193,8 +193,8 @@
  * @return uint8_t. Value of @ref Sn_CR.
  * @sa setSn_CR()
  */
-#define getSn_CR(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_CR)
+#define getSn_CR() \
+		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_CR)
 
 /**
  * @brief Set @ref Sn_IR register
@@ -202,8 +202,8 @@
  * @param (uint8_t)ir Value to set @ref Sn_IR
  * @sa getSn_IR()
  */
-#define setSn_IR(sn, ir) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_IR, (ir & 0x1F))
+#define setSn_IR(ir) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_IR, (ir & 0x1F))
 
 /**
  * @brief Get @ref Sn_IR register
@@ -211,8 +211,8 @@
  * @return uint8_t. Value of @ref Sn_IR.
  * @sa setSn_IR()
  */
-#define getSn_IR(sn) \
-		(wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_IR) & 0x1F)
+#define getSn_IR() \
+		(wizchip_read(WIZCHIP_SREG_BLOCK, Sn_IR) & 0x1F)
 
 /**
  * @brief Set @ref Sn_IMR register
@@ -220,8 +220,8 @@
  * @param (uint8_t)imr Value to set @ref Sn_IMR
  * @sa getSn_IMR()
  */
-#define setSn_IMR(sn, imr) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_IMR, (imr & 0x1F))
+#define setSn_IMR(imr) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_IMR, (imr & 0x1F))
 
 /**
  * @brief Get @ref Sn_IMR register
@@ -229,16 +229,16 @@
  * @return uint8_t. Value of @ref Sn_IMR.
  * @sa setSn_IMR()
  */
-#define getSn_IMR(sn) \
-		(wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_IMR) & 0x1F)
+#define getSn_IMR() \
+		(wizchip_read(WIZCHIP_SREG_BLOCK, Sn_IMR) & 0x1F)
 
 /**
  * @brief Get @ref Sn_SR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint8_t. Value of @ref Sn_SR.
  */
-#define getSn_SR(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_SR)
+#define getSn_SR() \
+		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_SR)
 
 /**
  * @brief Set @ref Sn_RXBUF_SIZE register
@@ -246,8 +246,8 @@
  * @param (uint8_t)rxbufsize Value to set @ref Sn_RXBUF_SIZE
  * @sa getSn_RXBUF_SIZE()
  */
-#define setSn_RXBUF_SIZE(sn, rxbufsize) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_RXBUF_SIZE,rxbufsize)
+#define setSn_RXBUF_SIZE(rxbufsize) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_RXBUF_SIZE, rxbufsize)
 
 /**
  * @brief Get @ref Sn_RXBUF_SIZE register
@@ -255,8 +255,8 @@
  * @return uint8_t. Value of @ref Sn_RXBUF_SIZE.
  * @sa setSn_RXBUF_SIZE()
  */
-#define getSn_RXBUF_SIZE(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RXBUF_SIZE)
+#define getSn_RXBUF_SIZE() \
+		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_RXBUF_SIZE)
 
 /**
  * @brief Set @ref Sn_TXBUF_SIZE register
@@ -264,8 +264,8 @@
  * @param (uint8_t)txbufsize Value to set @ref Sn_TXBUF_SIZE
  * @sa getSn_TXBUF_SIZE()
  */
-#define setSn_TXBUF_SIZE(sn, txbufsize) \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TXBUF_SIZE, txbufsize)
+#define setSn_TXBUF_SIZE(txbufsize) \
+		wizchip_write(WIZCHIP_SREG_BLOCK, Sn_TXBUF_SIZE, txbufsize)
 
 /**
  * @brief Get @ref Sn_TXBUF_SIZE register
@@ -273,16 +273,16 @@
  * @return uint8_t. Value of @ref Sn_TXBUF_SIZE.
  * @sa setSn_TXBUF_SIZE()
  */
-#define getSn_TXBUF_SIZE(sn) \
-		wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TXBUF_SIZE)
+#define getSn_TXBUF_SIZE() \
+		wizchip_read(WIZCHIP_SREG_BLOCK, Sn_TXBUF_SIZE)
 
 /**
  * @brief Get @ref Sn_TX_RD register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
-#define getSn_TX_RD(sn) \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_RD)
+#define getSn_TX_RD() \
+    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_RD)
 
 /**
  * @brief Set @ref Sn_TX_WR register
@@ -290,8 +290,8 @@
  * @param (uint16_t)txwr Value to set @ref Sn_TX_WR
  * @sa GetSn_TX_WR()
  */
-#define setSn_TX_WR(sn, txwr) \
-    wizchip_write_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR, txwr)
+#define setSn_TX_WR(txwr) \
+    wizchip_write_word(WIZCHIP_SREG_BLOCK, Sn_TX_WR, txwr)
 
 /**
  * @brief Get @ref Sn_TX_WR register
@@ -299,8 +299,8 @@
  * @return uint16_t. Value of @ref Sn_TX_WR.
  * @sa setSn_TX_WR()
  */
-#define getSn_TX_WR(sn) \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR)
+#define getSn_TX_WR() \
+    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_WR)
 
 /**
  * @brief Set @ref Sn_RX_RD register
@@ -308,8 +308,8 @@
  * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
  * @sa getSn_RX_RD()
  */
-#define setSn_RX_RD(sn, rxrd) \
-    wizchip_write_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD, rxrd)
+#define setSn_RX_RD(rxrd) \
+    wizchip_write_word(WIZCHIP_SREG_BLOCK, Sn_RX_RD, rxrd)
 
 /**
  * @brief Get @ref Sn_RX_RD register
@@ -317,16 +317,16 @@
  * @return uint16_t. Value of @ref Sn_RX_RD.
  * @sa setSn_RX_RD()
  */
-#define getSn_RX_RD(sn) \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD)
+#define getSn_RX_RD() \
+    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RD)
 
 /**
  * @brief Get @ref Sn_RX_WR register
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
-#define getSn_RX_WR(sn) \
-    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_WR)
+#define getSn_RX_WR() \
+    wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_WR)
 
 /**
  * @brief Socket_register_access_function
@@ -334,8 +334,8 @@
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n RX max buffer size.
  */
-#define getSn_RxMAX(sn) \
-		(((uint16_t)getSn_RXBUF_SIZE(sn)) << 10)		
+#define getSn_RxMAX() \
+		(((uint16_t)getSn_RXBUF_SIZE()) << 10)		
 
 /**
  * @brief Socket_register_access_function
@@ -343,8 +343,8 @@
  * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
  * @return uint16_t. Value of Socket n TX max buffer size.
  */
-#define getSn_TxMAX(sn) \
-		(((uint16_t)getSn_TXBUF_SIZE(sn)) << 10)
+#define getSn_TxMAX() \
+		(((uint16_t)getSn_TXBUF_SIZE()) << 10)
 
 
 
@@ -512,7 +512,7 @@ private:
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @return uint16_t. Value of @ref Sn_TX_FSR.
      */
-    uint16_t getSn_TX_FSR(uint8_t sn);
+    uint16_t getSn_TX_FSR();
 
 
     /**
@@ -520,7 +520,7 @@ private:
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @return uint16_t. Value of @ref Sn_RX_RSR.
      */
-    uint16_t getSn_RX_RSR(uint8_t sn);
+    uint16_t getSn_RX_RSR();
 
     /**
      * @brief Reset WIZCHIP by softly.
@@ -570,7 +570,7 @@ private:
      * @param len Data length
      * @sa wiz_recv_data()
      */
-    void wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len);
+    void wizchip_send_data(const uint8_t *wizdata, uint16_t len);
 
     /**
      * @brief It copies data to your buffer from internal RX memory
@@ -585,7 +585,7 @@ private:
      * @param len Data length
      * @sa wiz_send_data()
      */
-    void wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len);
+    void wizchip_recv_data(uint8_t *wizdata, uint16_t len);
 
     /**
      * @brief It discard the received data in RX memory.
@@ -593,7 +593,7 @@ private:
      * @param (uint8_t)sn Socket number. It should be <b>0 ~ 7</b>.
      * @param len Data length
      */
-    void wizchip_recv_ignore(uint8_t sn, uint16_t len);
+    void wizchip_recv_ignore(uint16_t len);
 
     /** Common registers */
     enum {

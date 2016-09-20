@@ -119,68 +119,68 @@ void Wiznet5500::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_
     wizchip_cs_deselect();
 }
 
-uint16_t Wiznet5500::getSn_TX_FSR(uint8_t sn)
+uint16_t Wiznet5500::getSn_TX_FSR()
 {
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
+        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_FSR);
         if (val1 != 0)
         {
-            val = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
+            val = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_TX_FSR);
         }
     } while (val != val1);
     return val;
 }
 
 
-uint16_t Wiznet5500::getSn_RX_RSR(uint8_t sn)
+uint16_t Wiznet5500::getSn_RX_RSR()
 {
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
+        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RSR);
         if (val1 != 0)
         {
-            val = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
+            val = wizchip_read_word(WIZCHIP_SREG_BLOCK, Sn_RX_RSR);
         }
     } while (val != val1);
     return val;
 }
 
-void Wiznet5500::wizchip_send_data(uint8_t sn, const uint8_t *wizdata, uint16_t len)
+void Wiznet5500::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr = 0;
 
     if(len == 0)  return;
-    ptr = getSn_TX_WR(sn);
-    wizchip_write_buf(WIZCHIP_TXBUF_BLOCK(sn), ptr, wizdata, len);
+    ptr = getSn_TX_WR();
+    wizchip_write_buf(WIZCHIP_TXBUF_BLOCK, ptr, wizdata, len);
 
     ptr += len;
 
-    setSn_TX_WR(sn,ptr);
+    setSn_TX_WR(ptr);
 }
 
-void Wiznet5500::wizchip_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+void Wiznet5500::wizchip_recv_data(uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr = 0;
 
     if(len == 0) return;
-    ptr = getSn_RX_RD(sn);
-    wizchip_read_buf(WIZCHIP_RXBUF_BLOCK(sn), ptr, wizdata, len);
+    ptr = getSn_RX_RD();
+    wizchip_read_buf(WIZCHIP_RXBUF_BLOCK, ptr, wizdata, len);
     ptr += len;
 
-    setSn_RX_RD(sn,ptr);
+    setSn_RX_RD(ptr);
 }
 
 
-void Wiznet5500::wizchip_recv_ignore(uint8_t sn, uint16_t len)
+void Wiznet5500::wizchip_recv_ignore(uint16_t len)
 {
     uint16_t ptr = 0;
 
-    ptr = getSn_RX_RD(sn);
+    ptr = getSn_RX_RD();
     ptr += len;
-    setSn_RX_RD(sn,ptr);
+    setSn_RX_RD(ptr);
 }
 
 
@@ -350,9 +350,9 @@ boolean Wiznet5500::begin(const uint8_t *mac_address)
     setSHAR(_mac_address);
 
     // Open Socket 0 in MACRaw mode
-    setSn_MR(0, Sn_MR_MACRAW);
-    setSn_CR(0, Sn_CR_OPEN);
-    if (getSn_SR(0) != SOCK_MACRAW) {
+    setSn_MR(Sn_MR_MACRAW);
+    setSn_CR(Sn_CR_OPEN);
+    if (getSn_SR() != SOCK_MACRAW) {
         // Failed to put socket 0 into MACRaw mode
         return false;
     }
@@ -363,25 +363,25 @@ boolean Wiznet5500::begin(const uint8_t *mac_address)
 
 void Wiznet5500::end()
 {
-    setSn_CR(0, Sn_CR_CLOSE);
+    setSn_CR(Sn_CR_CLOSE);
 
     // clear all interrupt of the socket
-    setSn_IR(0, 0xFF);
+    setSn_IR(0xFF);
 
     // Wait for socket to change to closed
-    while(getSn_SR(0) != SOCK_CLOSED);
+    while(getSn_SR() != SOCK_CLOSED);
 }
 
 uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
 {
-    uint16_t len = getSn_RX_RSR(0);
+    uint16_t len = getSn_RX_RSR();
     if ( len > 0 )
     {
         uint8_t head[2];
         uint16_t data_len=0;
 
-        wizchip_recv_data(0, head, 2);
-        setSn_CR(0, Sn_CR_RECV);
+        wizchip_recv_data(head, 2);
+        setSn_CR(Sn_CR_RECV);
 
         data_len = head[0];
         data_len = (data_len<<8) + head[1];
@@ -390,13 +390,13 @@ uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
         if(data_len > bufsize)
         {
             // Packet is bigger than buffer - drop the packet
-            wizchip_recv_ignore(0, data_len);
-            setSn_CR(0, Sn_CR_RECV);
+            wizchip_recv_ignore(data_len);
+            setSn_CR(Sn_CR_RECV);
             return 0;
         }
 
-        wizchip_recv_data(0, buffer, data_len);
-        setSn_CR(0, Sn_CR_RECV);
+        wizchip_recv_data(buffer, data_len);
+        setSn_CR(Sn_CR_RECV);
 
         // W5500 doesn't have any built-in MAC address filtering
         if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
@@ -416,28 +416,28 @@ uint16_t Wiznet5500::sendFrame(const uint8_t *buf, uint16_t len)
     // Wait for space in the transmit buffer
     while(1)
     {
-        uint16_t freesize = getSn_TX_FSR(0);
-        if(getSn_SR(0) == SOCK_CLOSED) {
+        uint16_t freesize = getSn_TX_FSR();
+        if(getSn_SR() == SOCK_CLOSED) {
             return -1;
         }
         if (len <= freesize) break;
     };
 
-    wizchip_send_data(0, buf, len);
-    setSn_CR(0, Sn_CR_SEND);
+    wizchip_send_data(buf, len);
+    setSn_CR(Sn_CR_SEND);
 
     while(1)
     {
-        uint8_t tmp = getSn_IR(0);
+        uint8_t tmp = getSn_IR();
         if (tmp & Sn_IR_SENDOK)
         {
-            setSn_IR(0, Sn_IR_SENDOK);
+            setSn_IR(Sn_IR_SENDOK);
             // Packet sent ok
             break;
         }
         else if (tmp & Sn_IR_TIMEOUT)
         {
-            setSn_IR(0, Sn_IR_TIMEOUT);
+            setSn_IR(Sn_IR_TIMEOUT);
             // There was a timeout
             return -1;
         }
