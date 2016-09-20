@@ -54,8 +54,6 @@
 #define WIZCHIP_TXBUF_BLOCK(N)      ((2+4*N) << 3) //< Socket N Tx buffer address block
 #define WIZCHIP_RXBUF_BLOCK(N)      ((3+4*N) << 3) //< Socket N Rx buffer address block
 
-#define WIZCHIP_OFFSET_INC(ADDR, N)    (ADDR + N) //< Increase offset address
-
 
 
 /**
@@ -96,11 +94,8 @@
  * @param (uint16_t)intlevel Value to set @ref INTLEVEL register.
  * @sa getINTLEVEL()
  */
-#define setINTLEVEL(intlevel)  {\
-		wizchip_write(WIZCHIP_CREG_BLOCK, INTLEVEL,   (uint8_t)(intlevel >> 8)); \
-		wizchip_write(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(INTLEVEL,1), (uint8_t) intlevel); \
-	}
-
+#define setINTLEVEL(intlevel) \
+    wizchip_write_word(WIZCHIP_CREG_BLOCK, INTLEVEL, intlevel)
 
 /**
  * @brief Get INTLEVEL register
@@ -108,7 +103,7 @@
  * @sa setINTLEVEL()
  */
 #define getINTLEVEL() \
-		(((uint16_t)wizchip_read(WIZCHIP_CREG_BLOCK, INTLEVEL) << 8) + wizchip_read(WIZCHIP_CREG_BLOCK, WIZCHIP_OFFSET_INC(INTLEVEL,1)))
+		wizchip_read_work(WIZCHIP_CREG_BLOCK, INTLEVEL)
 
 /**
  * @brief Set @ref IR register
@@ -291,7 +286,7 @@
  * @return uint16_t. Value of @ref Sn_TX_RD.
  */
 #define getSn_TX_RD(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_RD) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_RD,1)))		
+    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_RD)
 
 /**
  * @brief Set @ref Sn_TX_WR register
@@ -299,10 +294,8 @@
  * @param (uint16_t)txwr Value to set @ref Sn_TX_WR
  * @sa GetSn_TX_WR()
  */
-#define setSn_TX_WR(sn, txwr) { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR,   (uint8_t)(txwr>>8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_WR,1), (uint8_t) txwr); \
-		}
+#define setSn_TX_WR(sn, txwr) \
+    wizchip_write_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR, txwr)
 
 /**
  * @brief Get @ref Sn_TX_WR register
@@ -311,7 +304,7 @@
  * @sa setSn_TX_WR()
  */
 #define getSn_TX_WR(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_WR, 1)))		
+    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_WR)
 
 /**
  * @brief Set @ref Sn_RX_RD register
@@ -319,10 +312,8 @@
  * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
  * @sa getSn_RX_RD()
  */
-#define setSn_RX_RD(sn, rxrd) { \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD,   (uint8_t)(rxrd>>8)); \
-		wizchip_write(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RD,1), (uint8_t) rxrd); \
-	}
+#define setSn_RX_RD(sn, rxrd) \
+    wizchip_write_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD, rxrd)
 
 /**
  * @brief Get @ref Sn_RX_RD register
@@ -331,7 +322,7 @@
  * @sa setSn_RX_RD()
  */
 #define getSn_RX_RD(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RD,1)))		
+    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RD)
 
 /**
  * @brief Get @ref Sn_RX_WR register
@@ -339,7 +330,7 @@
  * @return uint16_t. Value of @ref Sn_RX_WR.
  */
 #define getSn_RX_WR(sn) \
-		(((uint16_t)wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_WR) << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_WR,1)))		
+    wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_WR)
 
 /**
  * @brief Socket_register_access_function
@@ -476,12 +467,11 @@ private:
     uint8_t wizchip_read(uint8_t block, uint16_t address);
 
     /**
-     * @brief It writes 1 byte value to a register.
-     * @param address Register address
-     * @param wb Write data
-     * @return void
+     * Reads a 2 byte value from a register.
+     * @param AddrSel Register address
+     * @return The value of register
      */
-    void wizchip_write(uint8_t block, uint16_t address, uint8_t wb);
+    uint16_t wizchip_read_word(uint8_t block, uint16_t address);
 
     /**
      * @brief It reads sequence data from registers.
@@ -490,6 +480,22 @@ private:
      * @param len Data length
      */
     void wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf, uint16_t len);
+
+    /**
+     * @brief It writes 1 byte value to a register.
+     * @param address Register address
+     * @param wb Write data
+     * @return void
+     */
+    void wizchip_write(uint8_t block, uint16_t address, uint8_t wb);
+
+    /**
+     * Writes a 2 byte value to a register.
+     * @param AddrSel Register address
+     * @param wb Write data
+     * @return void
+     */
+    void wizchip_write_word(uint8_t block, uint16_t address, uint16_t word);
 
     /**
      * @brief It writes sequence data to registers.

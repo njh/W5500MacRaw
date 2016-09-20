@@ -42,20 +42,6 @@
 
 
 
-void Wiznet5500::wizchip_write(uint8_t block, uint16_t address, uint8_t wb)
-{
-    wizchip_cs_select();
-
-    block |= _W5500_SPI_WRITE_;
-
-    wizchip_spi_write_byte((address & 0xFF00) >> 8);
-    wizchip_spi_write_byte((address & 0x00FF) >> 0);
-    wizchip_spi_write_byte(block);
-    wizchip_spi_write_byte(wb);
-
-    wizchip_cs_deselect();
-}
-
 uint8_t  Wiznet5500::wizchip_read(uint8_t block, uint16_t address)
 {
     uint8_t ret;
@@ -74,21 +60,9 @@ uint8_t  Wiznet5500::wizchip_read(uint8_t block, uint16_t address)
     return ret;
 }
 
-void Wiznet5500::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf, uint16_t len)
+uint16_t Wiznet5500::wizchip_read_word(uint8_t block, uint16_t address)
 {
-    uint16_t i;
-
-    wizchip_cs_select();
-
-    block |= _W5500_SPI_WRITE_;
-
-    wizchip_spi_write_byte((address & 0xFF00) >> 8);
-    wizchip_spi_write_byte((address & 0x00FF) >> 0);
-    wizchip_spi_write_byte(block);
-    for(i = 0; i < len; i++)
-        wizchip_spi_write_byte(pBuf[i]);
-
-    wizchip_cs_deselect();
+    return ((uint16_t)wizchip_read(block, address) << 8) + wizchip_read(block, address + 1);
 }
 
 void Wiznet5500::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf, uint16_t len)
@@ -108,17 +82,52 @@ void Wiznet5500::wizchip_read_buf(uint8_t block, uint16_t address, uint8_t* pBuf
     wizchip_cs_deselect();
 }
 
+void Wiznet5500::wizchip_write(uint8_t block, uint16_t address, uint8_t wb)
+{
+    wizchip_cs_select();
+
+    block |= _W5500_SPI_WRITE_;
+
+    wizchip_spi_write_byte((address & 0xFF00) >> 8);
+    wizchip_spi_write_byte((address & 0x00FF) >> 0);
+    wizchip_spi_write_byte(block);
+    wizchip_spi_write_byte(wb);
+
+    wizchip_cs_deselect();
+}
+
+void Wiznet5500::wizchip_write_word(uint8_t block, uint16_t address, uint16_t word)
+{
+    wizchip_write(block, address,   (uint8_t)(word>>8));
+    wizchip_write(block, address+1, (uint8_t) word);
+}
+
+void Wiznet5500::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_t* pBuf, uint16_t len)
+{
+    uint16_t i;
+
+    wizchip_cs_select();
+
+    block |= _W5500_SPI_WRITE_;
+
+    wizchip_spi_write_byte((address & 0xFF00) >> 8);
+    wizchip_spi_write_byte((address & 0x00FF) >> 0);
+    wizchip_spi_write_byte(block);
+    for(i = 0; i < len; i++)
+        wizchip_spi_write_byte(pBuf[i]);
+
+    wizchip_cs_deselect();
+}
+
 uint16_t Wiznet5500::getSn_TX_FSR(uint8_t sn)
 {
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
-        val1 = (val1 << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_FSR,1));
+        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
         if (val1 != 0)
         {
-            val = wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
-            val = (val << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_TX_FSR,1));
+            val = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_TX_FSR);
         }
     } while (val != val1);
     return val;
@@ -130,12 +139,10 @@ uint16_t Wiznet5500::getSn_RX_RSR(uint8_t sn)
     uint16_t val=0,val1=0;
     do
     {
-        val1 = wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
-        val1 = (val1 << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RSR,1));
+        val1 = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
         if (val1 != 0)
         {
-            val = wizchip_read(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
-            val = (val << 8) + wizchip_read(WIZCHIP_SREG_BLOCK(sn), WIZCHIP_OFFSET_INC(Sn_RX_RSR,1));
+            val = wizchip_read_word(WIZCHIP_SREG_BLOCK(sn), Sn_RX_RSR);
         }
     } while (val != val1);
     return val;
