@@ -445,8 +445,8 @@ private:
      * @param (uint8_t*)shar Pointer variable to set local MAC address. It should be allocated 6 bytes.
      * @sa getSHAR()
      */
-    inline void setSHAR(const uint8_t *shar) {
-        wizchip_write_buf(BlockSelectCReg, SHAR, shar, 6);
+    inline void setSHAR(const uint8_t* macaddr) {
+        wizchip_write_buf(BlockSelectCReg, SHAR, macaddr, 6);
     }
 
     /**
@@ -454,8 +454,8 @@ private:
      * @param (uint8_t*)shar Pointer variable to get local MAC address. It should be allocated 6 bytes.
      * @sa setSHAR()
      */
-    inline uint8_t getSHAR(uint8_t *shar) {
-        wizchip_read_buf(BlockSelectCReg, SHAR, shar, 6);
+    inline uint8_t getSHAR(uint8_t* macaddr) {
+        wizchip_read_buf(BlockSelectCReg, SHAR, macaddr, 6);
     }
 
     /**
