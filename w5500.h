@@ -1,6 +1,3 @@
-
-#ifndef  _W5500_H_
-#define  _W5500_H_
 /*
  * Copyright (c) 2013, WIZnet Co., Ltd.
  * Copyright (c) 2016, Nicholas Humfrey
@@ -32,6 +29,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+#ifndef W5500_H
+#define W5500_H
 
 #include <stdint.h>
 #include <Arduino.h>
