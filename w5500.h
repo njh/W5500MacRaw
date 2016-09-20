@@ -46,22 +46,6 @@
 
 
 
-/**
- *  It configures PHY configuration when CW_SET PHYCONF or CW_GET_PHYCONF in W5500,
- *  and it indicates the real PHY status configured by HW or SW in all WIZCHIP. \n
- *  Valid only in W5500.
- */
-typedef struct wiz_PhyConf_t
-{
-    uint8_t by;       ///< set by @ref PHY_CONFBY_HW or @ref PHY_CONFBY_SW
-    uint8_t mode;     ///< set by @ref PHY_MODE_MANUAL or @ref PHY_MODE_AUTONEGO
-    uint8_t speed;    ///< set by @ref PHY_SPEED_10 or @ref PHY_SPEED_100
-    uint8_t duplex;   ///< set by @ref PHY_DUPLEX_HALF @ref PHY_DUPLEX_FULL
-    //uint8_t power;  ///< set by @ref PHY_POWER_NORM or @ref PHY_POWER_DOWN
-    //uint8_t link;   ///< Valid only in CW_GET_PHYSTATUS. set by @ref PHY_LINK_ON or PHY_DUPLEX_OFF
-} wiz_PhyConf;
-
-
 class Wiznet5500 {
 
 public:
@@ -222,41 +206,32 @@ private:
      */
     uint16_t getSn_TX_FSR();
 
-
     /**
      * Get @ref Sn_RX_RSR register
      * @return uint16_t. Value of @ref Sn_RX_RSR.
      */
     uint16_t getSn_RX_RSR();
 
+
     /**
      * Reset WIZCHIP by softly.
      */
-    void   wizchip_sw_reset(void);
+    void wizchip_sw_reset(void);
 
-    int8_t wizphy_getphylink(void);              ///< get the link status of phy in WIZCHIP. No use in W5100
-    int8_t wizphy_getphypmode(void);             ///< get the power mode of PHY in WIZCHIP. No use in W5100
-
-
-
-    void   wizphy_reset(void);                   ///< Reset phy. Vailid only in W5500
     /**
-     * Set the phy information for WIZCHIP without power mode
-     * @param phyconf : @ref wiz_PhyConf
+     * Get the link status of phy in WIZCHIP
      */
-    void   wizphy_setphyconf(wiz_PhyConf* phyconf);
+    int8_t wizphy_getphylink(void);
 
     /**
-    * Get phy configuration information.
-    * @param phyconf : @ref wiz_PhyConf
-    */
-    void   wizphy_getphyconf(wiz_PhyConf* phyconf);
+     * Get the power mode of PHY in WIZCHIP
+     */
+    int8_t wizphy_getphypmode();
 
     /**
-    * Get phy status.
-    * @param phyconf : @ref wiz_PhyConf
-    */
-    void   wizphy_getphystat(wiz_PhyConf* phyconf);
+     * Reset Phy
+     */
+    void wizphy_reset();
 
     /**
     * set the power mode of phy inside WIZCHIP. Refer to @ref PHYCFGR in W5500, @ref PHYSTATUS in W5200
@@ -443,10 +418,6 @@ private:
     };
 
     enum {
-        PHY_CONFBY_HW = 0,     ///< Configured PHY operation mode by HW pin
-        PHY_CONFBY_SW = 1,     ///< Configured PHY operation mode by SW register   
-        PHY_MODE_MANUAL = 0,     ///< Configured PHY operation mode with user setting.
-        PHY_MODE_AUTONEGO = 1,     ///< Configured PHY operation mode with auto-negotiation
         PHY_SPEED_10 = 0,     ///< Link Speed 10
         PHY_SPEED_100 = 1,     ///< Link Speed 100
         PHY_DUPLEX_HALF = 0,     ///< Link Half-Duplex
@@ -454,7 +425,7 @@ private:
         PHY_LINK_OFF = 0,     ///< Link Off
         PHY_LINK_ON = 1,     ///< Link On
         PHY_POWER_NORM = 0,     ///< PHY power normal mode
-        PHY_POWER_DOWN = 1,     ///< PHY power down mode 
+        PHY_POWER_DOWN = 1,     ///< PHY power down mode
     };
 
 

@@ -183,7 +183,6 @@ void Wiznet5500::wizchip_recv_ignore(uint16_t len)
     setSn_RX_RD(ptr);
 }
 
-
 void Wiznet5500::wizchip_sw_reset(void)
 {
     setMR(MR_RST);
@@ -220,82 +219,6 @@ void Wiznet5500::wizphy_reset(void)
     tmp = getPHYCFGR();
     tmp |= ~PHYCFGR_RST;
     setPHYCFGR(tmp);
-}
-
-void Wiznet5500::wizphy_setphyconf(wiz_PhyConf* phyconf)
-{
-    uint8_t tmp = 0;
-    if(phyconf->by == PHY_CONFBY_SW)
-        tmp |= PHYCFGR_OPMD;
-    else
-        tmp &= ~PHYCFGR_OPMD;
-    if(phyconf->mode == PHY_MODE_AUTONEGO)
-        tmp |= PHYCFGR_OPMDC_ALLA;
-    else
-    {
-        if(phyconf->duplex == PHY_DUPLEX_FULL)
-        {
-            if(phyconf->speed == PHY_SPEED_100)
-                tmp |= PHYCFGR_OPMDC_100F;
-            else
-                tmp |= PHYCFGR_OPMDC_10F;
-        }
-        else
-        {
-            if(phyconf->speed == PHY_SPEED_100)
-                tmp |= PHYCFGR_OPMDC_100H;
-            else
-                tmp |= PHYCFGR_OPMDC_10H;
-        }
-    }
-    setPHYCFGR(tmp);
-    wizphy_reset();
-}
-
-void Wiznet5500::wizphy_getphyconf(wiz_PhyConf* phyconf)
-{
-    uint8_t tmp = 0;
-    tmp = getPHYCFGR();
-    phyconf->by   = (tmp & PHYCFGR_OPMD) ? PHY_CONFBY_SW : PHY_CONFBY_HW;
-    switch(tmp & PHYCFGR_OPMDC_ALLA)
-    {
-    case PHYCFGR_OPMDC_ALLA:
-    case PHYCFGR_OPMDC_100FA:
-        phyconf->mode = PHY_MODE_AUTONEGO;
-        break;
-    default:
-        phyconf->mode = PHY_MODE_MANUAL;
-        break;
-    }
-    switch(tmp & PHYCFGR_OPMDC_ALLA)
-    {
-    case PHYCFGR_OPMDC_100FA:
-    case PHYCFGR_OPMDC_100F:
-    case PHYCFGR_OPMDC_100H:
-        phyconf->speed = PHY_SPEED_100;
-        break;
-    default:
-        phyconf->speed = PHY_SPEED_10;
-        break;
-    }
-    switch(tmp & PHYCFGR_OPMDC_ALLA)
-    {
-    case PHYCFGR_OPMDC_100FA:
-    case PHYCFGR_OPMDC_100F:
-    case PHYCFGR_OPMDC_10F:
-        phyconf->duplex = PHY_DUPLEX_FULL;
-        break;
-    default:
-        phyconf->duplex = PHY_DUPLEX_HALF;
-        break;
-    }
-}
-
-void Wiznet5500::wizphy_getphystat(wiz_PhyConf* phyconf)
-{
-    uint8_t tmp = getPHYCFGR();
-    phyconf->duplex = (tmp & PHYCFGR_DPX_FULL) ? PHY_DUPLEX_FULL : PHY_DUPLEX_HALF;
-    phyconf->speed  = (tmp & PHYCFGR_SPD_100) ? PHY_SPEED_100 : PHY_SPEED_10;
 }
 
 int8_t Wiznet5500::wizphy_setphypmode(uint8_t pmode)
