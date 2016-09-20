@@ -57,431 +57,7 @@
 #define WIZCHIP_OFFSET_INC(ADDR, N)    (ADDR + N) //< Increase offset address
 
 
-//----------------------------- W5500 Common Registers IOMAP -----------------------------
-/**
- * @brief Mode Register address(R/W)\n
- * @ref MR is used for S/W reset, ping block mode, PPPoE mode and etc.
- * @details Each bit of @ref MR defined as follows.
- * <table>
- * 		<tr>  <td>7</td> <td>6</td> <td>5</td> <td>4</td> <td>3</td> <td>2</td> <td>1</td> <td>0</td>   </tr>
- * 		<tr>  <td>RST</td> <td>Reserved</td> <td>WOL</td> <td>PB</td> <td>PPPoE</td> <td>Reserved</td> <td>FARP</td> <td>Reserved</td> </tr>
- * </table>
- * - \ref MR_RST		 	: Reset
- * - \ref MR_WOL       	: Wake on LAN
- * - \ref MR_PB         : Ping block
- * - \ref MR_PPPOE      : PPPoE mode
- * - \ref MR_FARP			: Force ARP mode
- */
-#define MR                 (0x0000)
 
-/**
- * @brief Gateway IP Register address(R/W)
- * @details @ref GAR configures the default gateway address.
- */
-#define GAR                (0x0001)
-
-/**
- * @brief Subnet mask Register address(R/W)
- * @details @ref SUBR configures the subnet mask address.
- */
-#define SUBR               (0x0005)
-
-/**
- * @brief Source MAC Register address(R/W)
- * @details @ref SHAR configures the source hardware address.
- */
-#define SHAR               (0x0009)
-
-/**
- * @brief Source IP Register address(R/W)
- * @details @ref SIPR configures the source IP address.
- */
-#define SIPR               (0x000F)
-
-/**
- * @brief Set Interrupt low level timer register address(R/W)
- * @details @ref INTLEVEL configures the Interrupt Assert Time.
- */
-#define INTLEVEL           (0x0013)
-
-/**
- * @brief Interrupt Register(R/W)
- * @details @ref IR indicates the interrupt status. Each bit of @ref IR will be still until the bit will be written to by the host.
- * If @ref IR is not equal to x00 INTn PIN is asserted to low until it is x00\n\n
- * Each bit of @ref IR defined as follows.
- * <table>
- * 		<tr>  <td>7</td> <td>6</td> <td>5</td> <td>4</td> <td>3</td> <td>2</td> <td>1</td> <td>0</td>   </tr>
- * 		<tr>  <td>CONFLICT</td> <td>UNREACH</td> <td>PPPoE</td> <td>MP</td> <td>Reserved</td> <td>Reserved</td> <td>Reserved</td> <td>Reserved</td> </tr>
- * </table>
- * - \ref IR_CONFLICT : IP conflict
- * - \ref IR_UNREACH  : Destination unreachable
- * - \ref IR_PPPoE	  : PPPoE connection close
- * - \ref IR_MP		  : Magic packet
- */
-#define IR                 (0x0015)
-
-/**
- * @brief Interrupt mask register(R/W)
- * @details @ref _IMR_ is used to mask interrupts. Each bit of @ref _IMR_ corresponds to each bit of @ref IR.
- * When a bit of @ref _IMR_ is and the corresponding bit of @ref IR is  an interrupt will be issued. In other words,
- * if a bit of @ref _IMR_ is  an interrupt will not be issued even if the corresponding bit of @ref IR is \n\n
- * Each bit of @ref _IMR_ defined as the following.
- * <table>
- * 		<tr>  <td>7</td> <td>6</td> <td>5</td> <td>4</td> <td>3</td> <td>2</td> <td>1</td> <td>0</td>   </tr>
- * 		<tr>  <td>IM_IR7</td> <td>IM_IR6</td> <td>IM_IR5</td> <td>IM_IR4</td> <td>Reserved</td> <td>Reserved</td> <td>Reserved</td> <td>Reserved</td> </tr>
- * </table>
- * - \ref IM_IR7 : IP Conflict Interrupt Mask
- * - \ref IM_IR6 : Destination unreachable Interrupt Mask
- * - \ref IM_IR5 : PPPoE Close Interrupt Mask
- * - \ref IM_IR4 : Magic Packet Interrupt Mask
- */
-#define _IMR_                (0x0016)
-
-/**
- * @brief Socket Interrupt Register(R/W)
- * @details @ref SIR indicates the interrupt status of Socket.\n
- * Each bit of @ref SIR be still until @ref Sn_IR is cleared by the host.\n
- * If @ref Sn_IR is not equal to x00 the n-th bit of @ref SIR is and INTn PIN is asserted until @ref SIR is x00 */
-#define SIR                (0x0017)
-
-/**
- * @brief Socket Interrupt Mask Register(R/W)
- * @details Each bit of @ref SIMR corresponds to each bit of @ref SIR.
- * When a bit of @ref SIMR is and the corresponding bit of @ref SIR is  Interrupt will be issued.
- * In other words, if a bit of @ref SIMR is  an interrupt will be not issued even if the corresponding bit of @ref SIR is
- */
-#define SIMR               (0x0018)
-
-/**
- * @brief Timeout register address( 1 is 100us )(R/W)
- * @details @ref _RTR_ configures the retransmission timeout period. The unit of timeout period is 100us and the default of @ref _RTR_ is x07D0.
- * And so the default timeout period is 200ms(100us X 2000). During the time configured by @ref _RTR_, W5500 waits for the peer response
- * to the packet that is transmitted by \ref Sn_CR (CONNECT, DISCON, CLOSE, SEND, SEND_MAC, SEND_KEEP command).
- * If the peer does not respond within the @ref _RTR_ time, W5500 retransmits the packet or issues timeout.
- */
-#define _RTR_                (0x0019)
-
-/**
- * @brief Retry count register(R/W)
- * @details @ref _RCR_ configures the number of time of retransmission.
- * When retransmission occurs as many as ref _RCR_+1 Timeout interrupt is issued (@ref Sn_IR_TIMEOUT = '1').
- */
-#define _RCR_                (0x001B)
-
-/**
- * @brief PPP LCP Request Timer register  in PPPoE mode(R/W)
- * @details @ref PTIMER configures the time for sending LCP echo request. The unit of time is 25ms.
- */
-#define PTIMER             (0x001C)
-
-/**
- * @brief PPP LCP Magic number register  in PPPoE mode(R/W)
- * @details @ref PMAGIC configures the 4bytes magic number to be used in LCP negotiation.
- */
-#define PMAGIC             (0x001D)
-
-/**
- * @brief PPP Destination MAC Register address(R/W)
- * @details @ref PHAR configures the PPPoE server hardware address that is acquired during PPPoE connection process.
- */
-#define PHAR                (0x001E)
-
-/**
- * @brief PPP Session Identification Register(R/W)
- * @details @ref PSID configures the PPPoE sever session ID acquired during PPPoE connection process.
- */
-#define PSID               (0x0024)
-
-/**
- * @brief PPP Maximum Segment Size(MSS) register(R/W)
- * @details @ref PMRU configures the maximum receive unit of PPPoE.
- */
-#define PMRU               (0x0026)
-
-/**
- * @brief Unreachable IP register address in UDP mode(R)
- * @details W5500 receives an ICMP packet(Destination port unreachable) when data is sent to a port number
- * which socket is not open and @ref IR_UNREACH bit of @ref IR becomes and @ref UIPR & @ref UPORTR indicates
- * the destination IP address & port number respectively.
- */
-#define UIPR               (0x0028)
-
-/**
- * @brief Unreachable Port register address in UDP mode(R)
- * @details W5500 receives an ICMP packet(Destination port unreachable) when data is sent to a port number
- * which socket is not open and @ref IR_UNREACH bit of @ref IR becomes and @ref UIPR & @ref UPORTR
- * indicates the destination IP address & port number respectively.
- */
-#define UPORTR              (0x002C)
-
-/**
- * @brief PHY Status Register(R/W)
- * @details @ref PHYCFGR configures PHY operation mode and resets PHY. In addition, @ref PHYCFGR indicates the status of PHY such as duplex, Speed, Link.
- */
-#define PHYCFGR            (0x002E)
-
-/**
- * @brief chip version register address(R)
- * @details @ref VERSIONR always indicates the W5500 version as @b 0x04.
- */
-#define VERSIONR           (0x0039)
-
-
-//----------------------------- W5500 Socket Registers IOMAP -----------------------------
-/**
- * @brief socket Mode register(R/W)
- * @details @ref Sn_MR configures the option or protocol type of Socket n.\n\n
- * Each bit of @ref Sn_MR defined as the following.
- * <table>
- * 		<tr>  <td>7</td> <td>6</td> <td>5</td> <td>4</td> <td>3</td> <td>2</td> <td>1</td> <td>0</td>   </tr>
- * 		<tr>  <td>MULTI/MFEN</td> <td>BCASTB</td> <td>ND/MC/MMB</td> <td>UCASTB/MIP6B</td> <td>Protocol[3]</td> <td>Protocol[2]</td> <td>Protocol[1]</td> <td>Protocol[0]</td> </tr>
- * </table>
- * - @ref Sn_MR_MULTI	: Support UDP Multicasting
- * - @ref Sn_MR_BCASTB	: Broadcast block <b>in UDP Multicasting</b>
- * - @ref Sn_MR_ND		: No Delayed Ack(TCP) flag
- * - @ref Sn_MR_MC   	: IGMP version used <b>in UDP mulitcasting</b>
- * - @ref Sn_MR_MMB    	: Multicast Blocking <b>in @ref Sn_MR_MACRAW mode</b>
- * - @ref Sn_MR_UCASTB	: Unicast Block <b>in UDP Multicating</b>
- * - @ref Sn_MR_MIP6B   : IPv6 packet Blocking <b>in @ref Sn_MR_MACRAW mode</b>
- * - <b>Protocol</b>
- * <table>
- * 		<tr>   <td><b>Protocol[3]</b></td> <td><b>Protocol[2]</b></td> <td><b>Protocol[1]</b></td> <td><b>Protocol[0]</b></td> <td>@b Meaning</td>   </tr>
- * 		<tr>   <td>0</td> <td>0</td> <td>0</td> <td>0</td> <td>Closed</td>   </tr>
- * 		<tr>   <td>0</td> <td>0</td> <td>0</td> <td>1</td> <td>TCP</td>   </tr>
- * 		<tr>   <td>0</td> <td>0</td> <td>1</td> <td>0</td> <td>UDP</td>   </tr>
- * 		<tr>   <td>0</td> <td>1</td> <td>0</td> <td>0</td> <td>MACRAW</td>   </tr>
- * </table>
- *	- @ref Sn_MR_MACRAW	: MAC LAYER RAW SOCK \n
- *  - @ref Sn_MR_UDP		: UDP
- *  - @ref Sn_MR_TCP		: TCP
- *  - @ref Sn_MR_CLOSE	: Unused socket
- *  @note MACRAW mode should be only used in Socket 0.
- */
-#define Sn_MR           (0x0000)
-
-/**
- * @brief Socket command register(R/W)
- * @details This is used to set the command for Socket n such as OPEN, CLOSE, CONNECT, LISTEN, SEND, and RECEIVE.\n
- * After W5500 accepts the command, the @ref Sn_CR register is automatically cleared to 0x00.
- * Even though @ref Sn_CR is cleared to 0x00, the command is still being processed.\n
- * To check whether the command is completed or not, please check the @ref Sn_IR or @ref Sn_SR.
- * - @ref Sn_CR_OPEN 		: Initialize or open socket.
- * - @ref Sn_CR_LISTEN 		: Wait connection request in TCP mode(<b>Server mode</b>)
- * - @ref Sn_CR_CONNECT 	: Send connection request in TCP mode(<b>Client mode</b>)
- * - @ref Sn_CR_DISCON 		: Send closing request in TCP mode.
- * - @ref Sn_CR_CLOSE   	: Close socket.
- * - @ref Sn_CR_SEND    	: Update TX buffer pointer and send data.
- * - @ref Sn_CR_SEND_MAC	: Send data with MAC address, so without ARP process.
- * - @ref Sn_CR_SEND_KEEP 	: Send keep alive message.
- * - @ref Sn_CR_RECV		: Update RX buffer pointer and receive data.
- */
-#define Sn_CR           (0x0001)
-
-/**
- * @brief Socket interrupt register(R)
- * @details @ref Sn_IR indicates the status of Socket Interrupt such as establishment, termination, receiving data, timeout).\n
- * When an interrupt occurs and the corresponding bit of @ref Sn_IMR is  the corresponding bit of @ref Sn_IR becomes \n
- * In order to clear the @ref Sn_IR bit, the host should write the bit to \n
- * <table>
- * 		<tr>  <td>7</td> <td>6</td> <td>5</td> <td>4</td> <td>3</td> <td>2</td> <td>1</td> <td>0</td>   </tr>
- * 		<tr>  <td>Reserved</td> <td>Reserved</td> <td>Reserved</td> <td>SEND_OK</td> <td>TIMEOUT</td> <td>RECV</td> <td>DISCON</td> <td>CON</td> </tr>
- * </table>
- * - \ref Sn_IR_SENDOK : <b>SEND_OK Interrupt</b>
- * - \ref Sn_IR_TIMEOUT : <b>TIMEOUT Interrupt</b>
- * - \ref Sn_IR_RECV : <b>RECV Interrupt</b>
- * - \ref Sn_IR_DISCON : <b>DISCON Interrupt</b>
- * - \ref Sn_IR_CON : <b>CON Interrupt</b>
- */
-#define Sn_IR           (0x0002)
-
-/**
- * @brief Socket status register(R)
- * @details @ref Sn_SR indicates the status of Socket n.\n
- * The status of Socket n is changed by @ref Sn_CR or some special control packet as SYN, FIN packet in TCP.
- * @par Normal status
- * - @ref SOCK_CLOSED 		: Closed
- * - @ref SOCK_INIT   		: Initiate state
- * - @ref SOCK_LISTEN    	: Listen state
- * - @ref SOCK_ESTABLISHED 	: Success to connect
- * - @ref SOCK_CLOSE_WAIT   : Closing state
- * - @ref SOCK_UDP   		: UDP socket
- * - @ref SOCK_MACRAW  		: MAC raw mode socket
- *@par Temporary status during changing the status of Socket n.
- * - @ref SOCK_SYNSENT   	: This indicates Socket n sent the connect-request packet (SYN packet) to a peer.
- * - @ref SOCK_SYNRECV    	: It indicates Socket n successfully received the connect-request packet (SYN packet) from a peer.
- * - @ref SOCK_FIN_WAIT		: Connection state
- * - @ref SOCK_CLOSING		: Closing state
- * - @ref SOCK_TIME_WAIT	: Closing state
- * - @ref SOCK_LAST_ACK 	: Closing state
- */
-#define Sn_SR           (0x0003)
-
-/**
- * @brief source port register(R/W)
- * @details @ref Sn_PORT configures the source port number of Socket n.
- * It is valid when Socket n is used in TCP/UDP mode. It should be set before OPEN command is ordered.
- */
-#define Sn_PORT         (0x0004)
-
-/**
- * @brief Peer MAC register address(R/W)
- * @details @ref Sn_DHAR configures the destination hardware address of Socket n when using SEND_MAC command in UDP mode or
- * it indicates that it is acquired in ARP-process by CONNECT/SEND command.
- */
-#define Sn_DHAR         (0x0006)
-
-/**
- * @brief Peer IP register address(R/W)
- * @details @ref Sn_DIPR configures or indicates the destination IP address of Socket n. It is valid when Socket n is used in TCP/UDP mode.
- * In TCP client mode, it configures an IP address of TCP serverbefore CONNECT command.
- * In TCP server mode, it indicates an IP address of TCP clientafter successfully establishing connection.
- * In UDP mode, it configures an IP address of peer to be received the UDP packet by SEND or SEND_MAC command.
- */
-#define Sn_DIPR         (0x000C)
-
-/**
- * @brief Peer port register address(R/W)
- * @details @ref Sn_DPORT configures or indicates the destination port number of Socket n. It is valid when Socket n is used in TCP/UDP mode.
- * In TCP clientmode, it configures the listen port number of TCP serverbefore CONNECT command.
- * In TCP Servermode, it indicates the port number of TCP client after successfully establishing connection.
- * In UDP mode, it configures the port number of peer to be transmitted the UDP packet by SEND/SEND_MAC command.
- */
-#define Sn_DPORT        (0x0010)
-
-/**
- * @brief Maximum Segment Size(Sn_MSSR0) register address(R/W)
- * @details @ref Sn_MSSR configures or indicates the MTU(Maximum Transfer Unit) of Socket n.
- */
-#define Sn_MSSR         (0x0012)
-
-/**
- * @brief IP Type of Service(TOS) Register(R/W)
- * @details @ref Sn_TOS configures the TOS(Type Of Service field in IP Header) of Socket n.
- * It is set before OPEN command.
- */
-#define Sn_TOS          (0x0015)
-/**
- * @brief IP Time to live(TTL) Register(R/W)
- * @details @ref Sn_TTL configures the TTL(Time To Live field in IP header) of Socket n.
- * It is set before OPEN command.
- */
-#define Sn_TTL          (0x0016)
-
-/**
- * @brief Receive memory size register(R/W)
- * @details @ref Sn_RXBUF_SIZE configures the RX buffer block size of Socket n.
- * Socket n RX Buffer Block size can be configured with 1,2,4,8, and 16 Kbytes.
- * If a different size is configured, the data cannot be normally received from a peer.
- * Although Socket n RX Buffer Block size is initially configured to 2Kbytes,
- * user can re-configure its size using @ref Sn_RXBUF_SIZE. The total sum of @ref Sn_RXBUF_SIZE can not be exceed 16Kbytes.
- * When exceeded, the data reception error is occurred.
- */
-#define Sn_RXBUF_SIZE   (0x001E)
-
-/**
- * @brief Transmit memory size register(R/W)
- * @details @ref Sn_TXBUF_SIZE configures the TX buffer block size of Socket n. Socket n TX Buffer Block size can be configured with 1,2,4,8, and 16 Kbytes.
- * If a different size is configured, the data can•t be normally transmitted to a peer.
- * Although Socket n TX Buffer Block size is initially configured to 2Kbytes,
- * user can be re-configure its size using @ref Sn_TXBUF_SIZE. The total sum of @ref Sn_TXBUF_SIZE can not be exceed 16Kbytes.
- * When exceeded, the data transmission error is occurred.
- */
-#define Sn_TXBUF_SIZE   (0x001F)
-
-/**
- * @brief Transmit free memory size register(R)
- * @details @ref Sn_TX_FSR indicates the free size of Socket n TX Buffer Block. It is initialized to the configured size by @ref Sn_TXBUF_SIZE.
- * Data bigger than @ref Sn_TX_FSR should not be saved in the Socket n TX Buffer because the bigger data overwrites the previous saved data not yet sent.
- * Therefore, check before saving the data to the Socket n TX Buffer, and if data is equal or smaller than its checked size,
- * transmit the data with SEND/SEND_MAC command after saving the data in Socket n TX buffer. But, if data is bigger than its checked size,
- * transmit the data after dividing into the checked size and saving in the Socket n TX buffer.
- */
-#define Sn_TX_FSR      (0x0020)
-
-/**
- * @brief Transmit memory read pointer register address(R)
- * @details @ref Sn_TX_RD is initialized by OPEN command. However, if Sn_MR(P[3:0]) is TCP mode(001, it is re-initialized while connecting with TCP.
- * After its initialization, it is auto-increased by SEND command.
- * SEND command transmits the saved data from the current @ref Sn_TX_RD to the @ref Sn_TX_WR in the Socket n TX Buffer.
- * After transmitting the saved data, the SEND command increases the @ref Sn_TX_RD as same as the @ref Sn_TX_WR.
- * If its increment value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
- * then the carry bit is ignored and will automatically update with the lower 16bits value.
- */
-#define Sn_TX_RD        (0x0022)
-
-/**
- * @brief Transmit memory write pointer register address(R/W)
- * @details @ref Sn_TX_WR is initialized by OPEN command. However, if Sn_MR(P[3:0]) is TCP mode(001, it is re-initialized while connecting with TCP.\n
- * It should be read or be updated like as follows.\n
- * 1. Read the starting address for saving the transmitting data.\n
- * 2. Save the transmitting data from the starting address of Socket n TX buffer.\n
- * 3. After saving the transmitting data, update @ref Sn_TX_WR to the increased value as many as transmitting data size.
- * If the increment value exceeds the maximum value 0xFFFF(greater than 0x10000 and the carry bit occurs),
- * then the carry bit is ignored and will automatically update with the lower 16bits value.\n
- * 4. Transmit the saved data in Socket n TX Buffer by using SEND/SEND command
- */
-#define Sn_TX_WR        (0x0024)
-
-/**
- * @brief Received data size register(R)
- * @details @ref Sn_RX_RSR indicates the data size received and saved in Socket n RX Buffer.
- * @ref Sn_RX_RSR does not exceed the @ref Sn_RXBUF_SIZE and is calculated as the difference between
- * •Socket n RX Write Pointer (@ref Sn_RX_WR)and •Socket n RX Read Pointer (@ref Sn_RX_RD)
- */
-#define Sn_RX_RSR       (0x0026)
-
-/**
- * @brief Read point of Receive memory(R/W)
- * @details @ref Sn_RX_RD is initialized by OPEN command. Make sure to be read or updated as follows.\n
- * 1. Read the starting save address of the received data.\n
- * 2. Read data from the starting address of Socket n RX Buffer.\n
- * 3. After reading the received data, Update @ref Sn_RX_RD to the increased value as many as the reading size.
- * If the increment value exceeds the maximum value 0xFFFF, that is, is greater than 0x10000 and the carry bit occurs,
- * update with the lower 16bits value ignored the carry bit.\n
- * 4. Order RECV command is for notifying the updated @ref Sn_RX_RD to W5500.
- */
-#define Sn_RX_RD        (0x0028)
-
-/**
- * @brief Write point of Receive memory(R)
- * @details @ref Sn_RX_WR is initialized by OPEN command and it is auto-increased by the data reception.
- * If the increased value exceeds the maximum value 0xFFFF, (greater than 0x10000 and the carry bit occurs),
- * then the carry bit is ignored and will automatically update with the lower 16bits value.
- */
-#define Sn_RX_WR        (0x002A)
-
-/**
- * @brief socket interrupt mask register(R)
- * @details @ref Sn_IMR masks the interrupt of Socket n.
- * Each bit corresponds to each bit of @ref Sn_IR. When a Socket n Interrupt is occurred and the corresponding bit of @ref Sn_IMR is
- * the corresponding bit of @ref Sn_IR becomes  When both the corresponding bit of @ref Sn_IMR and @ref Sn_IR are and the n-th bit of @ref IR is
- * Host is interrupted by asserted INTn PIN to low.
- */
-#define Sn_IMR          (0x002C)
-
-/**
- * @brief Fragment field value in IP header register(R/W)
- * @details @ref Sn_FRAG configures the FRAG(Fragment field in IP header).
- */
-#define Sn_FRAG         (0x002D)
-
-/**
- * @brief Keep Alive Timer register(R/W)
- * @details @ref Sn_KPALVTR configures the transmitting timer of •KEEP ALIVE(KA)packet of SOCKETn. It is valid only in TCP mode,
- * and ignored in other modes. The time unit is 5s.
- * KA packet is transmittable after @ref Sn_SR is changed to SOCK_ESTABLISHED and after the data is transmitted or received to/from a peer at least once.
- * In case of '@ref Sn_KPALVTR > 0', W5500 automatically transmits KA packet after time-period for checking the TCP connection (Auto-keepalive-process).
- * In case of '@ref Sn_KPALVTR = 0', Auto-keep-alive-process will not operate,
- * and KA packet can be transmitted by SEND_KEEP command by the host (Manual-keep-alive-process).
- * Manual-keep-alive-process is ignored in case of '@ref Sn_KPALVTR > 0'.
- */
-#define Sn_KPALVTR      (0x002F)
-
-
-
-/////////////////////////////////
-// Common Register I/O function //
-/////////////////////////////////
 /**
  * @brief Set Mode Register
  * @param (uint8_t)mr The value to be set.
@@ -1014,6 +590,48 @@ private:
      */
     void wizchip_recv_ignore(uint8_t sn, uint16_t len);
 
+    /** Common registers */
+    enum {
+        MR = 0x0000,        ///< Mode Register address (R/W)
+        SHAR = 0x0009,      ///< Source MAC Register address (R/W)
+        INTLEVEL = 0x0013,  ///< Set Interrupt low level timer register address (R/W)
+        IR = 0x0015,        ///< Interrupt Register (R/W)
+        _IMR_ = 0x0016,     ///< Interrupt mask register (R/W)
+        SIR = 0x0017,       ///< Socket Interrupt Register (R/W)
+        SIMR = 0x0018,      ///< Socket Interrupt Mask Register (R/W)
+        _RTR_ = 0x0019,     ///< Timeout register address( 1 is 100us) (R/W)
+        _RCR_ = 0x001B,     ///< Retry count register (R/W)
+        UIPR = 0x0028,      ///< Unreachable IP register address in UDP mode (R)
+        UPORTR = 0x002C,    ///< Unreachable Port register address in UDP mode (R)
+        PHYCFGR = 0x002E,   ///< PHY Status Register (R/W)
+        VERSIONR = 0x0039,  ///< Chip version register address (R)
+    };
+
+    /** Socket registers */
+    enum {
+        Sn_MR = 0x0000,          ///< socket Mode register (R/W)
+        Sn_CR = 0x0001,          ///< Socket command register (R/W)
+        Sn_IR = 0x0002,          ///< Socket interrupt register (R)
+        Sn_SR = 0x0003,          ///< Socket status register (R)
+        Sn_PORT = 0x0004,        ///< Source port register (R/W)
+        Sn_DHAR = 0x0006,        ///< Peer MAC register address (R/W)
+        Sn_DIPR = 0x000C,        ///< Peer IP register address (R/W)
+        Sn_DPORT = 0x0010,       ///< Peer port register address (R/W)
+        Sn_MSSR = 0x0012,        ///< Maximum Segment Size(Sn_MSSR0) register address (R/W)
+        Sn_TOS = 0x0015,         ///< IP Type of Service(TOS) Register (R/W)
+        Sn_TTL = 0x0016,         ///< IP Time to live(TTL) Register (R/W)
+        Sn_RXBUF_SIZE = 0x001E,  ///< Receive memory size register (R/W)
+        Sn_TXBUF_SIZE = 0x001F,  ///< Transmit memory size register (R/W)
+        Sn_TX_FSR = 0x0020,      ///< Transmit free memory size register (R)
+        Sn_TX_RD = 0x0022,       ///< Transmit memory read pointer register address (R)
+        Sn_TX_WR = 0x0024,       ///< Transmit memory write pointer register address (R/W)
+        Sn_RX_RSR = 0x0026,      ///< Received data size register (R)
+        Sn_RX_RD = 0x0028,       ///< Read point of Receive memory (R/W)
+        Sn_RX_WR = 0x002A,       ///< Write point of Receive memory (R)
+        Sn_IMR = 0x002C,         ///< Socket interrupt mask register (R)
+        Sn_FRAG = 0x002D,        ///< Fragment field value in IP header register (R/W)
+        Sn_KPALVTR = 0x002F,     ///< Keep Alive Timer register (R/W)
+    };
 
     /** Mode register values */
     enum {
