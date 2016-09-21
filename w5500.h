@@ -62,7 +62,7 @@ public:
      * Shut down the Ethernet controlled
      */
     void end();
-  
+
     /**
      * Send an Ethernet frame
      * @param data a pointer to the data to send
@@ -85,7 +85,7 @@ private:
 
     //< SPI interface Read operation in Control Phase
     static const uint8_t AccessModeRead = (0x00 << 2);
-    
+
     //< SPI interface Read operation in Control Phase
     static const uint8_t AccessModeWrite = (0x01 << 2);
 
@@ -454,7 +454,7 @@ private:
      * @param (uint8_t*)shar Pointer variable to get local MAC address. It should be allocated 6 bytes.
      * @sa setSHAR()
      */
-    inline uint8_t getSHAR(uint8_t* macaddr) {
+    inline void getSHAR(uint8_t* macaddr) {
         wizchip_read_buf(BlockSelectCReg, SHAR, macaddr, 6);
     }
 
@@ -491,7 +491,7 @@ private:
      * @sa setIMR()
      */
     inline uint8_t getIMR() {
-        wizchip_read(BlockSelectCReg, _IMR_);
+        return wizchip_read(BlockSelectCReg, _IMR_);
     }
 
     /**
@@ -509,7 +509,7 @@ private:
      * @sa setPHYCFGR()
      */
     inline uint8_t getPHYCFGR() {
-        wizchip_read(BlockSelectCReg, PHYCFGR);
+        return wizchip_read(BlockSelectCReg, PHYCFGR);
     }
 
     /**
@@ -517,7 +517,7 @@ private:
      * @return uint8_t. Value of @ref VERSIONR register.
      */
     inline uint8_t getVERSIONR() {
-        wizchip_read(BlockSelectCReg, VERSIONR);
+        return wizchip_read(BlockSelectCReg, VERSIONR);
     }
 
     /**
@@ -535,7 +535,7 @@ private:
      * @sa setSn_MR()
      */
     inline uint8_t getSn_MR() {
-        wizchip_read(BlockSelectSReg, Sn_MR);
+        return wizchip_read(BlockSelectSReg, Sn_MR);
     }
 
     /**
@@ -553,7 +553,7 @@ private:
      * @sa setSn_CR()
      */
     inline uint8_t getSn_CR() {
-        wizchip_read(BlockSelectSReg, Sn_CR);
+        return wizchip_read(BlockSelectSReg, Sn_CR);
     }
 
     /**
@@ -571,7 +571,7 @@ private:
      * @sa setSn_IR()
      */
     inline uint8_t getSn_IR() {
-        (wizchip_read(BlockSelectSReg, Sn_IR) & 0x1F);
+        return (wizchip_read(BlockSelectSReg, Sn_IR) & 0x1F);
     }
 
     /**
@@ -589,7 +589,7 @@ private:
      * @sa setSn_IMR()
      */
     inline uint8_t getSn_IMR() {
-        (wizchip_read(BlockSelectSReg, Sn_IMR) & 0x1F);
+        return (wizchip_read(BlockSelectSReg, Sn_IMR) & 0x1F);
     }
 
     /**
@@ -597,7 +597,7 @@ private:
      * @return uint8_t. Value of @ref Sn_SR.
      */
     inline uint8_t getSn_SR() {
-        wizchip_read(BlockSelectSReg, Sn_SR);
+        return wizchip_read(BlockSelectSReg, Sn_SR);
     }
 
     /**
@@ -615,7 +615,7 @@ private:
      * @sa setSn_RXBUF_SIZE()
      */
     inline uint8_t getSn_RXBUF_SIZE() {
-        wizchip_read(BlockSelectSReg, Sn_RXBUF_SIZE);
+        return wizchip_read(BlockSelectSReg, Sn_RXBUF_SIZE);
     }
 
     /**
@@ -633,7 +633,7 @@ private:
      * @sa setSn_TXBUF_SIZE()
      */
     inline uint8_t getSn_TXBUF_SIZE() {
-        wizchip_read(BlockSelectSReg, Sn_TXBUF_SIZE);
+        return wizchip_read(BlockSelectSReg, Sn_TXBUF_SIZE);
     }
 
     /**
@@ -667,7 +667,7 @@ private:
      * @param (uint16_t)rxrd Value to set @ref Sn_RX_RD
      * @sa getSn_RX_RD()
      */
-    inline void setSn_RX_RD(uint8_t rxrd) {
+    inline void setSn_RX_RD(uint16_t rxrd) {
         wizchip_write_word(BlockSelectSReg, Sn_RX_RD, rxrd);
     }
 
@@ -693,7 +693,7 @@ private:
      * Gets the max buffer size of socket sn passed as parameter.
      * @return uint16_t. Value of Socket n RX max buffer size.
      */
-    inline uint8_t getSn_RxMAX() {
+    inline uint16_t getSn_RxMAX() {
         return ((uint16_t)getSn_RXBUF_SIZE()) << 10;
     }
 
@@ -702,7 +702,7 @@ private:
      * Gets the max buffer size of socket sn passed as parameters.
      * @return uint16_t. Value of Socket n TX max buffer size.
      */
-    inline uint8_t getSn_TxMAX() {
+    inline uint16_t getSn_TxMAX() {
         return ((uint16_t)getSn_TXBUF_SIZE()) << 10;
     }
 };
