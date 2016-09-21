@@ -112,6 +112,14 @@ void Wiznet5500::wizchip_write_buf(uint8_t block, uint16_t address, const uint8_
     wizchip_cs_deselect();
 }
 
+void Wiznet5500::setSn_CR(uint8_t cr) {
+    // Write the command to the Command Register
+    wizchip_write(BlockSelectSReg, Sn_CR, cr);
+
+    // Now wait for the command to complete
+    while( wizchip_read(BlockSelectSReg, Sn_CR) );
+}
+
 uint16_t Wiznet5500::getSn_TX_FSR()
 {
     uint16_t val=0,val1=0;

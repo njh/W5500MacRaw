@@ -539,13 +539,11 @@ private:
     }
 
     /**
-     * Set @ref Sn_CR register
+     * Set @ref Sn_CR register, then wait for the command to execute
      * @param (uint8_t)cr Value to set @ref Sn_CR
      * @sa getSn_CR()
      */
-    inline void setSn_CR(uint8_t cr) {
-        wizchip_write(BlockSelectSReg, Sn_CR, cr);
-    }
+    void setSn_CR(uint8_t cr);
 
     /**
      * Get @ref Sn_CR register
