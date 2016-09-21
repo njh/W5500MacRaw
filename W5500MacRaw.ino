@@ -66,7 +66,7 @@ void loop() {
         printPaddedHex(buffer[12]);
         printPaddedHex(buffer[13]);
         Serial.println();
-        
+
         // Reply to the 0x88B5 Local Experimental Ethertype
         if (buffer[12] == 0x88 && buffer[13] == 0xB5) {
             Serial.print("Byte 15=");

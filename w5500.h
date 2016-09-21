@@ -604,7 +604,7 @@ private:
      * @sa getSn_RXBUF_SIZE()
      */
     inline void setSn_RXBUF_SIZE(uint8_t rxbufsize) {
-        wizchip_write(BlockSelectSReg, Sn_RXBUF_SIZE,rxbufsize);
+        wizchip_write(BlockSelectSReg, Sn_RXBUF_SIZE, rxbufsize);
     }
 
     /**

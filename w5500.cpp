@@ -35,7 +35,7 @@
 
 
 
-uint8_t  Wiznet5500::wizchip_read(uint8_t block, uint16_t address)
+uint8_t Wiznet5500::wizchip_read(uint8_t block, uint16_t address)
 {
     uint8_t ret;
 
@@ -153,7 +153,7 @@ void Wiznet5500::wizchip_send_data(const uint8_t *wizdata, uint16_t len)
 {
     uint16_t ptr = 0;
 
-    if(len == 0)  return;
+    if(len == 0) return;
     ptr = getSn_TX_WR();
     wizchip_write_buf(BlockSelectTxBuf, ptr, wizdata, len);
 
@@ -299,7 +299,8 @@ void Wiznet5500::end()
 uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
 {
     uint16_t len = getSn_RX_RSR();
-    if ( len > 0 )
+    
+    if (len > 0)
     {
         uint8_t head[2];
         uint16_t data_len=0;
@@ -311,7 +312,7 @@ uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
         data_len = (data_len<<8) + head[1];
         data_len -= 2;
 
-        if(data_len > bufsize)
+        if (data_len > bufsize)
         {
             // Packet is bigger than buffer - drop the packet
             wizchip_recv_ignore(data_len);
