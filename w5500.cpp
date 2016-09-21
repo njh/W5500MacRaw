@@ -266,9 +266,9 @@ boolean Wiznet5500::begin(const uint8_t *mac_address)
 
     wizchip_sw_reset();
 
-    // Set the size of the Rx and Tx buffers
-    //wizchip_write(RMSR, RxBufferSize);
-    //wizchip_write(TMSR, TxBufferSize);
+    // Use the full 16Kb of RAM for Socket 0
+    setSn_RXBUF_SIZE(16);
+    setSn_TXBUF_SIZE(16);
 
     // Set our local MAC address
     setSHAR(_mac_address);
