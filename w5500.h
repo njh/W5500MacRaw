@@ -412,13 +412,13 @@ private:
 
     enum {
         PHY_SPEED_10 = 0,     ///< Link Speed 10
-        PHY_SPEED_100 = 1,     ///< Link Speed 100
-        PHY_DUPLEX_HALF = 0,     ///< Link Half-Duplex
-        PHY_DUPLEX_FULL = 1,     ///< Link Full-Duplex
+        PHY_SPEED_100 = 1,    ///< Link Speed 100
+        PHY_DUPLEX_HALF = 0,  ///< Link Half-Duplex
+        PHY_DUPLEX_FULL = 1,  ///< Link Full-Duplex
         PHY_LINK_OFF = 0,     ///< Link Off
-        PHY_LINK_ON = 1,     ///< Link On
-        PHY_POWER_NORM = 0,     ///< PHY power normal mode
-        PHY_POWER_DOWN = 1,     ///< PHY power down mode
+        PHY_LINK_ON = 1,      ///< Link On
+        PHY_POWER_NORM = 0,   ///< PHY power normal mode
+        PHY_POWER_DOWN = 1,   ///< PHY power down mode
     };
 
 
