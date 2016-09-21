@@ -685,24 +685,6 @@ private:
     inline uint16_t getSn_RX_WR() {
         return wizchip_read_word(BlockSelectSReg, Sn_RX_WR);
     }
-
-    /**
-     * Socket_register_access_function
-     * Gets the max buffer size of socket sn passed as parameter.
-     * @return uint16_t. Value of Socket n RX max buffer size.
-     */
-    inline uint16_t getSn_RxMAX() {
-        return ((uint16_t)getSn_RXBUF_SIZE()) << 10;
-    }
-
-    /**
-     * Socket_register_access_function
-     * Gets the max buffer size of socket sn passed as parameters.
-     * @return uint16_t. Value of Socket n TX max buffer size.
-     */
-    inline uint16_t getSn_TxMAX() {
-        return ((uint16_t)getSn_TXBUF_SIZE()) << 10;
-    }
 };
 
 #endif   // _W5500_H_
