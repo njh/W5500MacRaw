@@ -113,7 +113,7 @@ private:
      */
     inline void wizchip_cs_select()
     {
-        digitalWrite(SS, LOW);
+        digitalWrite(_cs, LOW);
     }
 
     /**
@@ -123,7 +123,7 @@ private:
      */
     inline void wizchip_cs_deselect()
     {
-        digitalWrite(SS, HIGH);
+        digitalWrite(_cs, HIGH);
     }
 
     /**
