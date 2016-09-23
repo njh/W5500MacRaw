@@ -103,7 +103,7 @@ private:
 
 
 
-    uint8_t _cs;
+    int8_t _cs;
     uint8_t _mac_address[6];
 
     /**
