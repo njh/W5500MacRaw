@@ -322,7 +322,8 @@ uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
         wizchip_recv_data(buffer, data_len);
         setSn_CR(Sn_CR_RECV);
 
-        // W5500 doesn't have any built-in MAC address filtering
+        // Had problems with W5500 MAC address filtering (the Sn_MR_MFEN option)
+        // Do it in software instead:
         if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
         {
             // Addressed to an Ethernet multicast address or our unicast address
