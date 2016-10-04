@@ -211,7 +211,7 @@ int8_t Wiznet5500::wizphy_getphypmode()
     return tmp;
 }
 
-void Wiznet5500::wizphy_reset(void)
+void Wiznet5500::wizphy_reset()
 {
     uint8_t tmp = getPHYCFGR();
     tmp &= PHYCFGR_RST;

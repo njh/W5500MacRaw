@@ -131,7 +131,7 @@ private:
      * @note This function help not to access wrong address. If you do not describe this function or register any functions,
      * null function is called.
      */
-    inline uint8_t wizchip_spi_read_byte(void)
+    inline uint8_t wizchip_spi_read_byte()
     {
         return SPI.transfer(0);
     }
@@ -209,12 +209,12 @@ private:
     /**
      * Reset WIZCHIP by softly.
      */
-    void wizchip_sw_reset(void);
+    void wizchip_sw_reset();
 
     /**
      * Get the link status of phy in WIZCHIP
      */
-    int8_t wizphy_getphylink(void);
+    int8_t wizphy_getphylink();
 
     /**
      * Get the power mode of PHY in WIZCHIP
