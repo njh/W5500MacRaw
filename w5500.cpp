@@ -297,43 +297,61 @@ void Wiznet5500::end()
 
 uint16_t Wiznet5500::readFrame(uint8_t *buffer, uint16_t bufsize)
 {
-    uint16_t len = getSn_RX_RSR();
-    
-    if (len > 0)
+    uint16_t data_len = readFrameSize();
+
+    if (data_len == 0)
+        return 0;
+
+    if (data_len > bufsize)
     {
-        uint8_t head[2];
-        uint16_t data_len=0;
-
-        wizchip_recv_data(head, 2);
-        setSn_CR(Sn_CR_RECV);
-
-        data_len = head[0];
-        data_len = (data_len<<8) + head[1];
-        data_len -= 2;
-
-        if (data_len > bufsize)
-        {
-            // Packet is bigger than buffer - drop the packet
-            wizchip_recv_ignore(data_len);
-            setSn_CR(Sn_CR_RECV);
-            return 0;
-        }
-
-        wizchip_recv_data(buffer, data_len);
-        setSn_CR(Sn_CR_RECV);
-
-        // Had problems with W5500 MAC address filtering (the Sn_MR_MFEN option)
-        // Do it in software instead:
-        if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
-        {
-            // Addressed to an Ethernet multicast address or our unicast address
-            return data_len;
-        } else {
-            return 0;
-        }
+        // Packet is bigger than buffer - drop the packet
+        discardFrame(data_len);
+        return 0;
     }
 
-    return 0;
+    return readFrameData(buffer, data_len);
+}
+
+uint16_t Wiznet5500::readFrameSize()
+{
+    uint16_t len = getSn_RX_RSR();
+
+    if (len == 0)
+        return 0;
+
+    uint8_t head[2];
+    uint16_t data_len=0;
+
+    wizchip_recv_data(head, 2);
+    setSn_CR(Sn_CR_RECV);
+
+    data_len = head[0];
+    data_len = (data_len<<8) + head[1];
+    data_len -= 2;
+
+    return data_len;
+}
+
+void Wiznet5500::discardFrame(uint16_t framesize)
+{
+    wizchip_recv_ignore(framesize);
+    setSn_CR(Sn_CR_RECV);
+}
+
+uint16_t Wiznet5500::readFrameData(uint8_t *buffer, uint16_t framesize)
+{
+    wizchip_recv_data(buffer, framesize);
+    setSn_CR(Sn_CR_RECV);
+
+    // Had problems with W5500 MAC address filtering (the Sn_MR_MFEN option)
+    // Do it in software instead:
+    if ((buffer[0] & 0x01) || memcmp(&buffer[0], _mac_address, 6) == 0)
+    {
+        // Addressed to an Ethernet multicast address or our unicast address
+        return framesize;
+    } else {
+        return 0;
+    }
 }
 
 uint16_t Wiznet5500::sendFrame(const uint8_t *buf, uint16_t len)

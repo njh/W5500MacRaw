@@ -80,6 +80,33 @@ public:
      */
     uint16_t readFrame(uint8_t *buffer, uint16_t bufsize);
 
+protected:
+
+    /**
+     * Read an Ethernet frame size
+     * @return the length of data do receive
+     *         or 0 if no frame was received
+     */
+    uint16_t readFrameSize();
+
+    /**
+     * discard an Ethernet frame
+     * @param framesize readFrameSize()'s result
+     */
+    void discardFrame(uint16_t framesize);
+
+    /**
+     * Read an Ethernet frame data
+     *     readFrameSize() must be called first,
+     *     its result must be passed into framesize parameter
+     * @param buffer a pointer to a buffer to write the frame to
+     * @param framesize readFrameSize()'s result
+     * @return the length of the received frame
+     *         or 0 if a problem occured
+     */
+    uint16_t readFrameData(uint8_t *frame, uint16_t framesize);
+
+    uint8_t _mac_address[6];
 
 private:
 
@@ -104,7 +131,6 @@ private:
 
 
     int8_t _cs;
-    uint8_t _mac_address[6];
 
     /**
      * Default function to select chip.
